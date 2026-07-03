@@ -22,6 +22,11 @@ All notable changes to Frends Companion are documented here. The format is based
 - Frends Platform API CLI tools (`frends-*.sh`) and the `frends-canvas-arranger` agent.
 - Single-repo marketplace manifest at `.claude-plugin/marketplace.json`.
 
+### Changed
+- Command set finalized as `/fc-integration:connect`, `/fc-integration:new-workspace`, and
+  `/fc-integration:clean`; the generated global scaffolder is now `/frends-init`.
+- Removed third-party platform comparison references so the docs read as a standalone project.
+
 ### Fixed
 - Corrected two serialization guesses against real 6.2 data: Type 21 is the DMN Task (not a data
   object reference), and Type 8 is a Scope (not Assign Variable).

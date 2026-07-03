@@ -26,11 +26,11 @@ changes/                    # Changelog fragments (one per PR)
 
 ## Commands
 
-- `/fc-integration:configure-template-workspace` - Sets up a template folder in a chosen location and generates a global `/freshies` command.
-- `/fc-integration:env-setup-guide` - Interactive Frends Platform API credentials setup.
-- `/fc-integration:tidy-up` - Clean development artifacts.
+- `/fc-integration:new-workspace` - Sets up a template folder in a chosen location and generates a global `/frends-init` command.
+- `/fc-integration:connect` - Interactive Frends Platform API credentials setup.
+- `/fc-integration:clean` - Clean development artifacts.
 
-After running `configure-template-workspace`, users can invoke `/freshies` from any empty directory to scaffold a new Frends project. When `configure-template-workspace` is re-run, the AI merges updates intelligently, keeping existing preferences while bringing in new updates from the plugin.
+After running `new-workspace`, users can invoke `/frends-init` from any empty directory to scaffold a new Frends project. When `new-workspace` is re-run, the AI merges updates intelligently, keeping existing preferences while bringing in new updates from the plugin.
 
 ## Guidelines
 
@@ -46,7 +46,7 @@ Frends-specific vocabulary matters; generic BPMN/C# intuition often gets it wron
 
 ## Platform API note
 
-The CLI tools in `skills/frends-ipaas-developer/scripts/` talk to the **Frends Platform API** (`https://<tenant>.frendsapp.com/api/v1`). The Platform API is not enabled out of the box: it requires Microsoft Entra ID app registration, an admin app role, and IP allowlisting arranged with Frends support. Authentication is OAuth2 client-credentials against Azure AD, which returns a bearer token used on every Platform API call. See `skills/frends-ipaas-developer/references/guides/cli_tool_reference.md` and the `env-setup-guide` command.
+The CLI tools in `skills/frends-ipaas-developer/scripts/` talk to the **Frends Platform API** (`https://<tenant>.frendsapp.com/api/v1`). The Platform API is not enabled out of the box: it requires Microsoft Entra ID app registration, an admin app role, and IP allowlisting arranged with Frends support. Authentication is OAuth2 client-credentials against Azure AD, which returns a bearer token used on every Platform API call. See `skills/frends-ipaas-developer/references/guides/cli_tool_reference.md` and the `connect` command.
 
 The Platform API scripts are **scaffolded against the published Frends 6.2 Platform API reference and have not been live-tested against a tenant.** Each script header says so. Validate endpoints against your own tenant's `https://<tenant>.frendsapp.com/swagger` before relying on them in automation, and confirm any list endpoints whose exact path is marked TODO in the script.
 

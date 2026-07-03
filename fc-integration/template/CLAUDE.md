@@ -12,7 +12,7 @@ If you are asked to build an integration and the `frends-ipaas-developer` skill 
 
 ## Credentials & .env
 
-You cannot read `.env` directly — project settings block it. The CLI tools load credentials internally via `source .env` and exchange them for a short-lived bearer token. To check what's configured, run `bash scripts/frends-env-check.sh` (shows SET/UNSET, never values) and `bash scripts/frends-connection-test.sh`. If credentials are missing or the test fails, guide the user through `/fc-integration:env-setup-guide`.
+You cannot read `.env` directly — project settings block it. The CLI tools load credentials internally via `source .env` and exchange them for a short-lived bearer token. To check what's configured, run `bash scripts/frends-env-check.sh` (shows SET/UNSET, never values) and `bash scripts/frends-connection-test.sh`. If credentials are missing or the test fails, guide the user through `/fc-integration:connect`.
 
 - Never echo secret values into the conversation, plans, or summaries — they could be visible during screen sharing.
 - Prefer pulling Process exports from the platform over hand-editing secrets: production credential values live in the Frends GUI / Environment Variables.

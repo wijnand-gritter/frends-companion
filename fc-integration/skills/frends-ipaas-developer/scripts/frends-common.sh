@@ -7,7 +7,7 @@
 # against a tenant. Validate endpoints against your own
 # https://<tenant>.frendsapp.com/swagger before relying on these in automation.
 #
-# Auth model (differs from Boomi): the Frends Platform API uses OAuth2
+# Auth model: the Frends Platform API uses OAuth2
 # client-credentials against Microsoft Entra ID (Azure AD). We POST client
 # credentials to the Azure token endpoint, receive a short-lived bearer token,
 # cache it, and send it as `Authorization: Bearer <token>` on every API call.

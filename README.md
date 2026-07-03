@@ -1,7 +1,6 @@
 # Frends Companion
 
-A Claude Code plugin (and marketplace) for Frends iPaaS development, modeled on the structure of
-Boomi's "Boomi Companion" (`bc-integration` / `boomi-companion`).
+A Claude Code plugin (and marketplace) for Frends iPaaS development.
 
 This repository is both the **marketplace** and the **plugin**:
 
@@ -17,9 +16,9 @@ This repository is both the **marketplace** and the **plugin**:
 /plugin install fc-integration@frends-companion
 ```
 
-Then run `/fc-integration:env-setup-guide` to configure Frends Platform API credentials, and
-`/fc-integration:configure-template-workspace` to set up a project template and the global
-`/freshies` scaffolder.
+Then run `/fc-integration:connect` to configure Frends Platform API credentials, and
+`/fc-integration:new-workspace` to set up a project template and the global
+`/frends-init` scaffolder.
 
 ## What's inside the plugin
 

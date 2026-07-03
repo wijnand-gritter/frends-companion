@@ -4,7 +4,7 @@ Scaffolded from the Frends Companion (`fc-integration`) plugin.
 
 ## First-time setup
 
-1. Copy `.env.example` to `.env` and fill in your Frends Platform API credentials. Run `/fc-integration:env-setup-guide` if you want a guided walkthrough.
+1. Copy `.env.example` to `.env` and fill in your Frends Platform API credentials. Run `/fc-integration:connect` if you want a guided walkthrough.
 2. Verify connectivity:
 
    ```bash

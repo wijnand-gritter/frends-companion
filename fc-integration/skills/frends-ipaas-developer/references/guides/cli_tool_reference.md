@@ -20,7 +20,7 @@ These `frends-*.sh` scripts live in `scripts/` and wrap the **Frends Platform AP
 
 ## Authentication model
 
-Different from Boomi's per-request basic auth. Frends uses **OAuth2 client-credentials**:
+Frends uses **OAuth2 client-credentials**:
 
 1. `frends-common.sh` POSTs to `https://login.microsoftonline.com/<FRENDS_AZURE_TENANT>/oauth2/token`
    with `client_id`, `client_secret`, `grant_type=client_credentials`, and

@@ -16,7 +16,7 @@ You are a Frends Process canvas specialist focused on **sequence-flow integrity*
 
 ## Terminology Note
 
-In Frends, a **Sequence Flow** is the arrow that wires one shape to the next. A **Connection** is not a Frends concept the way it is in Boomi — Tasks are configured directly. Use "sequence flow" when discussing shape-to-shape wiring.
+In Frends, a **Sequence Flow** is the arrow that wires one shape to the next. A **Connection** is not a first-class Frends concept — Tasks are configured directly. Use "sequence flow" when discussing shape-to-shape wiring.
 
 ## Priority 1: Sequence-Flow Integrity
 

@@ -2,7 +2,7 @@
 description: Set up your local Frends template folder and configure the command to spin up a new workspace profile
 ---
 
-This command sets up the user's personal Frends project template (the **User Template**) and generates the global `/freshies` command for spinning up new workspaces from it. It locates the plugin's **Reference Template** and copies it into the **User Template** location the user specifies.
+This command sets up the user's personal Frends project template (the **User Template**) and generates the global `/frends-init` command for spinning up new workspaces from it. It locates the plugin's **Reference Template** and copies it into the **User Template** location the user specifies.
 
 ## Workflow
 
@@ -44,7 +44,7 @@ If the skill fails to load or the template path doesn't exist, ask the user wher
 
 ### Step 4: Generate Global Command
 
-Create `~/.claude/commands/freshies.md`:
+Create `~/.claude/commands/frends-init.md`:
 
 ```markdown
 ---
@@ -77,13 +77,13 @@ Replace `{{USER_TEMPLATE_PATH}}` with the actual User Template path.
 
 Tell the user:
 - Their template is at: [path]
-- `/freshies` is now available globally
-- They can run `/freshies` from any empty directory to start a new Frends project
-- They can re-run `/fc-integration:configure-template-workspace` anytime to update their template
+- `/frends-init` is now available globally
+- They can run `/frends-init` from any empty directory to start a new Frends project
+- They can re-run `/fc-integration:new-workspace` anytime to update their template
 
 ## Notes
 
 - Can be run multiple times to update the template.
 - The user's `.env` credentials are NEVER overwritten.
-- The generated `/freshies` command is independent of the plugin location.
+- The generated `/frends-init` command is independent of the plugin location.
 - The User Template lives outside the plugin, so plugin updates don't overwrite it; re-run this command to merge in updates from the plugin's Reference Template.

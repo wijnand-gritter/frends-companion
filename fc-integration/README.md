@@ -41,11 +41,11 @@ claude --plugin-dir /path/to/fc-integration
 
 | Command | Purpose |
 |---------|---------|
-| `/fc-integration:env-setup-guide` | Interactive Frends Platform API credentials setup |
-| `/fc-integration:configure-template-workspace` | Create a reusable project template + global `/freshies` command |
-| `/fc-integration:tidy-up` | Clean development artifacts |
+| `/fc-integration:connect` | Interactive Frends Platform API credentials setup |
+| `/fc-integration:new-workspace` | Create a reusable project template + global `/frends-init` command |
+| `/fc-integration:clean` | Clean development artifacts |
 
-After running `configure-template-workspace`, use `/freshies` from any empty directory to scaffold a new project.
+After running `new-workspace`, use `/frends-init` from any empty directory to scaffold a new project.
 
 ## Credential handling
 
