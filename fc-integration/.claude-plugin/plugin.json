@@ -1,0 +1,8 @@
+{
+  "name": "fc-integration",
+  "description": "Frends iPaaS development tools: skill, commands, and agents for building, deploying, and monitoring Frends integrations",
+  "version": "0.1.0",
+  "author": {
+    "name": "Frends Companion"
+  }
+}

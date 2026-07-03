@@ -1,0 +1,133 @@
+{
+  "tasks": {
+    "Frends.HTTP.Request": {
+      "1.11.0": {
+        "ref": "/ProcessTask/e6be823c-e2f0-496b-8218-8f003e670676/v1",
+        "guid": "e6be823c-e2f0-496b-8218-8f003e670676",
+        "name": "Frends.HTTP.Request.HTTP.Request(Input, Options, CancellationToken)",
+        "framework": ".NETCoreApp",
+        "parameterSkeleton": {
+          "input": {
+            "Method": {
+              "mode": "select",
+              "value": "GET"
+            },
+            "ResultMethod": {
+              "mode": "select",
+              "value": "JToken"
+            },
+            "Url": {
+              "mode": "text",
+              "value": "https://dummyjson.com/users/1"
+            },
+            "Message": {
+              "mode": "text",
+              "value": ""
+            },
+            "Headers": []
+          },
+          "options": {
+            "Authentication": {
+              "mode": "select",
+              "value": "None"
+            },
+            "Username": {
+              "mode": "text",
+              "value": ""
+            },
+            "Password": {
+              "mode": "text",
+              "value": ""
+            },
+            "Token": {
+              "mode": "text",
+              "value": ""
+            },
+            "UseProxy": {
+              "mode": "toggle",
+              "value": false
+            },
+            "ProxyUrl": {
+              "mode": "text",
+              "value": ""
+            },
+            "ProxyUsername": {
+              "mode": "text",
+              "value": ""
+            },
+            "ProxyPassword": {
+              "mode": "text",
+              "value": ""
+            },
+            "ClientCertificateSource": {
+              "mode": "select",
+              "value": "CertificateStore"
+            },
+            "ClientCertificateFilePath": {
+              "mode": "text",
+              "value": ""
+            },
+            "ClientCertificateInBase64": {
+              "mode": "text",
+              "value": ""
+            },
+            "ClientCertificateKeyPhrase": {
+              "mode": "text",
+              "value": ""
+            },
+            "CertificateThumbprint": {
+              "mode": "text",
+              "value": ""
+            },
+            "CertificateStoreLocation": {
+              "mode": "select",
+              "value": "CurrentUser"
+            },
+            "LoadEntireChainForCertificate": {
+              "mode": "toggle",
+              "value": true
+            },
+            "ConnectionTimeoutSeconds": {
+              "mode": "integer",
+              "value": 30
+            },
+            "FollowRedirects": {
+              "mode": "toggle",
+              "value": true
+            },
+            "AllowInvalidCertificate": {
+              "mode": "toggle",
+              "value": false
+            },
+            "AllowInvalidResponseContentTypeCharSet": {
+              "mode": "toggle",
+              "value": false
+            },
+            "ThrowExceptionOnErrorResponse": {
+              "mode": "toggle",
+              "value": false
+            },
+            "AutomaticCookieHandling": {
+              "mode": "toggle",
+              "value": true
+            },
+            "CacheHttpClient": {
+              "mode": "toggle",
+              "value": true
+            },
+            "HttpProtocolVersion": {
+              "mode": "select",
+              "value": "Http11"
+            },
+            "SslProtocolVersion": {
+              "mode": "select",
+              "value": "Default"
+            }
+          },
+          "cancellationToken": null
+        }
+      }
+    }
+  },
+  "_README": "Per-tenant Frends task refs harvested from real exports. GUIDs are tenant- and version-specific; do not assume they transfer between tenants. Keyed PackageId -> PackageVersion. Regenerate with: generate_process.py --harvest <export.json>"
+}

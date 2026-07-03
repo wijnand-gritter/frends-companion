@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "defaultMode": "acceptEdits",
+    "allow": [
+      "Skill(fc-integration:frends-ipaas-developer)",
+      "Read(~/.claude/plugins/fc-**)",
+      "Bash(bash */skills/frends-ipaas-developer/scripts/*)",
+      "Bash(python3 */skills/frends-ipaas-developer/scripts/*)"
+    ],
+    "deny": [
+      "Read(**/.env*)",
+      "Bash(*.env*)"
+    ]
+  },
+  "outputStyle": "Explanatory"
+}

@@ -1,0 +1,14 @@
+{
+  "name": "Create JSON message",
+  "isSubprocess": false,
+  "trigger": { "type": "manual" },
+  "steps": [
+    {
+      "type": "codeTask",
+      "name": "Build message",
+      "assignTo": "message",
+      "code": "return new JObject { [\"message\"] = \"Hello from Frends\", [\"createdAt\"] = DateTime.UtcNow };"
+    }
+  ],
+  "return": { "type": "expression", "value": "{{#var.message}}", "mode": "text" }
+}

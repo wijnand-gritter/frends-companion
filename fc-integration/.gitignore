@@ -1,0 +1,16 @@
+# Credentials
+.env
+.env.local
+*.env
+
+# Token cache written by the Platform API scripts
+.frends-token-cache
+.frends-token-cache.*
+
+# Activity logs
+.activity-log/
+
+# OS / editor
+.DS_Store
+*.swp
+hook-logs/

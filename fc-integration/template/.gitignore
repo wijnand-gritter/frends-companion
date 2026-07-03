@@ -1,0 +1,19 @@
+# Credentials & token cache
+.env
+.env.local
+.frends-token-cache
+.frends-token-cache.*
+
+# Activity logs
+.activity-log/
+
+# Pulled artifacts / run output (keep structure via .gitkeep)
+active-development/processes/*
+!active-development/processes/.gitkeep
+active-development/feedback/*
+!active-development/feedback/.gitkeep
+
+# OS / editor
+.DS_Store
+*.swp
+hook-logs/
