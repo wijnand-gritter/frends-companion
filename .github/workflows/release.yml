@@ -1,0 +1,32 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Tag must match plugin.json version
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          v=$(jq -r .version fc-integration/.claude-plugin/plugin.json)
+          echo "tag=$tag  plugin.json=$v"
+          [ "$tag" = "$v" ] \
+            || { echo "::error::tag $GITHUB_REF_NAME does not match plugin.json version $v"; exit 1; }
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Frends Companion ${{ github.ref_name }}"
+          generate_release_notes: true
+          body_path: ${{ github.workspace }}/.github/release-intro.md
+          fail_on_unmatched_files: false

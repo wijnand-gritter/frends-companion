@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate JSON manifests
+        run: |
+          jq empty .claude-plugin/marketplace.json
+          jq empty fc-integration/.claude-plugin/plugin.json
+          jq empty fc-integration/template/.claude/settings.json
+
+      - name: Plugin version must be SemVer
+        run: |
+          v=$(jq -r .version fc-integration/.claude-plugin/plugin.json)
+          echo "plugin.json version: $v"
+          echo "$v" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+([-+].*)?$' \
+            || { echo "::error::version '$v' is not SemVer"; exit 1; }
+
+      - name: Shell scripts syntax check
+        run: |
+          for f in fc-integration/skills/frends-ipaas-developer/scripts/*.sh; do
+            bash -n "$f" && echo "ok: $f"
+          done
+
+      - name: Python generator compiles
+        run: python3 -m py_compile fc-integration/skills/frends-ipaas-developer/scripts/generate_process.py
+
+      - name: Markdown link check
+        run: python3 .github/scripts/check_links.py
