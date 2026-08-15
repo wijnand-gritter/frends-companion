@@ -18,6 +18,7 @@ The start condition of a Process. One file per type, plus the shared field-behav
 | [azure-event-hub.md](azure-event-hub.md) | `AzureEventHubTrigger` | Azure Event Hub events. |
 | [tcp.md](tcp.md) | `TcpTrigger` | Raw TCP connections. |
 | [parameter-fields.md](parameter-fields.md) | — | **Read this** for the special Text/`#env` field behavior. |
+| [openapi-spec-constraints.md](openapi-spec-constraints.md) | — | Frends-specific OpenAPI rules for API Triggers (flat schemas, no anchors); read before authoring a spec. |
 
 To add a trigger: copy [../_TEMPLATE.md](../_TEMPLATE.md) here, add a row above, record its
 `$type`/`config` in [../process-file-format/triggers-encoding.md](../process-file-format/triggers-encoding.md),

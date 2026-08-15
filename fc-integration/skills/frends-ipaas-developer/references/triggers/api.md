@@ -7,10 +7,23 @@ Backs a full **API-managed** endpoint defined by an OpenAPI specification (see
 [../concepts/api-management.md](../concepts/api-management.md)). The Process is the implementation
 behind the endpoint, secured by API Policies.
 
+## One API Trigger per process
+A process accepts **at most one API Trigger** (editor-enforced). One OpenAPI operation binds to
+one process; an API with N operations needs N processes. Consolidating operations into a single
+process requires consolidating them into a single operation in the spec (e.g. a parameterised
+path), which trades per-endpoint schema precision for process count - decide deliberately.
+
+## Spec constraints
+The OpenAPI document must satisfy Frends-specific rules beyond generic OpenAPI validity:
+flat schemas with explicit `properties` (no `allOf` compositions), no YAML anchors/aliases,
+concrete response status codes. Violations fail spec validation or trigger activation with
+non-obvious errors. Full rules and the symptom table:
+[openapi-spec-constraints.md](openapi-spec-constraints.md).
+
 ## Configuration (confirmed keys)
 `routeTemplate`, `httpMethod`, `isPrivate`, `corsEnabled`, `allowedOrigins`, `allowedSchemes`,
-`references` (the `#trigger.data.*` paths exposed for auto-complete, derived from the OpenAPI body),
-and `openApiDocument` (the OpenAPI contract embedded as a string).
+`references` (the `#trigger.data.*` paths exposed for auto-complete, derived from the OpenAPI
+request body's `properties`), and `openApiDocument` (the OpenAPI contract embedded as a string).
 
 ## Expressions and references
 Read the request through `#trigger` (e.g. `#trigger.data.body.employeeId`). Return responses with a

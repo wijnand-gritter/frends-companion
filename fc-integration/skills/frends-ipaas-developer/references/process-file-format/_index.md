@@ -13,4 +13,7 @@ How Frends serializes a Process, for reading an export or generating an importab
 | [confirmed-shape-parameters.md](confirmed-shape-parameters.md) | Real 6.2 per-shape parameter shapes. |
 | [triggers-encoding.md](triggers-encoding.md) | `TriggersJson` per trigger; confirmed vs inferred. |
 | [generation-checklist.md](generation-checklist.md) | Steps + caveats for emitting an importable file. |
+| [node-naming.md](node-naming.md) | Node names must be unique process-wide; the import error and exemptions. |
+| [structured-flow-rules.md](structured-flow-rules.md) | Gateway branches must nest properly (join at one node or terminate). |
+| [canvas-layout-conventions.md](canvas-layout-conventions.md) | DI conventions that make a generated canvas look hand-arranged. |
 | [examples.md](examples.md) | What each bundled real export demonstrates. |

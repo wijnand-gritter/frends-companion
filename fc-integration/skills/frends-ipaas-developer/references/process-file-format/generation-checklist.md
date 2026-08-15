@@ -47,6 +47,24 @@ decisions, scopes, and subprocess calls from this reference. See
   Triggers, and Subprocess calls are **confirmed** for 6.2. Only Schedule, File, and Conditional
   Trigger configs remain **inferred**. Validate generated output by importing into a dev Agent Group
   and fixing whatever the importer reports.
+- **Node names must be unique across the whole process**, including inside scopes; a duplicate
+  fails import with "Node name ... already used by another node". Validate before delivery — see
+  [node-naming.md](node-naming.md).
+- **Gateway branches must nest properly**: each branch terminates (its own Return/Throw) or all
+  branches reconverge at the same node; a nested gateway must not escape its enclosing region.
+  Violations fail import with "All branches of decision node ... must join at the same node." See
+  [structured-flow-rules.md](structured-flow-rules.md).
+- **Never reference `#result[X]` after branches rejoin when X ran on only one branch** — the file
+  imports as C# with definite-assignment checks and fails with CS0165 even inside runtime-guarded
+  ternaries. Promote the value to a `#var` on the branch that produces it. See
+  [../expressions/result-reference-scope.md](../expressions/result-reference-scope.md).
+- **Initialize object variables with csharp `new JObject()`**, not json-mode `{}` — json mode
+  yields a string at runtime. See [../shapes/assign-variable.md](../shapes/assign-variable.md).
+- **Gateway conditions go on the gateway's own entry** (`{"expression": {mode, value}}`); labeled
+  branch flows get Type 4 entries with empty `Parameters` and `IsDefault` flags. See
+  [../shapes/exclusive-decision.md](../shapes/exclusive-decision.md).
+- **Lay out the DI per [canvas-layout-conventions.md](canvas-layout-conventions.md)** so the
+  generated canvas matches how developers arrange processes by hand.
 - **Never bake secrets** into generated parameters. Use Environment Variable references
   (`{{#env.Group.Name}}` in text fields), let the tenant hold the values, and list each one in
   `RequiredEnvironmentVariables`.

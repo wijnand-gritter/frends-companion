@@ -6,6 +6,7 @@ The cross-cutting C# layer. Shape and trigger files link here rather than repeat
 | --- | --- |
 | [field-types.md](field-types.md) | **Expression vs Text** — the consequential field setting. |
 | [reference-syntax.md](reference-syntax.md) | `#result`, `#var`, `#env`, `#trigger`, `#process`. |
+| [result-reference-scope.md](result-reference-scope.md) | Where `#result` may be referenced across branches (CS0165); the promote-to-`#var` pattern. |
 | [handlebars.md](handlebars.md) | `{{ }}` embedding in Text fields. |
 | [code-tasks.md](code-tasks.md) | The C# rules inside a Code Task (incl. the library limit). |
 | [namespaces.md](namespaces.md) | Which namespaces are available, and which need an FQDN. |

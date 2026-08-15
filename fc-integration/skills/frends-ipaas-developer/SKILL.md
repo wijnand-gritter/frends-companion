@@ -50,6 +50,10 @@ are not enough.
 - **Deployment has hard prerequisites** (Subprocesses first; every Environment Variable valued in the
   target) — [references/guides/deployment.md](references/guides/deployment.md).
 - **Trigger parameter fields behave differently** — [references/triggers/parameter-fields.md](references/triggers/parameter-fields.md).
+- **One API Trigger per process; OpenAPI specs need flat schemas** — [references/triggers/openapi-spec-constraints.md](references/triggers/openapi-spec-constraints.md).
+- **Gateway branches must join at one node or terminate; `#result` does not survive joins** —
+  [references/process-file-format/structured-flow-rules.md](references/process-file-format/structured-flow-rules.md) ·
+  [references/expressions/result-reference-scope.md](references/expressions/result-reference-scope.md).
 
 ## Read X when Y
 
@@ -70,7 +74,8 @@ are not enough.
 [http](references/triggers/http.md) · [api](references/triggers/api.md) ·
 [amqp](references/triggers/amqp.md) · [service-bus](references/triggers/service-bus.md) ·
 [rabbitmq](references/triggers/rabbitmq.md) · [azure-event-hub](references/triggers/azure-event-hub.md) ·
-[tcp](references/triggers/tcp.md) · [parameter-fields](references/triggers/parameter-fields.md)
+[tcp](references/triggers/tcp.md) · [parameter-fields](references/triggers/parameter-fields.md) ·
+[openapi-spec-constraints](references/triggers/openapi-spec-constraints.md)
 
 ### Shapes — `references/shapes/`
 [task](references/shapes/task.md) · [code-task](references/shapes/code-task.md) ·
@@ -100,7 +105,8 @@ Documentation/wiring: [sequence-flow](references/shapes/sequence-flow.md) ·
 [namespaces](references/expressions/namespaces.md) ·
 [csharp-versions](references/expressions/csharp-versions.md) ·
 [task-definition-classes](references/expressions/task-definition-classes.md) ·
-[best-practices](references/expressions/best-practices.md)
+[best-practices](references/expressions/best-practices.md) ·
+[result-reference-scope](references/expressions/result-reference-scope.md)
 
 ### Guides (workflows) — `references/guides/`
 [bpmn-modeling](references/guides/bpmn-modeling.md) ·
@@ -123,6 +129,9 @@ flow is serialized. [overview](references/process-file-format/overview.md) ·
 [confirmed-shape-parameters](references/process-file-format/confirmed-shape-parameters.md) ·
 [triggers-encoding](references/process-file-format/triggers-encoding.md) ·
 [generation-checklist](references/process-file-format/generation-checklist.md) ·
+[node-naming](references/process-file-format/node-naming.md) ·
+[structured-flow-rules](references/process-file-format/structured-flow-rules.md) ·
+[canvas-layout-conventions](references/process-file-format/canvas-layout-conventions.md) ·
 [examples](references/process-file-format/examples.md). Validated against real Frends 6.2 exports in
 `references/process-file-format/examples/`. Target 6.2 / net8.0 unless told otherwise.
 

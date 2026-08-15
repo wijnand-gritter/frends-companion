@@ -41,13 +41,15 @@ Your most important task is detecting broken or missing wiring.
 
 ## Priority 2: Sensible Layout
 
-After integrity, make the diagram readable. Frends BPMN stores layout in the diagram interchange (`BPMNShape`/`BPMNEdge` bounds with x/y/width/height). Keep edits minimal.
+After integrity, make the diagram readable. Frends BPMN stores layout in the diagram interchange (`BPMNShape`/`BPMNEdge` bounds with x/y/width/height). Keep edits minimal. The house conventions, calibrated against hand-arranged editor exports, are in the skill's `references/process-file-format/canvas-layout-conventions.md` — follow them; the essentials:
 
-- **Main flow:** left-to-right at a consistent y, trigger at the left.
-- **Decision branches:** descend vertically with enough room for nested decisions/scopes; keep a clear default path.
-- **Error/Catch paths:** route below the happy path; they can terminate earlier (further left) than the main flow — they don't need to extend to the final Return.
-- **Merge points:** push a merge node to the right of all incoming branch endpoints, positioned vertically toward the shorter branches, so a short branch's edge doesn't cut through another branch's shapes.
-- **Spacing:** keep comfortable, even gaps between sequential shapes; widen locally when labels are long.
+- **Main flow:** left-to-right on one lane at a consistent y, trigger at the left. Small edge-to-edge gaps (54-90 px), not a wide fixed grid; no dead horizontal space before the final gateway.
+- **Shape sizes:** Tasks, Call Subprocess shapes, and Code shapes holding real logic are 100x80; only trivial one-line assigns are 30x30 dots. Events 36x36, gateways 50x50.
+- **Decision branches:** a "no" branch drops from the gateway bottom, turns right at rail height, and enters the first error shape from the left. With multiple rails, earlier gateways take deeper rails so a later gateway's drop never crosses an earlier group's shapes.
+- **Branch returns:** an error rail's return enters the scope's inner end event from below at its center x. Skip-forward branches that rejoin the lane route over the top of the lane, staggered.
+- **Error/Catch paths:** the catch subprocess sits directly below the scope near its left edge, fed by one straight vertical drop; its return rises ~70 px left of the final gateway. Error paths can terminate earlier (further left) than the main flow.
+- **No edge may pass through an unrelated shape; no diagonal segments.** Perpendicular riser/rail crossings are acceptable.
+- **Spacing:** keep containers tight (label band above the lane, small padding below the deepest rail); widen locally when labels are long.
 
 ## Working Process
 
