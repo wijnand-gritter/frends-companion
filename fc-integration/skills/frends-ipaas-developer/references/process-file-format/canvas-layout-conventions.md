@@ -49,6 +49,41 @@ No dead horizontal space. The final gateway sits ~160 px after the scope's right
 just enough for the catch riser. Total canvas width for a simple API process is
 ~1700-1800 px, not 2000+.
 
+## Color legend (semantic, never decorative)
+A color states what kind of step a shape is, identically in every process. A reviewer finds every
+side effect and every failure path without reading a label:
+
+| Color | Hex | Meaning |
+|---|---|---|
+| Red | `#ff8282` | Error path: error-response builders, error-handler calls, Throws |
+| Orange | `#ffbb95` | External **write** (side effects): AFAS PUT/POST, HubSpot updates/patches |
+| Blue | `#78d8ff` | External **read**: GetConnector lookups, HubSpot batch reads |
+| Purple | `#aa8dfa` | Persistent state: Shared State gets/sets, watermarks |
+| Pink | `#ffb4de` | Waiting / throttling: backoff shapes, retry loops |
+| Green | `#81efc0` | Reserved (unused) - keep the legend small |
+
+Uncolored = plain logic (transforms, assigns, gateways). Never color for aesthetics; a color that
+needs explaining is wrong.
+
+## Text annotations (the why, never the what)
+Attach an annotation only where the canvas cannot explain itself: business rules that look like
+bugs, magic values, external constraints (rate limits, batch caps), and deliberate deviations from
+the source system. Never restate a shape's name; keep it under ~15 words; budget 2-4 per process -
+anything longer or broader belongs in the process Description.
+
+## Groups (labelled phases, no execution semantics)
+Groups do not participate in structured-flow analysis, so they are the free way to mark a region.
+Use one when several **top-level** shapes form a phase that is not a Scope (e.g. a trigger cluster
+plus its routing guards). Never inside a Scope (the Scope already frames), never nested, always
+labelled.
+
+## Shape colors (encoding)
+Colors are pure DI: `bioc:fill="#hex" color:background-color="#hex"` on the shape's `BPMNShape`
+(both attributes, same value), with `xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0"` and
+`xmlns:color="http://www.omg.org/spec/BPMN/non-normative/color/1.0"` declared on `definitions`.
+The editor palette: pink `#ffb4de`, purple `#aa8dfa`, blue `#78d8ff`, green `#81efc0`,
+orange `#ffbb95`, red `#ff8282`.
+
 ## Tags
 Integration processes carry the tags of the systems they connect (e.g.
 `"Tags": ["AFAS", "HubSpot"]`) so the process list filters cleanly.

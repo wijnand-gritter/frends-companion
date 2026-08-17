@@ -17,6 +17,18 @@ decisions, scopes, and subprocess calls from this reference. See
    target tenant (6.2, net8.0), generate a new `UniqueIdentifier`.
 5. Wrap in the correct envelope for the import path ([proprietary-json.md](proprietary-json.md)).
 
+## Harvest before you build: ask for a sample export
+
+When a planned process needs **any** ingredient whose serialization is not marked confirmed here -
+a Task not yet harvested from this tenant (HTTP, SQL, Slack, ...), a trigger config, a loop or
+other scope variant, a Shared State operation - **stop and ask the developer for a sample export
+first**, either at project setup or the moment the gap surfaces. One throwaway process built in
+the editor with the needed shapes and exported takes them two minutes and yields exact task GUIDs,
+parameter skeletons, and shape encodings. Never work around a missing ingredient silently (e.g.
+re-implementing an HTTP Task inside a Code Task) and never guess an encoding: a workaround ships
+hidden design deviations, and a guess costs an import-fail roundtrip. State plainly: "I need an
+export containing X before I can generate this correctly."
+
 ## Caveats to state to the developer every time
 - **Task references are tenant-specific.** The GUID in `/ProcessTask/{guid}/v{n}` is assigned per
   tenant and not portable (see Type 1 in [shape-type-codes.md](shape-type-codes.md)). Never fabricate
@@ -65,6 +77,14 @@ decisions, scopes, and subprocess calls from this reference. See
   [../shapes/exclusive-decision.md](../shapes/exclusive-decision.md).
 - **Lay out the DI per [canvas-layout-conventions.md](canvas-layout-conventions.md)** so the
   generated canvas matches how developers arrange processes by hand.
+- **Every process carries a `Description` and system `Tags`.** The Description is one or two
+  present-tense sentences stating what the process does and when it runs - never a change log.
+  `Tags` lists every external system the process touches (e.g. `["AFAS", "HubSpot"]`), reusing
+  existing tag names so the process list filters cleanly; add a tag for a new system rather than
+  leaving it untagged. API-trigger processes default their Description to the OpenAPI spec title
+  and version (`"HubSpot API - 1.0.2"`) - that is not a description; replace it with a real one
+  (what the endpoint does, who calls it, error semantics) and keep the spec version as a
+  trailing footnote.
 - **Never bake secrets** into generated parameters. Use Environment Variable references
   (`{{#env.Group.Name}}` in text fields), let the tenant hold the values, and list each one in
   `RequiredEnvironmentVariables`.

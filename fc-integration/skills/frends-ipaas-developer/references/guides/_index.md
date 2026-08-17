@@ -5,7 +5,9 @@ Cohesive workflow essays. Entity-specific detail lives in the entity files; guid
 | File | What / when to read |
 | --- | --- |
 | [bpmn-modeling.md](bpmn-modeling.md) | Designing a correct, readable flow; a worked example. |
-| [error-handling.md](error-handling.md) | The throw/catch/shared-handler pattern. |
+| [subprocess-extraction.md](subprocess-extraction.md) | When a chunk should become a Subprocess - the extract/keep checklist and the deploy-order tax. |
+| [error-handling.md](error-handling.md) | The throw/catch/shared-handler pattern; the unhandled-error hook and its loop-avoidance wiring. |
+| [code-shape-style.md](code-shape-style.md) | House C# style for Code shapes: full-word naming, sparse why-comments, formatting. |
 | [deployment.md](deployment.md) | Promotion path, version rules, the two deploy prerequisites. |
 | [debugging.md](debugging.md) | Reading Process Instances; logging tradeoffs. |
 | [cli_tool_reference.md](cli_tool_reference.md) | The Platform API `frends-*.sh` tools and workflows. |

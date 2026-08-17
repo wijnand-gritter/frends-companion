@@ -15,8 +15,8 @@ the tenant `/swagger` or a configured export.
 
 | Trigger | `$type` | Confirmed `config` keys | Reference |
 | --- | --- | --- | --- |
-| Manual | `ManualTrigger` | (empty; params via `ManualTriggerJson`) | [../triggers/manual.md](../triggers/manual.md) |
-| Schedule | `ScheduleTrigger` | `startTime*`, `endTime*`, `recurring`, `repeatDelay*`, `cycleType`, `cycleLength`, `cycleRecurEvery`, `cycleDaysOfWeek`, `cycleMonths`, `cycleDaysString`, `cycleDayRanks`, `monthlyCycleType`, `season*Date`, `limitToOneConcurrentExecution`, `timeZone` | [../triggers/schedule.md](../triggers/schedule.md) |
+| Manual | `ManualTrigger` | Confirmed: parameter definitions live in `ManualTriggerJson` (full field set incl. `isSecret`); the trigger `config` and EP entry mirror the defaults as positional `manualTriggerDefaultValue-N` keys. | [../triggers/manual.md](../triggers/manual.md) |
+| Schedule | `ScheduleTrigger` | Full configured set confirmed: `startTime*`/`endTime*` (plus `*Hour`/`*Minute`), `recurring`, `repeatDelay`/`repeatDelayType` (unit multiplier)/`repeatDelaySeconds` (product), `cycleType`, `cycleLength`, `cycleRecurEvery`, `cycleDaysOfWeek`, `cycleMonths`, `cycleDaysString`, `cycleDayRanks`, `monthlyCycleType`, `season*Date`, `limitToOneConcurrentExecution`, `timeZone` (Windows id), `datesToExclude`, `openOnlyOnDates`. Multiple Schedule Triggers per process are allowed. | [../triggers/schedule.md](../triggers/schedule.md) |
 | File | `FileWatchTrigger` | `version`, `dirToWatch`, `fileMask`, `includeSubDirectories`, `maxFilesPerBatch`, `pollIntervalSeconds` | [../triggers/file.md](../triggers/file.md) |
 | Conditional | `ConditionalTrigger` | `pollingInterval`, `processGuid`, `limitToOneConcurrentExecution`, `parameters` | [../triggers/conditional.md](../triggers/conditional.md) |
 | HTTP | `HttpTrigger` | `routeTemplate`, `allowedSchemes`, `auth`, `corsEnabled`, `allowedOrigins`, `httpMethod`, `isPrivate` | [../triggers/http.md](../triggers/http.md) |

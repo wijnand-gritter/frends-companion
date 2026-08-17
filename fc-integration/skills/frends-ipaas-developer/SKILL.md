@@ -111,7 +111,9 @@ Documentation/wiring: [sequence-flow](references/shapes/sequence-flow.md) ·
 ### Guides (workflows) — `references/guides/`
 [bpmn-modeling](references/guides/bpmn-modeling.md) ·
 [error-handling](references/guides/error-handling.md) ·
+[code-shape-style](references/guides/code-shape-style.md) ·
 [deployment](references/guides/deployment.md) · [debugging](references/guides/debugging.md) ·
+[subprocess-extraction](references/guides/subprocess-extraction.md) ·
 [cli_tool_reference](references/guides/cli_tool_reference.md) ·
 [staying-current](references/guides/staying-current.md)
 
@@ -142,8 +144,11 @@ flow is serialized. [overview](references/process-file-format/overview.md) ·
   [references/guides/bpmn-modeling.md](references/guides/bpmn-modeling.md). Offer to render a diagram.
 - **Importable Process file:** use `scripts/generate_process.py` and follow
   [references/process-file-format/generation-checklist.md](references/process-file-format/generation-checklist.md).
-  Task GUIDs are tenant-specific — harvest, never fabricate. Always tell the developer to validate by
-  importing into a dev Agent Group.
+  Task GUIDs are tenant-specific — harvest, never fabricate. If the process needs any Task, trigger,
+  or shape whose encoding is not confirmed in the references, **ask the developer for a sample
+  export containing it first** (at setup or the moment the gap surfaces) — never work around the
+  gap silently and never guess. Always tell the developer to validate by importing into a dev
+  Agent Group.
 - **Custom Task:** scaffold a real .NET project per
   [references/tasks/authoring.md](references/tasks/authoring.md) (build/install:
   [packaging.md](references/tasks/packaging.md); declare/help:

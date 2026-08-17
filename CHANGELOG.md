@@ -7,6 +7,58 @@ All notable changes to Frends Companion are documented here. The format is based
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-08-16
+
+### Added
+- `references/guides/code-shape-style.md`: house C# style for Code shapes - full-word variable
+  naming (no single letters or abbreviations; `i`/`j` loop counters excepted), the
+  token/cast-pair pattern for JArray iteration, full-word `#var` names (`readControl`, not
+  `readCtrl`), sparse why-not-what comments, and formatting rules.
+- `references/guides/error-handling.md`: the "Subprocess to call on unhandled error" hook -
+  reporting-only semantics, the absence of platform loop protection, the wiring table (business
+  processes point at the shared handler; the handler and the error-event listener stay empty),
+  and the never-throws + circuit-breaker design rules that make a shared handler safe to hook.
+- `references/triggers/manual.md`: Manual Trigger parameter values are not guaranteed to be
+  strings - Json.NET date parsing turns ISO-datetime-looking values into `System.DateTime`, so
+  `(string)#trigger.data.x` throws `RuntimeBinderException` at runtime; documented the tolerant
+  `Convert.ToString` + `is DateTime` pattern.
+- `references/shapes/shared-state-task.md`: the same Json.NET conversion applies to Shared State
+  `.Value` on read - an ISO-datetime string stored as a string comes back as `System.DateTime`,
+  so a blind `(string)` cast fails from the second run onward (the first run takes the not-found
+  default, so tests miss it); documented the tolerant read pattern for watermark-style values.
+- Readability conventions in `canvas-layout-conventions.md`: the semantic color legend
+  (red error / orange write / blue read / purple state / pink waiting), text-annotation rules
+  (why-not-what, ~15 words, 2-4 per process), and group rules (top-level phases only, labelled,
+  never nested or inside Scopes).
+- `references/guides/subprocess-extraction.md`: the extract-vs-keep checklist for Subprocesses and
+  the deploy-order tax, as advisory design feedback.
+- `references/triggers/manual.md`: confirmed Manual Trigger parameter encoding -
+  `ManualTriggerJson` field set (incl. `isSecret`), positional `manualTriggerDefaultValue-N`
+  defaults mirrored in the trigger config and EP entry, `#trigger.data.<name>` string values, and
+  the multi-trigger routing pattern on `#trigger.name`.
+- `references/shapes/group.md` and `references/shapes/text-annotation.md`: confirmed 6.3
+  serialization for the documentation-only shapes - group/category/categoryValue structure,
+  textAnnotation/association structure, diagonal association edges, and the rule that none of
+  them carry `ElementParameters` entries. Shape-color DI encoding (`bioc:fill` +
+  `color:background-color`, editor palette) documented in `canvas-layout-conventions.md`.
+- Generation checklist: every process carries a present-tense `Description` and one system tag
+  per external system it touches.
+- `references/shapes/shared-state-task.md`: all eight Shared State operations confirmed from a 6.3
+  export - the uniform full parameter set required by every operation, `ttlMultiplier` unit
+  semantics (60/3600), the `#result.Success`/`.Value`/`.Message` contract, the
+  TryGetValue-with-default and GetOrAdd watermark patterns, and `PromoteResultAs` +
+  `PromotedResultVariablesJson`.
+- `references/triggers/schedule.md`: full confirmed Schedule Trigger config from configured 6.3
+  exports - `repeatDelayType` unit-multiplier semantics with precomputed `repeatDelaySeconds`,
+  `recurring` window vs fire-at-startTime behavior, Windows time-zone ids,
+  `datesToExclude`/`openOnlyOnDates`, and that multiple Schedule Triggers per process are allowed
+  (the one-trigger limit is API-Trigger-specific).
+- `references/shapes/loop.md`: confirmed While/Foreach serialization from a 6.3 tenant export -
+  loop markers (`standardLoopCharacteristics` vs `multiInstanceLoopCharacteristics isSequential`),
+  the full parameter shapes (`maxIterations`/`expression`; plain-string `variable`), the dual
+  meaning of `standardLoopCharacteristics` (task retry vs While), and the pre-test rule that While
+  conditions must be driven by `#var` control state, not body `#result`s.
+
 ## [0.3.0] - 2026-08-15
 
 ### Added

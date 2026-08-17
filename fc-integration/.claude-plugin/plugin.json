@@ -1,7 +1,7 @@
 {
   "name": "fc-integration",
   "description": "Frends iPaaS development tools: skill, commands, and agents for building, deploying, and monitoring Frends integrations",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "author": {
     "name": "Wijnand Gritter"
   }
