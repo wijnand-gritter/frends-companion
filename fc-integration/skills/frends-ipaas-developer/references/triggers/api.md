@@ -36,5 +36,11 @@ embedded `openApiDocument`) is in
 see also [../process-file-format/triggers-encoding.md](../process-file-format/triggers-encoding.md)
 and the bundled `examples/api_process_http_trigger_6.2.json`.
 
+## New in 6.3
+OpenAPI support is updated to **3.1.1**, the spec can carry **mTLS (client certificate)**
+authentication options, and client certificate validation defaults to enabled on the
+Cross-platform Agent. The flat-schema and no-anchor constraints below were confirmed on
+6.2/6.3; revalidate against the live editor if a spec depends on 3.1-only constructs.
+
 ## Source of truth
 `https://docs.frends.com/reference/triggers/api-trigger.md`

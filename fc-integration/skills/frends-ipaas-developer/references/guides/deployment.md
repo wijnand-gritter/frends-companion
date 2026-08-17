@@ -22,6 +22,9 @@ Both must be satisfied or the deploy fails:
 2. **Environment Variable values.** Every [Environment Variable](../concepts/environment-variables.md)
    referenced must already have a value in the **target** Environment — the most common deploy error.
 
+Also infrastructure: from Frends 6.3, on-premise Cross-platform Agents require
+**.NET Runtime 10.0.5 or newer** - an outdated runtime blocks the Agent, not just one deploy.
+
 ## How to deploy
 1. In the Process list, select the Environment and Agent Group holding the version. To deploy the
    very latest, deploy from the Development Agent Group.

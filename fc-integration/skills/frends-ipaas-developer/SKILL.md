@@ -74,7 +74,8 @@ are not enough.
 [http](references/triggers/http.md) · [api](references/triggers/api.md) ·
 [amqp](references/triggers/amqp.md) · [service-bus](references/triggers/service-bus.md) ·
 [rabbitmq](references/triggers/rabbitmq.md) · [azure-event-hub](references/triggers/azure-event-hub.md) ·
-[tcp](references/triggers/tcp.md) · [parameter-fields](references/triggers/parameter-fields.md) ·
+[tcp](references/triggers/tcp.md) · [mcp](references/triggers/mcp.md) ·
+[parameter-fields](references/triggers/parameter-fields.md) ·
 [openapi-spec-constraints](references/triggers/openapi-spec-constraints.md)
 
 ### Shapes — `references/shapes/`

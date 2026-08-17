@@ -14,5 +14,14 @@ secured through the platform.
 - The embedded OpenAPI contract is stored in the trigger config (`openApiDocument`); see
   [../process-file-format/confirmed-shape-parameters.md](../process-file-format/confirmed-shape-parameters.md).
 
+## Changed in 6.3 (API Policy migration)
+- API key **header names are configurable per API Policy** - previously fixed to
+  `Authorization: Apikey` / `x-apikey` / spec-defined headers. Existing rulesets are migrated.
+- A Process whose OpenAPI spec declares OAuth but that matched an API-key ruleset now accepts
+  **both** methods after migration (previously OAuth-only). Review policies where that widening
+  matters.
+- The migration can fail when the OpenAPI spec and the deployed Process disagree - align them
+  before upgrading.
+
 ## Source of truth
 `https://docs.frends.com/frends-development/api-management.md`

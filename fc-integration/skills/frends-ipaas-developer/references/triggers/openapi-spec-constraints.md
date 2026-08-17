@@ -1,6 +1,6 @@
 # OpenAPI spec constraints for API Triggers
 
-**Category:** trigger · **Baseline:** Frends 6.2 (confirmed against a production tenant)
+**Category:** trigger · **Baseline:** Frends 6.2 (confirmed against a production tenant; 6.3 raises OpenAPI support to 3.1.1 and adds mTLS auth options - the constraints below still applied on a 6.3 tenant)
 
 ## Purpose
 The rules an OpenAPI document must satisfy before the spec editor accepts it and an

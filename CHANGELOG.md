@@ -7,6 +7,19 @@ All notable changes to Frends Companion are documented here. The format is based
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-08-17
+
+### Added
+- `references/triggers/mcp.md`: the Frends 6.3 MCP Trigger (expose a Process as an MCP tool),
+  docs-sourced with an explicit harvest-first block - serialization is unconfirmed.
+- Frends 6.3 release notes folded into the affected references: AI Connector MCP Tools tab and
+  opt-in reasoning (`shapes/ai-connector.md`), RabbitMQ client-certificate authentication
+  (`triggers/rabbitmq.md`), OpenAPI 3.1.1 + mTLS on API Triggers (`triggers/api.md`,
+  `triggers/openapi-spec-constraints.md`), Agent Registration Modes / .NET Runtime 10.0.5
+  requirement / 6.4 Legacy Agent removal (`concepts/agent-and-agent-group.md`,
+  `guides/deployment.md`), and the API Policy auth migration
+  (`concepts/api-management.md`).
+
 ## [0.4.0] - 2026-08-16
 
 ### Added

@@ -16,5 +16,14 @@ the cloud, or close to the data it needs. Agents are organized into **Agent Grou
 - Agent Group IDs are needed for deploys and for listing [Process Instances](process-instance.md)
   via the Platform API (see [../guides/cli_tool_reference.md](../guides/cli_tool_reference.md)).
 
+## Changed in 6.3
+- **Agent Registration Mode** replaces the old toggle: an Agent Group is explicitly one of
+  Self-Hosted Agent, Cloud Agent, Kubernetes Deployment, or Kubernetes StatefulSet.
+- On-premise **Cross-platform Agents require .NET Runtime 10.0.5 or newer** from 6.3 onwards.
+- Remote Subprocess execution is re-architected (Agent-specific sessions with batching) for
+  high parallel loads - a behaviour-neutral performance change.
+- Heads-up: **6.4 drops the Legacy Agent** entirely; plan migrations to the Cross-platform
+  Agent before upgrading past 6.3.
+
 ## Source of truth
 `https://docs.frends.com/hybrid-integration-architecture/frends-runtime.md`
