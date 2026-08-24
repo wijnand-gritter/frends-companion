@@ -3,13 +3,13 @@
 The version users see is `.claude-plugin/plugin.json` → `version`. Claude Code installs this plugin
 straight from this repo (the Conclusion marketplace entry points here by git URL), so bumping that
 number and pushing to `main` is what delivers a new version on the user's next session. The
-catalogue in `conclusion-marketplace` does **not** need a change for a version bump — only for a
+catalogue in `conclusion-marketplace` does **not** need a change for a version bump, only for a
 description, keyword or source change.
 
 This project follows [SemVer](https://semver.org): `MAJOR.MINOR.PATCH`.
-- **PATCH** — doc fixes, corrections, small script fixes.
-- **MINOR** — new shapes/triggers/entities, new commands, backwards-compatible features.
-- **MAJOR** — breaking changes to plugin structure, command names, or the template contract.
+- **PATCH** for doc fixes, corrections and small script fixes.
+- **MINOR** for new shapes, triggers, entities or commands, and any backwards-compatible feature.
+- **MAJOR** for a breaking change to the plugin structure, a command name or the template contract.
 
 ## Cut a release
 
@@ -37,5 +37,5 @@ and paste the CHANGELOG section as the notes.
 - The tag `vX.Y.Z` must equal `plugin.json` `version` `X.Y.Z`, or the tag pipeline fails by design.
 - Users update automatically on a new Claude Code session; they can also force it from the `/plugin`
   menu.
-- To yank a bad release, delete the tag and Release, bump to the next PATCH, and re-release — don't
+- To yank a bad release, delete the tag and the release, bump to the next PATCH and re-release. Don't
   reuse a version number.
