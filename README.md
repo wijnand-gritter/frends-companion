@@ -123,8 +123,12 @@ its header, and a few list endpoints are still marked TODO.
 
 ## Contributing
 
-Open a merge request. CI validates the manifests, SemVer, the shell and Python syntax, and every
-relative Markdown link on each request and on `main`.
+Run `bash scripts/check.sh` before you push. It validates the manifests, SemVer, the shell and
+Python syntax, and every relative Markdown link. `git config core.hooksPath scripts/githooks` makes
+git run it on every push, which matters because our GitLab has no runners yet and a pipeline
+currently checks nothing.
+
+Then open a merge request.
 
 [RELEASING.md](RELEASING.md) covers cutting a version.
 

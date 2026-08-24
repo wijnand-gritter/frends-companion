@@ -45,16 +45,31 @@ not say which. Add `--dry-run` first if you want to see it without creating anyt
 Finally, create the GitLab release from that tag under **Deploy**, then **Releases**, and paste the
 CHANGELOG section in as the notes.
 
-## What CI checks
+## Checking your work
 
-`validate:structure` runs on every merge request and every push to `main`: the JSON manifests, SemVer,
-shell and Python syntax, and every relative Markdown link.
+Our GitLab has no runners attached, so pipelines sit pending and check nothing. Run them yourself:
 
-`release:check` runs only on a `*--v*` tag. It compares both halves of the tag against `plugin.json`
-and fails if either the plugin name or the version disagrees, which catches a tag someone wrote by
-hand.
+```bash
+bash scripts/check.sh
+```
 
-`validate:plugin` runs `claude plugin validate` and stays manual, because it needs npm on the runner.
+It parses the JSON manifests, confirms the version is SemVer, syntax-checks every shell script and
+Python file, resolves all 550 relative Markdown links, and runs `claude plugin validate`. Failures
+are all reported together rather than one per run.
+
+Better, let git run it for you:
+
+```bash
+git config core.hooksPath scripts/githooks     # once per clone
+```
+
+`git push` now runs the checks first and refuses to push if any fail. `git push --no-verify` skips
+them when you really mean to.
+
+`.gitlab-ci.yml` calls that same script, so attaching a runner later changes nothing about what gets
+checked. Two jobs stay in CI only: `release:check`, which compares both halves of a `*--v*` tag
+against `plugin.json` and catches a tag written by hand, and `validate:plugin`, which needs npm on
+the runner.
 
 ## Notes
 
