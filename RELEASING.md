@@ -71,6 +71,11 @@ checked. Two jobs stay in CI only: `release:check`, which compares both halves o
 against `plugin.json` and catches a tag written by hand, and `validate:plugin`, which needs npm on
 the runner.
 
+Pipelines are switched off at the top of that file, because GitLab creates one on every push whether
+or not a runner can pick it up, and a queue of permanently pending pipelines tells you nothing. To
+turn them on the day a runner is attached, add a CI/CD variable `RUN_PIPELINES` with the value `true`
+under Settings, then CI/CD, then Variables. Nothing else needs editing.
+
 ## Notes
 
 - A colleague on an older version updates at their next session, or immediately from the `/plugin`

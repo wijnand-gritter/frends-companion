@@ -6,6 +6,17 @@
 # the checks still have to happen, so they live in the repo rather than in this
 # file. Attach a runner later and nothing needs rewriting.
 
+# No runner is attached, so a pipeline would only sit pending and tell you
+# nothing. This gate stops GitLab creating one at all.
+#
+# When someone attaches a runner, add a CI/CD variable RUN_PIPELINES with the
+# value true under Settings, then CI/CD, then Variables. Pipelines start running
+# and nothing else in this file has to change.
+workflow:
+  rules:
+    - if: $RUN_PIPELINES == "true"
+    - when: never
+
 stages:
   - validate
 
