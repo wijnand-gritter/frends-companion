@@ -1,41 +1,67 @@
 # Releasing
 
-The version users see is `.claude-plugin/plugin.json` → `version`. Claude Code installs this plugin
-straight from this repo (the Conclusion marketplace entry points here by git URL), so bumping that
-number and pushing to `main` is what delivers a new version on the user's next session. The
-catalogue in `conclusion-marketplace` does **not** need a change for a version bump, only for a
-description, keyword or source change.
+Pushing to `main` is what ships. Claude Code installs this plugin straight from this repo, takes the
+tip of `main`, and reads the version from `.claude-plugin/plugin.json`. Your colleagues pick it up
+when they next start a session.
+
+Read that twice, because it has a consequence. A tag does not gate a release and neither does the
+catalogue in `conclusion-marketplace`. Merge something half finished and it ships. Protect `main` and
+merge only work you would be happy for someone to run tomorrow morning.
+
+So what are the tags for? Answering "what exactly was 0.5.0" six months from now, diffing two
+releases, and giving you something to check out when a colleague says last week's version worked.
+Bookkeeping worth having, not a safety net.
 
 This project follows [SemVer](https://semver.org): `MAJOR.MINOR.PATCH`.
+
 - **PATCH** for doc fixes, corrections and small script fixes.
 - **MINOR** for new shapes, triggers, entities or commands, and any backwards-compatible feature.
 - **MAJOR** for a breaking change to the plugin structure, a command name or the template contract.
 
 ## Cut a release
 
-1. Update `CHANGELOG.md`: move items from `[Unreleased]` into a new `[X.Y.Z]` section with today's
-   date, and add the compare/tag links at the bottom.
-2. Bump the version in `.claude-plugin/plugin.json` to `X.Y.Z` (optionally bump
-   `skills/frends-ipaas-developer/VERSION` too if the skill changed).
-3. Commit: `git commit -am "Release vX.Y.Z"`.
-4. Tag and push:
+1. Move the `[Unreleased]` items in `CHANGELOG.md` into a new `[X.Y.Z]` section with today's date,
+   and update the two links at the bottom of the file.
+2. Bump `version` in `.claude-plugin/plugin.json`. Bump
+   `skills/frends-ipaas-developer/VERSION` as well if the skill itself changed.
+3. Commit, then push `main`. Your colleagues now have it.
+4. Tag it:
 
    ```bash
-   git tag vX.Y.Z
-   git push origin main --tags
+   claude plugin tag --push
    ```
 
-The `release:check` job on the tag pipeline fails if the tag does not match `plugin.json`. The
-`validate` job runs on every push and merge request: JSON manifests, SemVer, shell and Python
-syntax, relative Markdown links, and `claude plugin validate`.
+Let that command write the tag rather than typing `git tag` yourself. It reads the name and version
+out of `plugin.json`, checks them against any enclosing marketplace entry, refuses a dirty working
+tree, and produces the convention Claude Code expects:
 
-Create the GitLab Release from the tag in **Deploy → Releases** (or `glab release create vX.Y.Z`)
-and paste the CHANGELOG section as the notes.
+```
+frends-companion-developer--v0.5.0
+```
+
+The plugin name sits in the tag because one repo may hold several plugins, and a bare `v0.5.0` could
+not say which. Add `--dry-run` first if you want to see it without creating anything.
+
+Finally, create the GitLab release from that tag under **Deploy**, then **Releases**, and paste the
+CHANGELOG section in as the notes.
+
+## What CI checks
+
+`validate:structure` runs on every merge request and every push to `main`: the JSON manifests, SemVer,
+shell and Python syntax, and every relative Markdown link.
+
+`release:check` runs only on a `*--v*` tag. It compares both halves of the tag against `plugin.json`
+and fails if either the plugin name or the version disagrees, which catches a tag someone wrote by
+hand.
+
+`validate:plugin` runs `claude plugin validate` and stays manual, because it needs npm on the runner.
 
 ## Notes
 
-- The tag `vX.Y.Z` must equal `plugin.json` `version` `X.Y.Z`, or the tag pipeline fails by design.
-- Users update automatically on a new Claude Code session; they can also force it from the `/plugin`
+- A colleague on an older version updates at their next session, or immediately from the `/plugin`
   menu.
-- To yank a bad release, delete the tag and the release, bump to the next PATCH and re-release. Don't
+- To withdraw a bad release, bump to the next PATCH and ship that. Deleting the tag tidies your
+  history but takes nothing back, because whoever started a session already has the code. Never
   reuse a version number.
+- The catalogue entry in `conclusion-marketplace` carries no version for this plugin, on purpose.
+  Nothing over there can check it against this repo, so it would quietly go stale.

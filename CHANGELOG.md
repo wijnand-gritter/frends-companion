@@ -3,7 +3,9 @@
 All notable changes to Frends Companion are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html). The user-facing plugin version lives in
-`.claude-plugin/plugin.json`; each release below corresponds to a `vX.Y.Z` git tag.
+`.claude-plugin/plugin.json`. Releases from 0.5.0 onward are tagged
+`frends-companion-developer--vX.Y.Z`, the convention `claude plugin tag` writes. Earlier
+versions were released from a different repository and have no tag here.
 
 ## [Unreleased]
 
@@ -183,6 +185,5 @@ All notable changes to Frends Companion are documented here. The format is based
 ## [0.1.0] - initial scaffold
 - Initial Frends Companion plugin, marketplace, and bundled skill.
 
-[Unreleased]: https://repo.virtualsciences.nl/ai-pilot/frends-companion/-/compare/v0.5.0...main
-[0.5.0]: https://repo.virtualsciences.nl/ai-pilot/frends-companion/-/tags/v0.5.0
-[0.3.0]: https://repo.virtualsciences.nl/ai-pilot/frends-companion/-/tags/v0.3.0
+[Unreleased]: https://repo.virtualsciences.nl/ai-pilot/frends-companion/-/compare/frends-companion-developer--v0.5.0...main
+[0.5.0]: https://repo.virtualsciences.nl/ai-pilot/frends-companion/-/tags/frends-companion-developer--v0.5.0
