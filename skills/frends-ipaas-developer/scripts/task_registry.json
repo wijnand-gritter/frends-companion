@@ -1,0 +1,120 @@
+{
+  "_README": "CAUTION: these are task GUIDs from the Frends MARKETPLACE template-authoring tenant only. Task-definition GUIDs are assigned PER TENANT and are NOT portable: the same package has a different GUID in another tenant (e.g. Frends.HTTP.Request is e6be823c-... in one real 1.11.0 tenant but d2f2020e-... here). Use these only as a last-resort hint. For a real import, harvest the target tenants ref with generate_process.py --harvest <export.json> (writes tenant_tasks.json), which the generator prefers.",
+  "_source": "FrendsPlatform/FrendsTemplates@main + references/examples 6.2 exports",
+  "tasks": {
+    "Frends.AzureDataLake.UploadFiles": {
+      "guid": "11965ff9-b033-4ebe-9523-ccfb320aee10",
+      "taskVersion": 1,
+      "name": "Frends.AzureDataLake.UploadFiles.AzureDataLake.UploadFiles(Input, CancellationToken)",
+      "framework": ".NETCoreApp"
+    },
+    "Frends.FTP.DownloadFiles": {
+      "guid": "68bae913-e3aa-4507-bf6c-595f08140fb4",
+      "taskVersion": 1,
+      "name": "Frends.FTP.DownloadFiles.FTP.DownloadFiles(Source, Destination, Connection, Options, Info, CancellationToken)",
+      "framework": ".NETCoreApp"
+    },
+    "Frends.Files.Find": {
+      "guid": "f74a6e79-5336-4875-a109-507f9e4baa2e",
+      "taskVersion": 1,
+      "name": "Frends.Files.Find.Files.Find(Input, Options)",
+      "framework": ".NETCoreApp"
+    },
+    "Frends.Files.Read": {
+      "guid": "7bef1e4f-5122-471b-8456-e52a2b0e9ba0",
+      "taskVersion": 1,
+      "name": "Frends.Files.Read.Files.Read(Input, Options)",
+      "framework": ".NETCoreApp"
+    },
+    "Frends.HTTP.DownloadFile": {
+      "guid": "3ddfe11d-d0df-42c0-bc05-044549638f86",
+      "taskVersion": 1,
+      "name": "Frends.HTTP.DownloadFile.HTTP.DownloadFile(Input, Options, CancellationToken)",
+      "framework": ".NETCoreApp"
+    },
+    "Frends.HTTP.Request": {
+      "guid": "d2f2020e-4ce6-4e5f-879f-ef34e57c9fca",
+      "taskVersion": 1,
+      "name": "Frends.HTTP.Request.HTTP.Request(Input, Options, CancellationToken)",
+      "framework": ".NETCoreApp"
+    },
+    "Frends.JSON.ConvertJSONStringToJToken": {
+      "guid": "fc3f0ffd-4f6d-4a54-8d19-ef4d00a6b1a6",
+      "taskVersion": 1,
+      "name": "Frends.JSON.ConvertJSONStringToJToken.JSON.ConvertJSONStringToJToken(Input)",
+      "framework": ".NETCoreApp"
+    },
+    "Frends.JSON.Validate": {
+      "guid": "0cac69c6-74d3-42d3-908b-63bfb45d3548",
+      "taskVersion": 1,
+      "name": "Frends.JSON.Validate.JSON.Validate(Input, Options)",
+      "framework": ".NETCoreApp"
+    },
+    "Frends.MicrosoftDynamics365.Request": {
+      "guid": "81e6cd26-703c-4622-bbad-9743db2a6ae6",
+      "taskVersion": 1,
+      "name": "Frends.MicrosoftDynamics365.Request.MicrosoftDynamics365.Request(Input, Options, CancellationToken)",
+      "framework": ".NETCoreApp"
+    },
+    "Frends.MicrosoftSQL.ExecuteQuery": {
+      "guid": "52de7e2e-788d-4d77-84c9-a6c86a64e2fb",
+      "taskVersion": 1,
+      "name": "Frends.MicrosoftSQL.ExecuteQuery.MicrosoftSQL.ExecuteQuery(Input, Options, CancellationToken)",
+      "framework": ".NETCoreApp"
+    },
+    "Frends.MongoDB.Query": {
+      "guid": "f3d9c49a-600b-4f33-8e9e-ebbbb2198f75",
+      "taskVersion": 1,
+      "name": "Frends.MongoDB.Query.MongoDB.Query(Input, Connection, CancellationToken)",
+      "framework": ".NETCoreApp"
+    },
+    "Frends.MySQL.ExecuteQuery": {
+      "guid": "868569a3-ccba-4d1d-8ac1-59ad6ae6cf46",
+      "taskVersion": 1,
+      "name": "Frends.MySQL.ExecuteQuery.MySQL.ExecuteQuery(QueryInput, Options, CancellationToken)",
+      "framework": ".NETCoreApp"
+    },
+    "Frends.Odoo.Request": {
+      "guid": "de684f37-f359-40f9-b24d-acb67999c2c2",
+      "taskVersion": 1,
+      "name": "Frends.Odoo.Request.Odoo.Request(Input, Options, CancellationToken)",
+      "framework": ".NETCoreApp"
+    },
+    "Frends.Oracle.ExecuteQuery": {
+      "guid": "0bfd5a7b-f89d-44f1-a7a6-d6a110906b04",
+      "taskVersion": 1,
+      "name": "Frends.Oracle.ExecuteQuery.Oracle.ExecuteQuery(Input, Options, CancellationToken)",
+      "framework": ".NETCoreApp"
+    },
+    "Frends.Regex.IsMatch": {
+      "guid": "1a901014-6c42-4067-b8c9-a59d5b0d30a6",
+      "taskVersion": 1,
+      "name": "Frends.Regex.IsMatch.Regex.IsMatch(Input)",
+      "framework": ".NETCoreApp"
+    },
+    "Frends.SFTP.ReadFile": {
+      "guid": "7fe311ed-3e37-4669-8c6b-9e5792e996d0",
+      "taskVersion": 1,
+      "name": "Frends.SFTP.ReadFile.SFTP.ReadFile(Input, Connection, CancellationToken)",
+      "framework": ".NETCoreApp"
+    },
+    "Frends.SFTP.UploadFiles": {
+      "guid": "910dc7ae-4d7e-4f02-b0a5-08847793629d",
+      "taskVersion": 1,
+      "name": "Frends.SFTP.UploadFiles.SFTP.UploadFiles(Source, Destination, Connection, Options, Info, CancellationToken)",
+      "framework": ".NETCoreApp"
+    },
+    "Frends.Salesforce.ExecuteQuery": {
+      "guid": "12e91c58-734a-451e-87e2-4c23385c1c43",
+      "taskVersion": 1,
+      "name": "Frends.Salesforce.ExecuteQuery.Salesforce.ExecuteQuery(Input, Options, CancellationToken)",
+      "framework": ".NETCoreApp"
+    },
+    "Frends.Slack.SendMessage": {
+      "guid": "8df5d07c-6c35-417c-b6c9-f0ce0721b9cd",
+      "taskVersion": 1,
+      "name": "Frends.Slack.SendMessage.Slack.SendMessage(Input, Connection, Options, CancellationToken)",
+      "framework": ".NETCoreApp"
+    }
+  }
+}

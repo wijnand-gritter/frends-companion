@@ -1,0 +1,55 @@
+stages:
+  - validate
+
+# Structural checks on the plugin manifest, the scripts and the docs.
+# Pure python + bash, no runner setup needed.
+validate:structure:
+  stage: validate
+  image: python:3.12-slim
+  before_script:
+    - apt-get update -qq && apt-get install -y -qq jq >/dev/null
+  script:
+    - jq empty .claude-plugin/plugin.json
+    - jq empty template/.claude/settings.json
+    - |
+      v=$(jq -r .version .claude-plugin/plugin.json)
+      echo "plugin.json version: $v"
+      echo "$v" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+([-+].*)?$' \
+        || { echo "ERROR: version '$v' is not SemVer"; exit 1; }
+    - |
+      for f in skills/frends-ipaas-developer/scripts/*.sh; do
+        bash -n "$f" && echo "ok: $f"
+      done
+    - python3 -m py_compile skills/frends-ipaas-developer/scripts/generate_process.py
+    - python3 scripts/check_links.py
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_TAG
+
+# Deeper validation with the Claude CLI. Kept manual because it needs npm
+# on the runner; promote it to automatic once the image is warm.
+validate:plugin:
+  stage: validate
+  image: node:22-slim
+  when: manual
+  allow_failure: true
+  script:
+    - npm install -g @anthropic-ai/claude-code
+    - claude plugin validate .
+
+# The tag must match the version users will be served.
+release:check:
+  stage: validate
+  image: python:3.12-slim
+  before_script:
+    - apt-get update -qq && apt-get install -y -qq jq >/dev/null
+  script:
+    - |
+      tag="${CI_COMMIT_TAG#v}"
+      v=$(jq -r .version .claude-plugin/plugin.json)
+      echo "tag=$tag  plugin.json=$v"
+      [ "$tag" = "$v" ] \
+        || { echo "ERROR: tag $CI_COMMIT_TAG does not match plugin.json version $v"; exit 1; }
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v/

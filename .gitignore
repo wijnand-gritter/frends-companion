@@ -1,0 +1,17 @@
+# Secrets & local runtime state
+**/.env
+**/.env.local
+**/.frends-token-cache
+**/.activity-log/
+
+# OS / editor cruft
+.DS_Store
+**/.DS_Store
+*.swp
+
+# Packaged skill artifact (build output, not source)
+*.skill
+
+# Python build artefacts
+__pycache__/
+*.pyc

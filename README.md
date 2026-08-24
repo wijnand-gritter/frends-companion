@@ -1,93 +1,118 @@
-# frends-companion
+# frends-companion-developer
 
+**Frends Companion** — a Claude Code plugin for Frends iPaaS development. It wraps the
+`frends-ipaas-developer` skill with plugin-level commands, an agent, a project template, and a set of
+Frends Platform API CLI tools.
 
+Distributed through the [Conclusion marketplace](https://repo.virtualsciences.nl/ai-pilot/conclusion-marketplace).
 
-## Getting started
+> **Important:** Frends Companion is an unofficial, community developer offering. It is not an
+> official Frends product and is not covered by any Frends support agreement or SLA. Provided as-is.
+> "Frends" is a trademark of its respective owner; this project is not affiliated with or endorsed by
+> Frends.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+> **Maturity:** The knowledge skill is production-grade, but the Platform API CLI scripts are
+> **scaffolded from the published Frends 6.2 Platform API reference and have not been live-tested
+> against a tenant.** Validate them against your own `https://<tenant>.frendsapp.com/swagger` before
+> using them in automation. See each script's header and
+> `skills/frends-ipaas-developer/references/guides/cli_tool_reference.md`.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## Install
 
-## Add your files
+In any Claude Code session:
 
-* [Create](https://docs.gitlab.com/user/project/repository/web_editor/#create-a-file) or [upload](https://docs.gitlab.com/user/project/repository/web_editor/#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+```bash
+/plugin marketplace add https://repo.virtualsciences.nl/ai-pilot/conclusion-marketplace.git
+/plugin install frends-companion-developer@conclusion
+```
+
+The first line only has to be run once per machine — if you already installed `solution-design` or a
+customer pack from the Conclusion marketplace, skip straight to the second.
+
+Then, in a new session:
+
+```bash
+/frends-companion-developer:connect        # set up Frends Platform API credentials
+/frends-companion-developer:new-workspace  # create the project template + global /frends-init
+```
+
+Updates arrive automatically when you open a new Claude Code session, or on demand from the
+`/plugin` menu.
+
+### Trying it out without installing
+
+```bash
+claude --plugin-dir /path/to/frends-companion
+```
+
+## What it does
+
+Frends Companion turns Claude into a hands-on Frends integration developer that can:
+
+- Design BPMN 2.0 Process flows shape-by-shape, write correct Frends C# expressions and Code Tasks,
+  and scaffold custom C# Tasks.
+- Generate importable Frends 6.2 Process JSON files via the skill's generator.
+- List, export (pull), and import (push) Processes through the Frends Platform API.
+- Deploy Processes to Agent Groups, activate/deactivate Triggers, and run Processes.
+- Query Process Instances for debugging, manage Environment Variables, and inspect Agent Groups.
+
+The skill loads by itself whenever you mention Frends concepts — Processes, Subprocesses, Tasks,
+Triggers, Agent Groups, `#result` / `#var` / `#env` expressions. You do not have to invoke it.
+
+## Commands
+
+| Command | Purpose |
+|---------|---------|
+| `/frends-companion-developer:connect` | Interactive Frends Platform API credentials setup |
+| `/frends-companion-developer:new-workspace` | Create a reusable project template + global `/frends-init` command |
+| `/frends-companion-developer:clean` | Clean development artifacts |
+
+After running `new-workspace`, use `/frends-init` from any empty directory to scaffold a new project.
+
+## What's inside
 
 ```
-cd existing_repo
-git remote add origin https://repo.virtualsciences.nl/ai-pilot/frends-companion.git
-git branch -M main
-git push -uf origin main
+.claude-plugin/plugin.json   the manifest
+commands/                    slash commands  (/frends-companion-developer:…)
+agents/                      frends-canvas-arranger — wiring + layout review
+skills/frends-ipaas-developer/
+  references/                concepts, triggers, shapes, expressions, tasks, guides,
+                             process-file-format — organised by entity so it's easy to extend
+  scripts/                   Platform API CLI tools + the Process JSON generator
+template/                    the workspace scaffold copied by new-workspace
+changes/                     changelog fragments, one per merge request
 ```
 
-## Integrate with your tools
+The serialization spec (`skills/frends-ipaas-developer/references/process-file-format/`) is confirmed
+against real Frends 6.2 exports.
 
-* [Set up project integrations](https://repo.virtualsciences.nl/ai-pilot/frends-companion/-/settings/integrations)
+## Credential handling
 
-## Collaborate with your team
+**Platform API credentials** live in a `.env` file: the Azure AD client id/secret, Application ID
+URI, Azure tenant, your Frends tenant name, and Agent Group IDs. The CLI tools load credentials
+internally (`source .env` inside bash) and exchange them for a short-lived bearer token; the agent
+invokes the tools without reading the secret values.
 
-* [Invite team members and collaborators](https://docs.gitlab.com/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/user/project/merge_requests/creating_merge_requests/)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/user/project/issues/managing_issues/#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+The template's `.claude/settings.json` denies reading `.env*` and steers the agent away from
+credential files. This is a convenience buffer, not a hard security boundary — `.env` is plaintext on
+your machine. For stricter isolation use OS-level file permissions.
 
-## Test and Deploy
+## How the Platform API works (summary)
 
-Use the built-in continuous integration in GitLab.
+1. The Platform API must be enabled per tenant (Entra ID app registration + admin app role + IP
+   allowlisting via Frends support).
+2. The scripts POST to `https://login.microsoftonline.com/<azure-tenant>/oauth2/token` with
+   `grant_type=client_credentials` to obtain a bearer token.
+3. They call `https://<tenant>.frendsapp.com/api/v1/...` with `Authorization: Bearer <token>`.
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/topics/autodevops/requirements/)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ci/environments/protected_environments/)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+See `skills/frends-ipaas-developer/references/guides/cli_tool_reference.md`.
 
 ## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+Extending the knowledge skill: `skills/frends-ipaas-developer/CONTRIBUTING.md`. Cutting a release:
+[RELEASING.md](RELEASING.md). Open a merge request — CI validates the manifests, the shell and Python
+syntax, and every relative Markdown link.
 
 ## License
-For open source projects, say how it is licensed.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+See [LICENSE](LICENSE).

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="sample-diagram" targetNamespace="http://bpmn.io/schema/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
+  <bpmn2:process id="Process_1" isExecutable="false">
+    <bpmn2:startEvent id="StartEvent_1" name="Manual">
+      <bpmn2:outgoing>Flow_1twq9s7</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:scriptTask id="Activity_0o7vxxp" name="Create Error Event JSON">
+      <bpmn2:incoming>Flow_1twq9s7</bpmn2:incoming>
+      <bpmn2:outgoing>Flow_1lk6tth</bpmn2:outgoing>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="Flow_1twq9s7" sourceRef="StartEvent_1" targetRef="Activity_0o7vxxp" />
+    <bpmn2:endEvent id="Event_0v0jvwz">
+      <bpmn2:incoming>Flow_1c8qmn0</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="Flow_1lk6tth" sourceRef="Activity_0o7vxxp" targetRef="Activity_0naihmj" />
+    <bpmn2:task id="Activity_0lwducw" name="Slack SendMessage">
+      <bpmn2:incoming>Flow_0za28dy</bpmn2:incoming>
+      <bpmn2:outgoing>Flow_1c8qmn0</bpmn2:outgoing>
+    </bpmn2:task>
+    <bpmn2:scriptTask id="Activity_0naihmj" name="Create Slack Block message">
+      <bpmn2:incoming>Flow_1lk6tth</bpmn2:incoming>
+      <bpmn2:outgoing>Flow_0za28dy</bpmn2:outgoing>
+    </bpmn2:scriptTask>
+    <bpmn2:sequenceFlow id="Flow_1c8qmn0" sourceRef="Activity_0lwducw" targetRef="Event_0v0jvwz" />
+    <bpmn2:sequenceFlow id="Flow_0za28dy" sourceRef="Activity_0naihmj" targetRef="Activity_0lwducw" />
+    <bpmn2:textAnnotation id="TextAnnotation_0s0l308">
+      <bpmn2:text>Create Error event JSON</bpmn2:text>
+    </bpmn2:textAnnotation>
+    <bpmn2:association id="Association_0ltg8nb" sourceRef="Activity_0o7vxxp" targetRef="TextAnnotation_0s0l308" />
+    <bpmn2:textAnnotation id="TextAnnotation_04pomqy">
+      <bpmn2:text>Return Error Event JSON</bpmn2:text>
+    </bpmn2:textAnnotation>
+    <bpmn2:association id="Association_1ihprzj" sourceRef="Event_0v0jvwz" targetRef="TextAnnotation_04pomqy" />
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="412" y="240" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0o7vxxp_di" bpmnElement="Activity_0o7vxxp">
+        <dc:Bounds x="542" y="218" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0v0jvwz_di" bpmnElement="Event_0v0jvwz">
+        <dc:Bounds x="1132" y="240" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0lwducw_di" bpmnElement="Activity_0lwducw">
+        <dc:Bounds x="940" y="218" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0naihmj_di" bpmnElement="Activity_0naihmj">
+        <dc:Bounds x="741" y="218" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0s0l308_di" bpmnElement="TextAnnotation_0s0l308">
+        <dc:Bounds x="620" y="130" width="99.99139118457302" height="39.94490358126721" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_04pomqy_di" bpmnElement="TextAnnotation_04pomqy">
+        <dc:Bounds x="1180" y="150" width="100" height="40" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1twq9s7_di" bpmnElement="Flow_1twq9s7">
+        <di:waypoint x="448" y="258" />
+        <di:waypoint x="542" y="258" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1lk6tth_di" bpmnElement="Flow_1lk6tth">
+        <di:waypoint x="642" y="258" />
+        <di:waypoint x="741" y="258" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1c8qmn0_di" bpmnElement="Flow_1c8qmn0">
+        <di:waypoint x="1040" y="258" />
+        <di:waypoint x="1132" y="258" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0za28dy_di" bpmnElement="Flow_0za28dy">
+        <di:waypoint x="841" y="258" />
+        <di:waypoint x="940" y="258" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_0ltg8nb_di" bpmnElement="Association_0ltg8nb">
+        <di:waypoint x="619" y="218" />
+        <di:waypoint x="652" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1ihprzj_di" bpmnElement="Association_1ihprzj">
+        <di:waypoint x="1162" y="244" />
+        <di:waypoint x="1209" y="190" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>
