@@ -21,6 +21,12 @@ versions were released from a different repository and have no tag here.
   `frends-ipaas-developer`.
 - CI moved from GitHub Actions to GitLab CI (`.gitlab-ci.yml`); the Markdown link checker now lives
   at `scripts/check_links.py`.
+- The README now opens with what to install before starting, naming `bash`, `curl` and `jq`, which
+  the Platform API tools require and which it never mentioned, with a macOS and a Windows column for
+  each. Install covers the terminal and the desktop app rather than the terminal alone, the git
+  token is stated rather than linked away, and keeping the two channels in step has its own section.
+  It follows the shape of the marketplace README, so a reader moving between the two finds the same
+  headings in the same order.
 
 ## [0.5.0] - 2026-08-19
 

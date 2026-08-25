@@ -8,32 +8,109 @@ The reason it exists: generic C# and BPMN knowledge gets Frends wrong. Ask any m
 or reference an earlier result and it invents syntax. The bundled `frends-ipaas-developer` skill
 carries the real vocabulary and the traps, verified against Frends 6.2 exports.
 
-## Install
+It is installed from the Conclusion marketplace, which also carries the solution design plugins.
+That catalogue's
+[README](https://repo.virtualsciences.nl/ai-pilot/conclusion-marketplace/-/blob/main/README.md)
+covers the rest of what the integration team maintains.
 
-Add the Conclusion marketplace once per machine, then install:
+## Before you start
+
+You need Claude Code, either in the terminal or in the desktop app, and access to our GitLab.
+
+The skill itself needs nothing else. The Platform API tools are shell scripts and the process
+generator is a Python script, so if you want those, install these once:
+
+| Tool | macOS | Windows |
+|---|---|---|
+| bash | preinstalled | comes with [Git for Windows](https://gitforwindows.org/), or use WSL |
+| curl | preinstalled | preinstalled on Windows 10 and later |
+| jq | `brew install jq` | `winget install jqlang.jq`, or [jqlang.github.io/jq](https://jqlang.github.io/jq/download/) |
+| Python 3.9 or newer | preinstalled, or `brew install python` | [python.org/downloads](https://www.python.org/downloads/), tick "Add python.exe to PATH" |
+
+The Python side uses the standard library only, so there is nothing to pip install. On Windows, run
+the shell scripts from Git Bash or WSL rather than PowerShell.
+
+Check them:
 
 ```bash
-/plugin marketplace add https://repo.virtualsciences.nl/ai-pilot/conclusion-marketplace.git
-/plugin install frends-companion-developer@conclusion
+bash --version
+curl --version
+jq --version
+python3 --version
 ```
 
-Already installed `solution-design` or a customer pack? Skip the first line.
+## Install
 
-If git has never talked to our GitLab on this machine, set up a token first. The
-[marketplace README](https://repo.virtualsciences.nl/ai-pilot/conclusion-marketplace) covers it in
-two commands, and it matters: get it wrong and your plugins stop updating without saying so.
+### Letting git in, once per machine
 
-Now start a new session and set yourself up:
+The catalogue is served over HTTPS, so git needs a token for our GitLab. Create a personal access
+token in GitLab, under your avatar, then Edit profile, then Access tokens. The `read_repository`
+scope is enough. Then:
+
+```bash
+git config --global url."https://oauth2:<TOKEN>@repo.virtualsciences.nl/ai-pilot".insteadOf "https://repo.virtualsciences.nl/ai-pilot"
+```
+
+Use this rewrite rather than a credential helper or keychain entry. Claude Code runs its background
+update with credential helpers switched off, so a keychain entry is invisible to it and your plugins
+quietly stop updating while your own `git pull` keeps working.
+
+Skip this if you already set it up for another Conclusion plugin.
+
+### In the terminal
+
+```bash
+claude plugin marketplace add https://repo.virtualsciences.nl/ai-pilot/conclusion-marketplace.git
+claude plugin install frends-companion-developer@conclusion
+```
+
+Skip the first line if you already added the catalogue for `solution-design` or a customer pack. The
+same commands work inside a session as `/plugin marketplace add ...` and `/plugin install ...`.
+
+Restart Claude Code, then set yourself up:
 
 ```bash
 /frends-companion-developer:connect        # Platform API credentials, step by step
 /frends-companion-developer:new-workspace  # project template plus a global /frends-init
 ```
 
-New versions arrive when you open a session. Force one from the `/plugin` menu.
+### In the desktop app or Cowork
 
-To try the plugin without installing it, point Claude at a clone: `claude --plugin-dir
-/path/to/frends-companion`.
+The desktop app cannot read a git catalogue. It runs plugins synced to your account as `.plugin`
+files, which are a zipped plugin directory under a different extension. This repository is the plugin
+directory, so package its root:
+
+```bash
+git clone https://repo.virtualsciences.nl/ai-pilot/frends-companion.git
+cd frends-companion
+zip -r ~/frends-companion-developer.plugin . -x ".git/*" -x "*.DS_Store" -x "*__pycache__*"
+```
+
+On Windows, right-click the folder, choose Send to, then Compressed folder, and rename the resulting
+`.zip` to `.plugin`.
+
+Share the file in a chat, or ask Claude in a Cowork session to package and deliver it. It arrives as
+a card with an accept button, and accepting saves it to your account for every chat and desktop
+session afterwards.
+
+### Keeping it up to date
+
+Git is the master copy, and the two channels follow it differently.
+
+The terminal updates in the background and applies at your next session. To pull now:
+
+```bash
+claude plugin update frends-companion-developer
+```
+
+The desktop app freezes at the moment you packaged it, so re-package and accept again when this
+plugin changes.
+
+### Trying it without installing
+
+```bash
+claude --plugin-dir /path/to/frends-companion
+```
 
 Colleagues who installed this from the old public `fc-integration` marketplace should remove it. The
 plugin moved here and was renamed, so the two copies fight over the same skill.
