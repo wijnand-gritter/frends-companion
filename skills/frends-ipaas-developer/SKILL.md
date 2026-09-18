@@ -54,6 +54,9 @@ are not enough.
 - **Gateway branches must join at one node or terminate; `#result` does not survive joins** —
   [references/process-file-format/structured-flow-rules.md](references/process-file-format/structured-flow-rules.md) ·
   [references/expressions/result-reference-scope.md](references/expressions/result-reference-scope.md).
+- **A Scope's catch branch holds exactly one node**, whose single flow goes to the same end event the
+  scope flows to, and the catch flow is listed first; wrap several handler shapes in a Scope —
+  [references/process-file-format/exception-handler-rules.md](references/process-file-format/exception-handler-rules.md).
 
 ## Platform facts vs conventions
 
@@ -150,6 +153,8 @@ flow is serialized. [overview](references/process-file-format/overview.md) ·
 [generation-checklist](references/process-file-format/generation-checklist.md) ·
 [node-naming](references/process-file-format/node-naming.md) ·
 [structured-flow-rules](references/process-file-format/structured-flow-rules.md) ·
+[exception-handler-rules](references/process-file-format/exception-handler-rules.md) ·
+[unhandled-error-hook](references/process-file-format/unhandled-error-hook.md) ·
 [canvas-layout-conventions](references/process-file-format/canvas-layout-conventions.md) ·
 [examples](references/process-file-format/examples.md). Validated against real Frends 6.2 exports in
 `references/process-file-format/examples/`. Target 6.2 / net8.0 unless told otherwise.

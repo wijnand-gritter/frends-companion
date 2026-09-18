@@ -9,6 +9,21 @@ versions were released from a different repository and have no tag here.
 
 ## [Unreleased]
 
+### Added
+- `references/process-file-format/exception-handler-rules.md`: the four rules the import parser
+  enforces on a Scope with a Catch, and the single import error all four report. The rule that
+  breaks generated files: **the catch branch holds exactly one node**, whose single outgoing flow
+  targets the same end event the scope flows to. A catch branch of two shapes fails even when the
+  graph converges on the right node, because the parser looks one hop past the Catch; several
+  handler shapes go inside a Scope, which is what the editor does. Also records what the parser
+  does *not* require, so a Catch with no paired Throw is no longer treated as suspect.
+- `references/process-file-format/examples/scope_catch_export_6.2.json`: an editor export whose
+  catch branch is itself a Scope, the authoritative example for the rules above.
+- `references/process-file-format/unhandled-error-hook.md`: the "Subprocess to call on unhandled
+  error" setting is a Type 18 `ElementParameters` entry with the literal id `globalErrorHandler` and
+  no BPMN element, so a generator deriving entries from the diagram drops it. Records its parameter
+  shape, `__timeoutMinutes` as a bare number, and the per-Throw `bypassGlobalExceptionHandler` opt-out.
+
 ### Changed
 - Moved the plugin to its own repository
   (`repo.virtualsciences.nl/ai-pilot/frends-companion`) and renamed it from `fc-integration` to

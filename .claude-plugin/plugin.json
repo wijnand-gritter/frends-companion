@@ -1,7 +1,7 @@
 {
   "name": "frends-companion-developer",
   "description": "Frends iPaaS development tools: skill, commands, and agents for building, deploying, and monitoring Frends integrations",
-  "version": "0.5.0",
+  "version": "0.6.1",
   "author": {
     "name": "Wijnand Gritter"
   }
