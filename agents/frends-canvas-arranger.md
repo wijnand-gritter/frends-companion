@@ -29,6 +29,12 @@ Your most important task is detecting broken or missing wiring.
 3. **Incomplete decision branches.** **Exclusive/Inclusive Decision** shapes where some condition branches are wired and others dangle. Confirm there is a default/else path where the model requires one.
 4. **Scope / Foreach / While bodies.** Shapes inside a Scope, Foreach, or While must wire to the scope's start node and back to its boundary correctly; the Catch branch of a Scope must originate from the boundary.
 5. **Trigger and end coverage.** Exactly one Trigger/Start entry; every path ends in a Return or Throw.
+6. **Exception handler wiring, for every Scope that has a Catch.** Four rules, all reporting the same import error. Check each one and report it as a blocker, not a style note:
+   - the `subProcess` has exactly two outgoing flows, one to the `intermediateCatchEvent` and one to the `endEvent`;
+   - the flow to the Catch is listed first in the `subProcess`'s `<outgoing>` elements;
+   - **the catch branch holds exactly one node**, and that node's single outgoing flow targets the same `endEvent` the scope flows to. This is the rule generators break: a chain of Catch, Call Subprocess, Assign, end event converges on the right node and still fails, because the parser looks only one hop past the Catch. Several handler shapes belong inside a Scope;
+   - nothing branches after the scope.
+   See `references/process-file-format/exception-handler-rules.md`.
 
 ### Frends element types to expect
 

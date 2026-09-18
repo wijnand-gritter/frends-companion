@@ -66,6 +66,16 @@ export containing X before I can generate this correctly."
   branches reconverge at the same node; a nested gateway must not escape its enclosing region.
   Violations fail import with "All branches of decision node ... must join at the same node." See
   [structured-flow-rules.md](structured-flow-rules.md).
+- **A Scope with a Catch has four wiring rules.** Two outgoing flows, the one to the
+  `intermediateCatchEvent` emitted **before** the one to the `endEvent`; **exactly one node in the
+  catch branch**, whose single outgoing flow targets that same `endEvent`; and no branching after
+  the scope. A catch branch of two or more shapes fails even though it converges on the right node,
+  so wrap them in a Scope. All four report "An exception handler must return to the same node as the
+  source it's catching from", so assert them before delivering. See
+  [exception-handler-rules.md](exception-handler-rules.md).
+- **The unhandled-error Subprocess setting is a Type 18 entry with no BPMN element** (id
+  `globalErrorHandler`); derive `ElementParameters` from the diagram alone and it is dropped. See
+  [unhandled-error-hook.md](unhandled-error-hook.md).
 - **Never reference `#result[X]` after branches rejoin when X ran on only one branch** — the file
   imports as C# with definite-assignment checks and fails with CS0165 even inside runtime-guarded
   ternaries. Promote the value to a `#var` on the branch that produces it. See

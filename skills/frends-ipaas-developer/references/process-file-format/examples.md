@@ -18,3 +18,10 @@ Real Frends 6.2 exports, in `examples/`:
   `intermediateThrowEvent`, an `intermediateCatchEvent`, and a `callActivity` to the shared
   error-handler Subprocess above. See [bpmn-xml.md](bpmn-xml.md) and
   [../guides/error-handling.md](../guides/error-handling.md).
+- `examples/scope_catch_export_6.2.json` — a full Process export whose catch branch is itself a
+  Scope: the authoritative example for [exception-handler-rules.md](exception-handler-rules.md)
+  (two outgoing flows, catch listed first, one node in the catch branch, the gateway and the signal
+  `intermediateThrowEvent` nested inside that branch's Scope). It also carries the only confirmed
+  Type 18 `globalErrorHandler` entry, documented in
+  [unhandled-error-hook.md](unhandled-error-hook.md), and a Type 6 Throw with
+  `bypassGlobalExceptionHandler`. UTF-8 BOM.

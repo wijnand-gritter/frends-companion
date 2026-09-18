@@ -15,5 +15,7 @@ How Frends serializes a Process, for reading an export or generating an importab
 | [generation-checklist.md](generation-checklist.md) | Steps + caveats for emitting an importable file. |
 | [node-naming.md](node-naming.md) | Node names must be unique process-wide; the import error and exemptions. |
 | [structured-flow-rules.md](structured-flow-rules.md) | Gateway branches must nest properly (join at one node or terminate). |
+| [exception-handler-rules.md](exception-handler-rules.md) | The four rules a Scope with a Catch must satisfy to import. |
+| [unhandled-error-hook.md](unhandled-error-hook.md) | The unhandled-error Subprocess setting, as a Type 18 entry with no BPMN element. |
 | [canvas-layout-conventions.md](canvas-layout-conventions.md) | DI conventions that make a generated canvas look hand-arranged. |
 | [examples.md](examples.md) | What each bundled real export demonstrates. |

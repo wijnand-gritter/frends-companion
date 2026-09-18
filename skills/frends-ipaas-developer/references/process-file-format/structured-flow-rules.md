@@ -41,6 +41,7 @@ Two envelope styles compose cleanly; do not mix them inside one scope:
    the scope result.
 
 ## Related
+[exception-handler-rules.md](exception-handler-rules.md) ·
 [canvas-layout-conventions.md](canvas-layout-conventions.md) ·
 [node-naming.md](node-naming.md)
 
