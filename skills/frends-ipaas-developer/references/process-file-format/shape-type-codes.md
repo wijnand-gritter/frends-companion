@@ -23,6 +23,8 @@ it is noted. Each row links to the shape's reference file.
 | 12 | `scriptTask` | [Code Task](../shapes/code-task.md) | None | confirmed |
 | 13 | `startEvent` (nested) | Scope start node (`SubProcessStartNode`) | "" | confirmed |
 | 14 | `intermediateCatchEvent` | [Catch](../shapes/scope-and-catch.md) | None | confirmed |
+| 15 | `inclusiveGateway` | [Inclusive Decision](../shapes/inclusive-decision.md) | None (`null`) | confirmed (6.3.2) |
+| 16 | `sequenceFlow` | Inclusive Decision branch (carries `SourceId`, `TargetId`, `IsDefault`) | None (`null`) | confirmed (6.3.2) |
 | 17 | `endEvent` | [Intermediate Return](../shapes/intermediate-return.md) | None | confirmed |
 | 20 | `businessRuleTask` | [Shared State Task](../shapes/shared-state-task.md) | operation: `AddOrUpdate`, `TryGetValue`, ... | confirmed |
 | 21 | `businessRuleTask` | [DMN Task](../shapes/dmn-task.md) | `Dmn` | confirmed (6.2) |
@@ -41,12 +43,18 @@ Notes:
 - Catch (14), Checkpoint (24), Scheduled Resume (25), and Signal Resume (26) all render as
   `intermediateCatchEvent`; the `Type` and their distinct `Parameters` keys tell them apart (see
   [confirmed-shape-parameters.md](confirmed-shape-parameters.md)).
+- Inclusive Decision (15) and its branches (16) were confirmed from a 6.3.2.5468 export,
+  [examples/mcp_rabbitmq_inclusive_export_6.3.json](examples/mcp_rabbitmq_inclusive_export_6.3.json). A conditional branch holds `Parameters.expression` (mode `csharp`); the default
+  branch has empty `Parameters` and `IsDefault: true`. See
+  [../shapes/inclusive-decision.md](../shapes/inclusive-decision.md).
+- Assign Variable (the API `ElementType` `Expression`) is Type 12, the same code as a Code Task;
+  its `Parameters` (`variableName`, `variableExpression`, `shouldAssignVariable`,
+  `useStatementMode`, `returnType`) tell them apart. The 6.3.2 export shows it with
+  `useStatementMode` false; see [../shapes/assign-variable.md](../shapes/assign-variable.md).
+- Plain connections have no `ElementParameters` entry in the 6.3.2 export: only the Inclusive
+  Decision branches (16) were listed. Plain flows live in the BPMN only.
 
 ## Still unconfirmed (not present in available exports)
-- **Inclusive Decision** (`inclusiveGateway`) and its branch — code not yet observed. Validate
-  against an export that uses one.
-- **Assign Variable** (the API `ElementType` calls this `Expression`) — code not yet observed. An
-  earlier note guessed Type 8, but 8 is confirmed to be a Scope; Assign Variable's code is unknown.
 - **Group** and **Text Annotation** — documentation shapes that appear in the BPMN as
   `group` / `textAnnotation` but do not get an `ElementParameters` entry. See
   [../shapes/group.md](../shapes/group.md) and [../shapes/text-annotation.md](../shapes/text-annotation.md).

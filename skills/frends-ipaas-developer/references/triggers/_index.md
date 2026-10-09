@@ -17,7 +17,7 @@ The start condition of a Process. One file per type, plus the shared field-behav
 | [rabbitmq.md](rabbitmq.md) | `RabbitMQTrigger` | RabbitMQ messages. |
 | [azure-event-hub.md](azure-event-hub.md) | `AzureEventHubTrigger` | Azure Event Hub events. |
 | [tcp.md](tcp.md) | `TcpTrigger` | Raw TCP connections. |
-| [mcp.md](mcp.md) | *(unconfirmed)* | Expose a Process as an MCP tool for AI clients (new in 6.3); serialization needs a harvest. |
+| [mcp.md](mcp.md) | `McpTrigger` | Expose a Process as an MCP tool for AI clients (new in 6.3). |
 | [parameter-fields.md](parameter-fields.md) | — | **Read this** for the special Text/`#env` field behavior. |
 | [openapi-spec-constraints.md](openapi-spec-constraints.md) | — | Frends-specific OpenAPI rules for API Triggers (flat schemas, no anchors); read before authoring a spec. |
 
