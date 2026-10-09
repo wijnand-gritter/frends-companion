@@ -13,7 +13,7 @@ This repository is both the plugin and its marketplace, `frends-companion`.
 
 ## Before you start
 
-You need Claude Code, either in the terminal or in the desktop app.
+You need Claude Code, either in the terminal or in the desktop app (including Cowork).
 
 The skill itself needs nothing else. The Platform API tools are shell scripts and the process
 generator is a Python script, so if you want those, install these once:
@@ -64,8 +64,15 @@ Restart Claude Code, then set yourself up:
 
 ### In the desktop app or Cowork
 
-The desktop app cannot read a git catalogue. It runs plugins synced to your account as `.plugin`
-files, which are a zipped plugin directory under a different extension. This repository is the plugin
+Add the same marketplace from the app. Open Customize, then Plugins, choose Add marketplace and
+enter `wijnand-gritter/frends-companion`. The `frends-companion` marketplace then lists one plugin,
+`frends-companion-developer`; install it from there. The plugin is then available in every chat and
+desktop session on your account.
+
+#### Offline fallback: upload a `.plugin` file
+
+Use this only when the app cannot reach GitHub, for example on a locked-down network. A `.plugin`
+file is a zipped plugin directory under a different extension. This repository is the plugin
 directory, so package its root:
 
 ```bash
@@ -83,7 +90,8 @@ session afterwards.
 
 ### Keeping it up to date
 
-Git is the master copy, and the two channels follow it differently.
+Git is the master copy. Both marketplace installs, in the terminal and in the desktop app, follow
+it.
 
 The terminal updates in the background and applies at your next session. To pull now:
 
@@ -91,8 +99,10 @@ The terminal updates in the background and applies at your next session. To pull
 claude plugin update frends-companion-developer
 ```
 
-The desktop app freezes at the moment you packaged it, so re-package and accept again when this
-plugin changes.
+In the desktop app, update the plugin from Customize, then Plugins.
+
+An uploaded `.plugin` file freezes at the moment you packaged it, so re-package and accept again
+when this plugin changes.
 
 ### Trying it without installing
 
