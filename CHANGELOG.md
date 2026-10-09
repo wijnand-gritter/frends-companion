@@ -9,6 +9,31 @@ versions were released from a different repository and have no tag here.
 
 ## [Unreleased]
 
+## [0.8.2] - 2026-10-09
+
+### Added
+- MCP Trigger, RabbitMQ Trigger and Inclusive Decision encodings confirmed from a 6.3.2.5468
+  export: the MCP Trigger config keys, the RabbitMQ connection and PEM client certificate keys,
+  Inclusive Decision as Type 15 with branches as Type 16, and Assign Variable as Type 12. A redacted
+  example export sits in `process-file-format/examples/`. Still open: the RabbitMQ certificate
+  password and store keys, the `Thumbprint` and `pfx/p12` types, `replyTo` and the AMQP trigger keys.
+- Platform API operations confirmed live on 6.3.2.5468: `frends-tags.sh set` (it replaces the
+  tags), `frends-instances.sh details` (step data sits behind `stepDataUri`), `frends-process-pull.sh
+  --id` with a process version id, and undeploy from a Test Agent Group. Template and API
+  specification operations stay unconfirmed: the tenant has neither.
+
+### Changed
+- README: the desktop app and Cowork install through Customize > Plugins > Add marketplace with
+  `wijnand-gritter/frends-companion`; the `.plugin` upload is the offline fallback.
+
+### Fixed
+- Custom Task references corrected against a real run of the frends-task template 1.17.0: the
+  workflow file names, the TODO decisions the template leaves, analyzer rule FT0012, the
+  `FRENDS_SECRET_KEY` check in TestBase, `ThrowErrorOnFailure` rethrowing the original exception
+  unless `ErrorMessageOnFailure` is set, the NUnit 4 `(Action)` cast, `DOTNET_ROLL_FORWARD` without a
+  .NET 8 runtime, reading coverage from the cobertura file, and quoted grep globs for zsh. Reviewer
+  rules TSK-03, 04, 13, 18, 24 and 25 follow the template's real behaviour.
+
 ## [0.8.1] - 2026-10-09
 
 ### Changed
@@ -314,7 +339,8 @@ versions were released from a different repository and have no tag here.
 ## [0.1.0] - initial scaffold
 - Initial Frends Companion plugin, marketplace, and bundled skill.
 
-[Unreleased]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.8.1...main
+[Unreleased]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.8.2...main
+[0.8.2]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.8.1...frends-companion-developer--v0.8.2
 [0.8.1]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.8.0...frends-companion-developer--v0.8.1
 [0.8.0]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.7.0...frends-companion-developer--v0.8.0
 [0.7.0]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.5.0...frends-companion-developer--v0.7.0
