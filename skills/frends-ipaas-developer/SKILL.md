@@ -205,8 +205,9 @@ and `TargetFramework` from a sample export of the target tenant.
   Task GUIDs are tenant-specific — harvest, never fabricate. If the process needs any Task, trigger,
   or shape whose encoding is not confirmed in the references, **ask the developer for a sample
   export containing it first** (at setup or the moment the gap surfaces) — never work around the
-  gap silently and never guess. Always tell the developer to validate by importing into a dev
-  Agent Group.
+  gap silently and never guess. Before delivering, launch the `frends-canvas-arranger` agent on the
+  file and then run `frends-reviewer`'s `review_process.py` on it. Always tell the developer to
+  validate by importing into a dev Agent Group.
 - Custom Task: generate from the official template and de-brand it
   ([references/tasks/template.md](references/tasks/template.md)), implement the contract
   ([anatomy.md](references/tasks/anatomy.md)), document, test and secure it, then version and pack
@@ -214,7 +215,9 @@ and `TargetFramework` from a sample export of the target tenant.
 - **Expressions / Code Tasks:** state which field type they belong in (Expression, Text, Decision,
   Assign Variable, or Code Task) — see [references/expressions/](references/expressions/).
 - Reviewing a Process or custom Task against the rules: hand over to the `frends-reviewer`
-  skill, and run its `review_process.py` on every Process file this skill generates.
+  skill, and run its `review_process.py` on every Process file this skill generates, after the
+  `frends-canvas-arranger` agent has checked and laid it out (file route only; on the MCP route
+  the process builder handles layout).
 - Operating a live tenant (list/pull/push/deploy/run/monitor): MCP first; the Platform API
   scripts per [references/guides/cli_tool_reference.md](references/guides/cli_tool_reference.md) for
   what MCP does not cover or when MCP is absent. Never hand-roll curl.
