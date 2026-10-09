@@ -11,7 +11,9 @@ Each trigger's `$type` corresponds to the `SelectedTypeId` on its Type 0 start s
 exports** — the HTTP API trigger from a production API process, and the other ten from an "All Icons"
 palette export (6.2.3.3649). The palette triggers are unconfigured, so the listed keys are those a
 **default** trigger carries; a fully configured trigger may include more. Validate specifics against
-the tenant `/swagger` or a configured export.
+the tenant `/swagger` or a configured export. The configured RabbitMQ Trigger (with client
+certificate authentication) and the MCP Trigger are confirmed against a 6.3.2.5468 export,
+[examples/mcp_rabbitmq_inclusive_export_6.3.json](examples/mcp_rabbitmq_inclusive_export_6.3.json).
 
 | Trigger | `$type` | Confirmed `config` keys | Reference |
 | --- | --- | --- | --- |
@@ -23,10 +25,16 @@ the tenant `/swagger` or a configured export.
 | API | `HttpApiTrigger` | `routeTemplate`, `httpMethod`, `isPrivate`, `corsEnabled`, `allowedOrigins`, `allowedSchemes`, `references`, `openApiDocument` | [../triggers/api.md](../triggers/api.md) |
 | AMQP / Queue | `QueueTrigger` | (empty by default) | [../triggers/amqp.md](../triggers/amqp.md) |
 | Service Bus | `ServiceBusTrigger` | `queueName`, `connectionString`, `maxConcurrentMessages`, `messagePrefetchCount`, `consumeMessageImmediately`, `reply`, `replyErrors`, `replyTo`, `retryMessageProcessingIfExceptionThrown` | [../triggers/service-bus.md](../triggers/service-bus.md) |
-| RabbitMQ | `RabbitMQTrigger` | `maxConcurrentMessages` (more when configured) | [../triggers/rabbitmq.md](../triggers/rabbitmq.md) |
+| RabbitMQ | `RabbitMQTrigger` | Configured set confirmed (6.3.2): `connectionString`, `queueName`, `maxConcurrentMessages`, `retryMessageProcessingIfExceptionThrown`, `reply`, `replyErrors`, `shouldNotLogParameters`, and for client certificates `useClientCertificate`, `clientCertificateType` (`"pem/crt"` observed), `clientCertificateThumbprintOrPath`, `clientCertificateKeyPath`, `skipServerCertificateValidation`. `replyTo`, `clientCertificatePassword` and `clientCertificateStore` were not set and are not in the export. | [../triggers/rabbitmq.md](../triggers/rabbitmq.md) |
 | Azure Event Hub | `AzureEventHubTrigger` | `eventHubAuthSettings`, `eventHubName`, `consumerGroupName`, `eventBatchSize`, `encoding`, `passDataAsBase64ByteArray`, `updateCheckpointImmediately`, `maxConcurrentProcesses`, `loadBalancingStrategy`, `blobCheckPointSettings` | [../triggers/azure-event-hub.md](../triggers/azure-event-hub.md) |
+| MCP | `McpTrigger` | `toolName`, `title`, `description`, `inputSchema` and `outputSchema` (JSON Schema as escaped strings), `annotations` (object, e.g. `readOnly`, `idempotent`). No access settings. Confirmed on 6.3.2. | [../triggers/mcp.md](../triggers/mcp.md) |
 | TCP | `TcpTrigger` | `dataMode`, `encoding`, `idleTimeoutSeconds`, `connectionIdBuilder`, `listenPort`, `listenAddress`, `maxConnections`, `terminationEvent`, `terminationHexString`, `allowedIps`, `autoAppendTermSeq` | [../triggers/tcp.md](../triggers/tcp.md) |
 
 The full HTTP API `config` (with `references` and embedded `openApiDocument`) is shown in
 [confirmed-shape-parameters.md](confirmed-shape-parameters.md). `Manual` and `HttpApi` were already
 confirmed earlier; the other nine are newly confirmed from the palette export.
+
+In every trigger confirmed so far, the start shape's `ElementParameters.Parameters` and the
+trigger's `config` carry the same keys and values, as plain JSON rather than `{mode, value}`
+leaves. A Process may carry several triggers of different types; the 6.3.2 harvest has an MCP and a
+RabbitMQ Trigger side by side, each a Type 0 `startEvent` flowing into the same first shape.

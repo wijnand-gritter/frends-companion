@@ -27,7 +27,7 @@ file links back to this row.
 | [Task](../shapes/task.md) | `task` | 1 |
 | [Code Task](../shapes/code-task.md) | `scriptTask` | 12 |
 | [Exclusive Decision](../shapes/exclusive-decision.md) | `exclusiveGateway` (has `default="<flowId>"`) | 2 |
-| [Inclusive Decision](../shapes/inclusive-decision.md) | `inclusiveGateway` (inferred; not in samples) | (n/a in sample) |
+| [Inclusive Decision](../shapes/inclusive-decision.md) | `inclusiveGateway` (has `default="<flowId>"` when a default branch exists) | 15; branches 16 |
 | [Return](../shapes/return.md) | `endEvent` | 5 |
 | [Throw](../shapes/throw.md) | `intermediateThrowEvent` (+ `signalEventDefinition`) | 6 |
 | Catch ([scope-and-catch](../shapes/scope-and-catch.md)) | `intermediateCatchEvent` + `signalEventDefinition` | (n/a in 5.7 sample) |
