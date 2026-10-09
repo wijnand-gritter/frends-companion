@@ -37,7 +37,7 @@ If the skill fails to load or the template path doesn't exist, ask the user wher
 - Tell the user to set up `.env` from `.env.example`.
 
 **If it already exists — smart merge:**
-- **PRESERVE**: `.env`, `.env.local`, `preferred_connections.md`, any custom files/instructions.
+- **PRESERVE**: `.env`, `.env.local`, `preferred_connections.md`, `house_standards.md`, any custom files/instructions.
 - **MERGE / UPDATE**: directory structure, `.gitignore`, `.env.example`, `README.md`, `CLAUDE.md`, `.claude/settings.json`.
 - **ASK** about conflicts when unsure; err toward preserving user content.
 - Report what was updated vs preserved.

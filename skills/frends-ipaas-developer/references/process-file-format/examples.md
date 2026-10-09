@@ -25,3 +25,13 @@ Real Frends 6.2 exports, in `examples/`:
   Type 18 `globalErrorHandler` entry, documented in
   [unhandled-error-hook.md](unhandled-error-hook.md), and a Type 6 Throw with
   `bypassGlobalExceptionHandler`. UTF-8 BOM.
+
+## Read the examples as serialization, not as conventions
+The exports are real tenant files and keep their original names and flows. Three things in them
+differ from the default conventions in [../guides/best-practices.md](../guides/best-practices.md):
+- Bracketed names such as `[Shared] - Generic error handler` and `[AFAS] - Create Calculation Rule`;
+  the Frends best practices collection rules out brackets.
+- `api_process_http_trigger_6.2.json` answers a failed validation with a Throw `400`; a validated
+  and answered request ends in a Return.
+- `process_export_6.2.bpmn` ends its catch branch at the end event; a handled failure ends in a
+  Throw.

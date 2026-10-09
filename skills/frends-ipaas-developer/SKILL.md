@@ -51,6 +51,11 @@ are not enough.
   target) — [references/guides/deployment.md](references/guides/deployment.md).
 - **Trigger parameter fields behave differently** — [references/triggers/parameter-fields.md](references/triggers/parameter-fields.md).
 - **One API Trigger per process; OpenAPI specs need flat schemas** — [references/triggers/openapi-spec-constraints.md](references/triggers/openapi-spec-constraints.md).
+- **A handled failure must still end in a Throw; an answered 4xx ends in a Return.** A catch branch
+  that reaches the end event records the failed run as successful —
+  [references/guides/error-handling.md](references/guides/error-handling.md).
+- **Production logs on "Only errors"; promoted values are logged at every level** —
+  [references/guides/debugging.md](references/guides/debugging.md).
 - **Gateway branches must join at one node or terminate; `#result` does not survive joins** —
   [references/process-file-format/structured-flow-rules.md](references/process-file-format/structured-flow-rules.md) ·
   [references/expressions/result-reference-scope.md](references/expressions/result-reference-scope.md).
@@ -69,6 +74,8 @@ This skill mixes two kinds of statement, and they carry different authority:
   convention say so at the top ("a default, not a rule"). **If the organisation has its own written
   standard, it wins**; use this skill's default only as a fallback and stay consistent with
   whichever is in force.
+  The default conventions are the Frends best practices collection, summarised in
+  [references/guides/best-practices.md](references/guides/best-practices.md).
 
 When a user's standards document and this skill disagree on a convention, follow the user's and say
 which one you followed. When they disagree on a platform fact, check it against a real export or the
@@ -129,6 +136,7 @@ Documentation/wiring: [sequence-flow](references/shapes/sequence-flow.md) ·
 [result-reference-scope](references/expressions/result-reference-scope.md)
 
 ### Guides (workflows) — `references/guides/`
+[best-practices](references/guides/best-practices.md) ·
 [bpmn-modeling](references/guides/bpmn-modeling.md) ·
 [error-handling](references/guides/error-handling.md) ·
 [code-shape-style](references/guides/code-shape-style.md) ·
@@ -177,6 +185,8 @@ flow is serialized. [overview](references/process-file-format/overview.md) ·
   [metadata.md](references/tasks/metadata.md)).
 - **Expressions / Code Tasks:** state which field type they belong in (Expression, Text, Decision,
   Assign Variable, or Code Task) — see [references/expressions/](references/expressions/).
+- **Reviewing a Process or custom Task** against the rules: hand over to the `frends-reviewer`
+  skill, and run its `review_process.py` on every Process file this skill generates.
 - **Operating a live tenant** (list/pull/push/deploy/run/monitor): use the Platform API CLI tools per
   [references/guides/cli_tool_reference.md](references/guides/cli_tool_reference.md). Prefer them over
   hand-rolled curl; they are scaffolded and not yet live-tested, so validate against the tenant's

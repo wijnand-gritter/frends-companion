@@ -17,5 +17,13 @@ paths). They are referenced in C# as `#env.Group.Name` — grouped, hence the tw
 - Managed via the Platform API `/environment-variables` endpoints (see
   [../guides/cli_tool_reference.md](../guides/cli_tool_reference.md)).
 
+## Conventions (Frends best practices collection)
+- Group by system (`#env.Afas.BaseUrl`), not per Process, so one value serves every Process
+  talking to that system.
+- Readable names, no abbreviations other teams do not know.
+- Document each variable (purpose, owner, value source per environment) in the operating
+  instructions.
+- Secrets use the Secret type and go in a Task's secret fields, never in a URL.
+
 ## Source of truth
 `https://docs.frends.com/management-and-operations/integration-lifecycle/environment-variables.md`

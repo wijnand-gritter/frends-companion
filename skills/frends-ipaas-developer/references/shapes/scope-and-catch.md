@@ -30,9 +30,11 @@ converges correctly; wrap them in a Scope, as the editor's own export does. See
 [../process-file-format/exception-handler-rules.md](../process-file-format/exception-handler-rules.md).
 
 ## The standard pattern
-Throw a signal inside a scope → catch it outside → hand off to a shared handler Subprocess → end.
-Detail and the worked shape are in [../guides/error-handling.md](../guides/error-handling.md). For
-the exact current scope/retry options, fetch the live docs rather than assuming, since they evolve.
+Work in a scope → Catch outside → one catch Scope that calls the shared handler Subprocess and then
+**Throws**, so the run is recorded as failed. A catch branch that ends at the end event records a
+handled failure as a successful run. Detail, the API variant and the loop variant are in
+[../guides/error-handling.md](../guides/error-handling.md). For the exact current scope/retry
+options, fetch the live docs rather than assuming, since they evolve.
 
 ## Source of truth
 `https://docs.frends.com/reference/shapes/scope-shapes/scope.md`,

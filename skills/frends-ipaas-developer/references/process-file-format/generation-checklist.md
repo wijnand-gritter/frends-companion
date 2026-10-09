@@ -98,3 +98,6 @@ export containing X before I can generate this correctly."
 - **Never bake secrets** into generated parameters. Use Environment Variable references
   (`{{#env.Group.Name}}` in text fields), let the tenant hold the values, and list each one in
   `RequiredEnvironmentVariables`.
+- **Run the reviewer before delivering.** `frends-reviewer`'s `review_process.py` checks the
+  generated file against the import wiring rules and the conventions in
+  [../guides/best-practices.md](../guides/best-practices.md); fix blockers and majors first.

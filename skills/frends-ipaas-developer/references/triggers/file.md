@@ -18,5 +18,14 @@ JSON `Type` 0, `SelectedTypeId: "FileWatchTrigger"`. **Confirmed** 6.2 `config` 
 `dirToWatch`, `fileMask`, `includeSubDirectories`, `maxFilesPerBatch`, `pollIntervalSeconds`. See
 [../process-file-format/triggers-encoding.md](../process-file-format/triggers-encoding.md).
 
+## Gotchas
+- **Set "Maximum concurrent instances" to 1** unless concurrent pickup is proven safe. Two
+  instances racing for one file fail with `No source files found` or
+  `RenameSourceFileBeforeTransfer - file not found`.
+- The Agent service account needs read and write rights on the watched directory; without them the
+  trigger turns blue, then red.
+- Write output to a temporary folder first, never into a watched folder, so a partial file is not
+  picked up.
+
 ## Source of truth
 `https://docs.frends.com/reference/triggers/file-trigger.md`

@@ -20,5 +20,10 @@ JSON `Type` 0, `SelectedTypeId: "ConditionalTrigger"`. **Confirmed** 6.2 `config
 `parameters`. See
 [../process-file-format/triggers-encoding.md](../process-file-format/triggers-encoding.md).
 
+## When to use it
+Prefer a Conditional Trigger to a frequent Schedule that mostly finds nothing: fewer empty runs and a
+cleaner Instance list. Keep the condition simple and free of business logic that changes data
+(Frends best practices collection).
+
 ## Source of truth
 `https://docs.frends.com/reference/triggers/conditional-trigger.md`

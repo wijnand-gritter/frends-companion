@@ -23,5 +23,8 @@ outgoing `sequenceFlow` entries (`Type` 4). See
 ## Gotchas
 Unlike Exclusive, more than one branch can fire — design downstream merges accordingly.
 
+**Not parallel.** The branches that fire run one after another, in creation order. Do not use an
+Inclusive Decision to speed a Process up (Frends process optimisation guide).
+
 ## Source of truth
 `https://docs.frends.com/reference/shapes/decision-shapes/inclusive-decision.md`

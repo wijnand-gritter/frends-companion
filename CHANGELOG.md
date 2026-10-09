@@ -9,7 +9,18 @@ versions were released from a different repository and have no tag here.
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-10-09
+
 ### Added
+- **`frends-reviewer` skill.** Reviews a Process export, an API Process or a custom Task and reports
+  findings with a rule id, a severity and a fix. `scripts/review_process.py` checks 35 rules
+  automatically, including the caught-scope import wiring, catch branches that end without a Throw,
+  4xx answered through a Throw, retry that can never fire, secrets in URLs and hard-coded
+  credentials, While loops without `maxIterations`, and embedded OpenAPI documents with more than
+  one operation. The remaining rules are a checklist for the reviewer. An organisation's standard,
+  named in the workspace's new `house_standards.md`, overrides the convention rules.
+- `references/guides/best-practices.md`: the Frends best practices collection plus facts from the
+  Frends guides, as the skill's default conventions.
 - `references/process-file-format/exception-handler-rules.md`: the four rules the import parser
   enforces on a Scope with a Catch, and the single import error all four report. The rule that
   breaks generated files: **the catch branch holds exactly one node**, whose single outgoing flow
@@ -25,6 +36,16 @@ versions were released from a different repository and have no tag here.
   shape, `__timeoutMinutes` as a bare number, and the per-Throw `bypassGlobalExceptionHandler` opt-out.
 
 ### Changed
+- **Error handling: a handled failure ends in a Throw.** A catch branch that reaches the end event
+  records the run as successful and hides it from the Failed Processes widget. The guide now
+  prescribes handler then Throw (with `bypassGlobalExceptionHandler`) in the catch Scope, a 4xx
+  answer through a Return, and a Throw after a loop whose entities failed. The bundled examples keep
+  their original flows and are marked as serialization references only.
+- Default naming follows the Frends best practices collection: no brackets, so
+  `Shared - Handle process error` instead of `[Shared] - ...`.
+- Loop, Inclusive Decision, Call Subprocess, File, Schedule and Conditional Trigger, Task retry,
+  logging levels, Environment Variables and API management references gained the platform
+  behaviour documented in the Frends guides.
 - Moved the plugin to its own repository
   (`repo.virtualsciences.nl/ai-pilot/frends-companion`) and renamed it from `fc-integration` to
   **`frends-companion-developer`**. The repo root is now the plugin, and the catalogue entry lives in
@@ -206,5 +227,6 @@ versions were released from a different repository and have no tag here.
 ## [0.1.0] - initial scaffold
 - Initial Frends Companion plugin, marketplace, and bundled skill.
 
-[Unreleased]: https://repo.virtualsciences.nl/ai-pilot/frends-companion/-/compare/frends-companion-developer--v0.5.0...main
+[Unreleased]: https://repo.virtualsciences.nl/ai-pilot/frends-companion/-/compare/frends-companion-developer--v0.7.0...main
+[0.7.0]: https://repo.virtualsciences.nl/ai-pilot/frends-companion/-/compare/frends-companion-developer--v0.5.0...frends-companion-developer--v0.7.0
 [0.5.0]: https://repo.virtualsciences.nl/ai-pilot/frends-companion/-/tags/frends-companion-developer--v0.5.0

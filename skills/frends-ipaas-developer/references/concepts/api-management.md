@@ -23,5 +23,12 @@ secured through the platform.
 - The migration can fail when the OpenAPI spec and the deployed Process disagree - align them
   before upgrading.
 
+## Conventions (Frends best practices collection)
+- Name an API after the business capability it exposes, never the backend system behind it.
+- Design first: the OpenAPI specification is agreed before the Process is built.
+- Deploy an API and its linked Processes together; operate APIs from Test and Production.
+- Decide the versioning approach when the API is created: some API properties cannot be changed in
+  place afterwards.
+
 ## Source of truth
 `https://docs.frends.com/frends-development/api-management.md`

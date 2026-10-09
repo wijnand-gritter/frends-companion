@@ -22,10 +22,20 @@ run, shape by shape, with start time, duration, what executed, and the result.
   entity is traceable across Processes.
 
 ## Logging levels and the performance tradeoff
-By default, input parameters are not shown in the Instance. Enabling **Log everything** (in Log
-settings, at the Process or Agent Group level) additionally logs and displays input parameters —
-invaluable when debugging but with a performance cost. Use it temporarily; Log settings allow
-enabling it for a set duration so it reverts automatically.
+| Level | Records | Use |
+| --- | --- | --- |
+| Only errors | failed runs only; successful runs leave no Instance detail | production |
+| Default | shape results; arrays truncated at 100 elements, text at 10,000 characters | development, test |
+| Log everything | parameters and results, no truncation | temporary troubleshooting |
+
+- Set production Agent Groups to **Only errors**. Verbose logging slows Processes and the UI and
+  exposes payloads.
+- Enable **Log everything** for a set duration so it reverts by itself.
+- **Promoted values are logged at every level.** Whatever support needs from a successful
+  production run (correlation id, business key, run counts) must be promoted.
+- Many promoted values on a high-volume Process can time out the Instance list.
+- **"Skip logging result and parameters"** on a shape hides its values from the Instance: use it
+  on shapes that carry secrets, personal data or large payloads.
 
 ## Source of truth
 `https://docs.frends.com/management-and-operations/dashboard-and-monitoring/process-instances.md`

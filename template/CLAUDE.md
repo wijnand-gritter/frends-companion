@@ -10,6 +10,10 @@ If you call the Platform API and get a 401/403 or a token error — stop and dis
 
 If you are asked to build an integration and the `frends-ipaas-developer` skill is not in your initial context — alert the user. The skill carries critical platform-specific knowledge. You should not need to file-search for it; if all is working it is presented to you as a skill option.
 
+## Reviews
+
+Review Processes and custom Tasks with the `frends-reviewer` skill, and run its `review_process.py` on every Process file before it is delivered. Your organisation's Frends standard is named in `house_standards.md`; its conventions override the Frends baseline.
+
 ## Credentials & .env
 
 You cannot read `.env` directly — project settings block it. The CLI tools load credentials internally via `source .env` and exchange them for a short-lived bearer token. To check what's configured, run `bash scripts/frends-env-check.sh` (shows SET/UNSET, never values) and `bash scripts/frends-connection-test.sh`. If credentials are missing or the test fails, guide the user through `/frends-companion-developer:connect`.

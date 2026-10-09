@@ -43,6 +43,17 @@ the body - this also gives a natural retry-until-accepted pattern (sentinel stat
 counter). See
 [../process-file-format/shape-type-codes.md](../process-file-format/shape-type-codes.md).
 
+## Behaviour to design for
+| Construct | Rule |
+| --- | --- |
+| Foreach | the iterated collection must not be modified inside the loop; iterate a copy |
+| Foreach | returns an array of each iteration's Return value |
+| While | set `maxIterations` from the design; exceeding it fails the Process |
+| While | after the loop, `#result` holds the last successful iteration only; collect per-iteration values in a `#var` |
+| Code Task loop | no platform safeguard or cancellation; an infinite loop blocks the Agent, so loops belong in shapes |
+| Parallel Foreach | 2 to 3 threads give most of the gain; never hundreds of parallel Subprocess calls (thread-pool starvation) |
+| Error handling | per-entity Scope and Catch inside the loop body; see [../guides/error-handling.md](../guides/error-handling.md) |
+
 ## Source of truth
 `https://docs.frends.com/reference/shapes/scope-shapes/foreach.md`,
 `https://docs.frends.com/reference/shapes/scope-shapes/while.md`

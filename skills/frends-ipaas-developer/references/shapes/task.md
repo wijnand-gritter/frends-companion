@@ -48,6 +48,10 @@ when the platform's policy is genuinely not enough, namely when you must honour 
 *some* statuses should be retried; `ThrowExceptionOnErrorResponse` throws on every non-2xx, so a
 400 is retried as eagerly as a 429.
 
+**Retry transient failures only** (timeouts, 429, 502, 503, 504, connection loss), on idempotent
+operations, with a limited count: five by default. A validation or business error fails again
+unchanged, so never retry it.
+
 **Watch the 2xx that are not success.** Because the option keys off non-2xx, a `207 Multi-Status`
 does not throw. Where 207 means partial failure (HubSpot batch endpoints), keep an explicit
 positive status check in the shape that already reads the result, so partial failure cannot pass

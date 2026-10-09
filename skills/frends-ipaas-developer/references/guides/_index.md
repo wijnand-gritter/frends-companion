@@ -4,9 +4,10 @@ Cohesive workflow essays. Entity-specific detail lives in the entity files; guid
 
 | File | What / when to read |
 | --- | --- |
+| [best-practices.md](best-practices.md) | The default conventions: the Frends best practices collection plus facts from the Frends guides. |
 | [bpmn-modeling.md](bpmn-modeling.md) | Designing a correct, readable flow; a worked example. |
 | [subprocess-extraction.md](subprocess-extraction.md) | When a chunk should become a Subprocess - the extract/keep checklist and the deploy-order tax. |
-| [error-handling.md](error-handling.md) | The throw/catch/shared-handler pattern; the unhandled-error hook and its loop-avoidance wiring. |
+| [error-handling.md](error-handling.md) | Outcome to end shape, the visible-failure catch pattern, loops, retry, the unhandled-error hook. |
 | [code-shape-style.md](code-shape-style.md) | House C# style for Code shapes: full-word naming, sparse why-comments, formatting. |
 | [deployment.md](deployment.md) | Promotion path, version rules, the two deploy prerequisites. |
 | [debugging.md](debugging.md) | Reading Process Instances; logging tradeoffs. |

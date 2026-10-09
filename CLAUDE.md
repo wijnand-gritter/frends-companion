@@ -56,4 +56,4 @@ The Platform API scripts are **scaffolded against the published Frends 6.2 Platf
 
 ## Skill VERSION files
 
-The bundled skill tracks its version in `skills/frends-ipaas-developer/VERSION`. Treat the skill as the source of truth for Frends platform knowledge; the plugin wraps it with commands, an agent, the Platform API CLI scripts, and a project template.
+Each bundled skill tracks its version in its own `VERSION` file: `skills/frends-ipaas-developer/VERSION` and `skills/frends-reviewer/VERSION`. `frends-reviewer` reviews Processes and custom Tasks; its automatic checks reuse the developer skill's generator validator, so keep the two in step. Treat the skill as the source of truth for Frends platform knowledge; the plugin wraps it with commands, an agent, the Platform API CLI scripts, and a project template.

@@ -131,6 +131,12 @@ With it, Claude can:
 - Query process instances when something failed, read and set environment variables, and inspect
   agent groups.
 
+The `frends-reviewer` skill reviews a process export, an API process or a custom task against the
+rules: the import wiring the parser enforces, and the Frends best practices collection. It runs a
+checker script, adds the checks a person has to make, and reports findings with a rule id, a
+severity and a fix. Point it at your own standard through `house_standards.md` in your workspace;
+your conventions then replace the baseline.
+
 The `frends-canvas-arranger` agent reviews a generated process before you import it. It checks every
 shape is wired and tidies the layout, which matters because a file that imports cleanly can still be
 unreadable on the canvas.
@@ -157,6 +163,9 @@ skills/frends-ipaas-developer/
   references/                concepts, triggers, shapes, expressions, tasks, guides,
                              process-file-format, one folder per entity
   scripts/                   eleven Platform API tools and the process generator
+skills/frends-reviewer/
+  references/                rule catalogue, custom task checklist, house standards, report format
+  scripts/                   review_process.py, the automatic checks
 template/                    what new-workspace copies into your workspace
 changes/                     one fragment per merge request
 ```

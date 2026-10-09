@@ -51,6 +51,11 @@ sync, like the API trigger. Values are plain (no `{mode,value}` leaves). See
 Trigger parameter fields are Text with the `#env` exception; see
 [parameter-fields.md](parameter-fields.md).
 
+## Gotchas
+- A Schedule that must not overlap itself is set to single instance.
+- With "Repeat" enabled the interval must be non-zero; an empty interval fails the trigger with
+  `DivideByZeroException`.
+
 ## Source of truth
 `https://docs.frends.com/reference/triggers/schedule-trigger.md`; config confirmed against
 Frends 6.3 exports of configured schedules (daily/recurring and weekly variants).

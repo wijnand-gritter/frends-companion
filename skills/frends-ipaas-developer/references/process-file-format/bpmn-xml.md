@@ -51,6 +51,6 @@ does the work and contains an `exclusiveGateway` whose "yes" branch goes to an
 `intermediateThrowEvent` with a `<signalEventDefinition/>`. Outside the scope, an
 `intermediateCatchEvent` with a matching `<signalEventDefinition/>` catches that signal and routes to
 a `callActivity` named like `[Shared] - Generic error handler` (a shared error-handling Subprocess),
-then to the `endEvent`. So: throw a signal inside a scope, catch it outside, hand off to a shared
-handler Subprocess. Model new error handling on this shape — see
-[../guides/error-handling.md](../guides/error-handling.md).
+then to the `endEvent`. That is the serialization to copy. The flow itself ends a handled failure
+at the end event, which records the run as successful: new Processes end the catch branch in a
+Throw instead. See [../guides/error-handling.md](../guides/error-handling.md).
