@@ -30,6 +30,7 @@ Category: tasks · Baseline: template from `FrendsPlatform/FrendsTasks`, net8.0
 | Secrets | never a connection string, key or tenant URL in the csproj |
 | Target framework | `net8.0`; `<TargetFrameworks>net8.0;net10.0</TargetFrameworks>` only when the Task needs a .NET 9 or 10 API or a dependency drops net8.0 |
 | Runtime | Frends 6.3 Processes compile against .NET 10 and Agents run .NET 10; a net8.0 Task compiles and runs in them (validated on 6.3.2.5468 with `Frends.HTTP.Request` 1.13.0, which ships net8.0 only). A net10.0-only Task does not load on 6.2 Agents |
+| Tenant export | `TargetFramework` `net10.0` in a 6.3 Process export is the Processes' framework, not a target for the Task: keep the Task on `net8.0` |
 
 ## Versioning
 
@@ -60,6 +61,14 @@ dotnet pack Conclusion.Salesforce.Query/Conclusion.Salesforce.Query/Conclusion.S
 ```
 
 A failing test stops the pack. `out/` is not committed.
+
+Check the package before anyone imports it. The root holds `FrendsTaskMetadata.json`,
+`migration.json` and `CHANGELOG.md`; `lib/net8.0/` holds the assembly and the XML documentation
+file, both named after the package id:
+
+```bash
+unzip -l out/Conclusion.Salesforce.Query.1.0.0.nupkg
+```
 
 ## Import into a tenant
 Importing changes the tenant: only on the person's confirmation.
