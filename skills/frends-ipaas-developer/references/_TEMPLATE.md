@@ -9,7 +9,7 @@
 > resolve from `references/` itself — fix them up for the destination folder depth.
 
 **Category:** shape | trigger | concept
-**Frends version baseline:** 6.2 / net8.0 (note older-version differences inline)
+**Frends version baseline:** 6.3 (note 6.2 differences inline)
 
 ## Purpose
 What this entity is and when to reach for it, in two or three sentences.

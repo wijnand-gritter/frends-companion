@@ -36,6 +36,14 @@ Every platform claim in this skill carries its evidence, in the file header or n
 | corpus | counted over the public `FrendsPlatform/FrendsTemplates` |
 | inferred | reasoned, not observed: confirm before relying on it |
 
+## Version coverage
+
+| Frends | Status | Checked against |
+| --- | --- | --- |
+| 6.3.0 to 6.3.2 | supported | release notes 6.3.0, 6.3.1, 6.3.2 and breaking changes; MCP schemas, OpenAPI document and validation on 6.3.2.5468 |
+| 6.2 | supported | tenant exports (serialisation), docs |
+| 6.4 | not checked | run the refresh below |
+
 ## Refreshing on a new Frends minor version
 Run when the tenant moves to a new Frends minor version (`get_overview` shows the version):
 

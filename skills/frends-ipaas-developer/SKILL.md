@@ -29,6 +29,10 @@ This SKILL.md is a **router**. The knowledge lives in small, single-purpose file
 answering anything non-trivial — the references hold the platform-specific detail you must not
 improvise. To add or change coverage, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
+Works against Frends 6.3 (6.3.0 to 6.3.2) and 6.2. Checked against the 6.3.0, 6.3.1 and 6.3.2
+release notes and a 6.3.2.5468 tenant. On 6.3, Processes compile against .NET 10 with C# 14;
+custom Tasks target net8.0 unless they need a .NET 10 API.
+
 ## Choose the route first
 
 Tenant work goes through one of three routes, chosen per operation in this order: the Frends MCP
@@ -187,8 +191,9 @@ flow is serialized. [overview](references/process-file-format/overview.md) ·
 [exception-handler-rules](references/process-file-format/exception-handler-rules.md) ·
 [unhandled-error-hook](references/process-file-format/unhandled-error-hook.md) ·
 [canvas-layout-conventions](references/process-file-format/canvas-layout-conventions.md) ·
-[examples](references/process-file-format/examples.md). Validated against real Frends 6.2 exports in
-`references/process-file-format/examples/`. Target 6.2 / net8.0 unless told otherwise.
+[examples](references/process-file-format/examples.md). Encodings are validated against real Frends 6.2 exports in
+`references/process-file-format/examples/`; 6.2 files import into 6.3 tenants. Take `FrendsVersion`
+and `TargetFramework` from a sample export of the target tenant.
 
 ## Producing artifacts
 
@@ -216,7 +221,7 @@ flow is serialized. [overview](references/process-file-format/overview.md) ·
 
 ## Staying current
 
-This skill snapshots the durable core of Frends 6.2. For version-specific behavior, exact Task
+This skill snapshots the durable core of Frends 6.2 and 6.3. For version-specific behavior, exact Task
 parameters, new features, or trigger configs not covered here, fetch the live docs — see
 [references/guides/staying-current.md](references/guides/staying-current.md). Don't invent exact
 parameter names, enum members, or trigger `config` shapes.

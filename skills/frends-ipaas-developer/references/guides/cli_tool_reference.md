@@ -49,7 +49,7 @@ through Frends API Management; they do not open the Platform API.
 | `FRENDS_APPLICATION_URI` | The Application ID URI exposed by the app registration (the token `resource`). |
 | `FRENDS_DEV_AGENT_GROUP_ID` / `FRENDS_TEST_AGENT_GROUP_ID` / `FRENDS_PROD_AGENT_GROUP_ID` | Agent Group IDs used for deploy / instance queries. |
 | `FRENDS_DEV_ENVIRONMENT_ID` / `FRENDS_TEST_ENVIRONMENT_ID` / `FRENDS_PROD_ENVIRONMENT_ID` | Environment IDs used for env-var values. |
-| `FRENDS_TARGET_FRAMEWORK` | Default Process target framework (e.g. `net8.0`). |
+| `FRENDS_TARGET_FRAMEWORK` | Process target framework, from a sample export (`net8.0` on 6.2; 6.3 compiles to .NET 10). |
 | `FRENDS_VERIFY_SSL` | `false` to pass `-k` to curl (corporate SSL inspection). Default `true`. |
 | `FRENDS_TIMEOUT` | Optional curl timeout override (seconds). |
 | `FRENDS_COMPANION_LOG_ACTIVITY` | `1` to append operations to `.activity-log/activity.jsonl`. |

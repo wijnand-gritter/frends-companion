@@ -12,6 +12,14 @@ The [AI Connector shape](../shapes/ai-connector.md) gained MCP tool discovery an
 same release, so Processes can both *be* tools (this trigger) and *call* tools (the shape) -
 from Agent Group Processes or external MCP servers.
 
+## Access (6.3.1)
+- Tool access can be granted to OAuth applications, so tokens from an external OAuth provider are
+  accepted at the Agent MCP endpoint.
+- An OAuth application can define MCP scopes; a token is honoured only when it carries every
+  configured scope.
+- The endpoint supports the MCP authorisation discovery flow for interactive clients.
+- Authorisation filters accept wildcard groups such as `test.*`.
+
 ## Serialization
 **Not confirmed against an export.** Per the harvest-first rule in
 [../process-file-format/generation-checklist.md](../process-file-format/generation-checklist.md):

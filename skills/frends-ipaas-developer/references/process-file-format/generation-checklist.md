@@ -14,7 +14,7 @@ decisions, scopes, and subprocess calls from this reference. See
    and `Parameters` leaves as `{mode,value}` ([parameter-encoding.md](parameter-encoding.md)).
 3. Emit `TriggersJson` for the start event ([triggers-encoding.md](triggers-encoding.md)).
 4. Fill `UsedTasksJson` with every Task ref used, set `FrendsVersion`/`TargetFramework` to the
-   target tenant (6.2, net8.0), generate a new `UniqueIdentifier`.
+   values in a sample export of the target tenant, generate a new `UniqueIdentifier`.
 5. Wrap in the correct envelope for the import path ([proprietary-json.md](proprietary-json.md)).
 
 ## Harvest before you build: ask for a sample export

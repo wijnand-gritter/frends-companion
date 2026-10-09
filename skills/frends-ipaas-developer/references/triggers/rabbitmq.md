@@ -15,6 +15,10 @@ passphrase, plus TriggerInput parameters for referencing certificates from the c
 store (mutual TLS). **Serialization of these keys is not confirmed** - harvest a configured
 export before generating them.
 
+From 6.3.1, "Use client certificate" without certificate details is a validation error. The trigger
+retries when RabbitMQ is unavailable at Agent startup or resume, shows an error state when the
+connection drops and resumes consuming after the Agent is paused and resumed.
+
 ## Serialization
 JSON `Type` 0, `SelectedTypeId: "RabbitMQTrigger"`. Confirmed `$type`; only `maxConcurrentMessages`
 observed by default. See

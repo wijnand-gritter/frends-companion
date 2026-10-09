@@ -24,7 +24,7 @@ repository.
 | TSK-06 | the Task method is `public static`, returns a value, has no overloads; one Task method per project | platform | blocker | read the Task class |
 | TSK-07 | `FrendsTaskMetadata.json` lists exactly the Task method, packed to the root, registered as `AdditionalFiles` | platform | blocker | read the file and the csproj |
 | TSK-08 | folder, assembly and package id identical | platform | major | compare csproj and folder |
-| TSK-09 | target framework matches the Agent (`net8.0`); .NET 10 Agent compatibility checked | platform | blocker | csproj, release notes |
+| TSK-09 | target framework `net8.0`, or `net8.0;net10.0` when the Task needs .NET 9 or 10 APIs; no net10.0-only Task while any Agent runs 6.2 | platform | blocker | csproj, tenant versions |
 
 ## Contract
 

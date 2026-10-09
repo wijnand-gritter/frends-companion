@@ -43,6 +43,9 @@ on activities, gateways and scopes as blockers.
   attribute of every BPMN flow node (excluding `sequenceFlow`) recursively through
   `subProcess` children and reject the file when any name occurs twice.
 
+- From 6.3.1, shape and decision branch names cannot contain a double quote: they broke Process
+  compilation and the editor rejects them.
+
 ## Related
 [../shapes/scope-and-catch.md](../shapes/scope-and-catch.md) ·
 [confirmed-shape-parameters.md](confirmed-shape-parameters.md)
