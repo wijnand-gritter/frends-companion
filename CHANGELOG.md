@@ -25,6 +25,14 @@ versions were released from a different repository and have no tag here.
   skipping, the Shared State first-write fix, RabbitMQ trigger retries and certificate validation,
   MCP Trigger OAuth access, .NET Runtime 10.0.7 for 6.3.1 Agents, blocked Task re-imports.
 
+### Added
+- `frends-smoke-test.sh`: a read-only run of every Platform API script against the tenant, with
+  the export validated and reviewed and a live OpenAPI drift check.
+
+### Fixed
+- An unreachable token endpoint or tenant now reports "cannot reach" instead of exiting silently
+  or reading as an authentication failure.
+
 ## [0.8.0] - 2026-10-09
 
 ### Added

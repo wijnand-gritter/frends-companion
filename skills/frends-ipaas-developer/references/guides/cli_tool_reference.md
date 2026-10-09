@@ -59,6 +59,7 @@ through Frends API Management; they do not open the Platform API.
 | Script | What it does | Key endpoint(s) | Changes the tenant |
 |--------|--------------|-----------------|---|
 | `frends-env-init.sh` | Creates `.env` from `.env.example` (mode 600) and fills non-secret keys with `--set`; refuses the client secret. | none | no |
+| `frends-smoke-test.sh` | Read-only run of every script against the tenant: PASS/FAIL table, export validated and reviewed, live OpenAPI drift check; log in `active-development/feedback/`. Stops on 401/403 or an unreachable tenant. | all read endpoints | no |
 | `frends-env-check.sh` | Shows which `.env` vars are SET/UNSET (no values). | none | no |
 | `frends-connection-test.sh` | Fetches a token, lists 1 Process. | `GET /processes?PageSize=1` | no |
 | `frends-agentgroups.sh` | list (per Environment) / show Agent Groups. | `GET /environments`, `GET /environments/{id}/agent-groups`, `GET /agent-groups/{id}` | no |
