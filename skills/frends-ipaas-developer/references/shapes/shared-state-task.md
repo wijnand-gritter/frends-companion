@@ -57,6 +57,9 @@ including for operations that ignore them (read-only ops carry `valueExpression`
 - `PromoteResultAs` works on this shape; the promoted name must also be listed in the process's
   `PromotedResultVariablesJson`.
 
+Concurrent first writes to the same key could deadlock before 6.3.1. On older tenants, seed the
+key once (for example in a setup run) before parallel executions write to it.
+
 Note Shared State (20) and [DMN](dmn-task.md) (21) both render as `businessRuleTask`. See
 [../process-file-format/shape-type-codes.md](../process-file-format/shape-type-codes.md).
 

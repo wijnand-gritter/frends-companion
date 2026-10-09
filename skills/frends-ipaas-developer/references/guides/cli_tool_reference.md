@@ -6,9 +6,24 @@ first for what it covers, and these scripts for the rest or when MCP is absent
 ([tooling-routes.md](tooling-routes.md)). Never hand-craft `curl`.
 
 Status: endpoints, parameters and response fields checked against the Frends 6.3.2 OpenAPI document
-(`https://<tenant>.frendsapp.com/v1.0/swagger.json`, 92 operations) and exercised against a stubbed
-API. If a script's behaviour differs from the tenant's document, trust the document and fix the
-script.
+(`https://<tenant>.frendsapp.com/v1.0/swagger.json`, 92 operations), and confirmed live on Frends
+6.3.2.5468: `frends-smoke-test.sh` for the reads, `frends-write-test.sh` for import (`Error`,
+`NewVersion`), tags, deploy, activation, run, acknowledge and an Environment Variable value. Not yet
+run live: undeploy, tags `set`, instance `details`, pull `--id`, template export and create-process,
+API specification show and version. Each script header lists what is confirmed. If a script's
+behaviour differs from the tenant's document, trust the document and fix the script.
+
+Facts from the live run:
+
+| Endpoint | Behaviour |
+| --- | --- |
+| `GET /processes` | returns every version, deleted and outdated ones included, each with its full BPMN; `frends-process-list.sh` shows live latest versions unless `--all` |
+| `GET /processes/{guid}/versions/{v}/export` | HTTP 400 for a deleted version |
+| `GET /process-deployments` | items carry `deploymentId`, `processGuid`, `processVersion`, `triggersActive` and a nested `agentGroup.id` |
+| `POST /processes/batch-import` | `data` is an array of `{name, elementIdentifier (guid), id, resourceLocation}`; a generated 6.3 file (`net10.0`, `FrendsVersion` `6.3.2.5468`) imports |
+| `POST /process-deployments/{id}/execute` | HTTP 202 only accepts the run; poll the instances for `state` (`Finished`) |
+| `POST /instances/.../acknowledge` | accepts a successful instance too |
+| `PUT /environment-variables/{id}/values/{env}` | body is the JSON value: `"companion-test"` for a String |
 
 ## Prerequisites
 
@@ -49,7 +64,7 @@ through Frends API Management; they do not open the Platform API.
 | `FRENDS_APPLICATION_URI` | The Application ID URI exposed by the app registration (the token `resource`). |
 | `FRENDS_DEV_AGENT_GROUP_ID` / `FRENDS_TEST_AGENT_GROUP_ID` / `FRENDS_PROD_AGENT_GROUP_ID` | Agent Group IDs used for deploy / instance queries. |
 | `FRENDS_DEV_ENVIRONMENT_ID` / `FRENDS_TEST_ENVIRONMENT_ID` / `FRENDS_PROD_ENVIRONMENT_ID` | Environment IDs used for env-var values. |
-| `FRENDS_TARGET_FRAMEWORK` | Default Process target framework (e.g. `net8.0`). |
+| `FRENDS_TARGET_FRAMEWORK` | Process target framework, from a sample export (`net8.0` on 6.2, `net10.0` on 6.3). |
 | `FRENDS_VERIFY_SSL` | `false` to pass `-k` to curl (corporate SSL inspection). Default `true`. |
 | `FRENDS_TIMEOUT` | Optional curl timeout override (seconds). |
 | `FRENDS_COMPANION_LOG_ACTIVITY` | `1` to append operations to `.activity-log/activity.jsonl`. |
@@ -59,10 +74,12 @@ through Frends API Management; they do not open the Platform API.
 | Script | What it does | Key endpoint(s) | Changes the tenant |
 |--------|--------------|-----------------|---|
 | `frends-env-init.sh` | Creates `.env` from `.env.example` (mode 600) and fills non-secret keys with `--set`; refuses the client secret. | none | no |
+| `frends-smoke-test.sh` | Read-only run of every script against the tenant: PASS/FAIL table, export validated and reviewed, live OpenAPI drift check; log in `active-development/feedback/`. Stops on 401/403 or an unreachable tenant. | all read endpoints | no |
+| `frends-write-test.sh` | Live test of the operations that change the tenant, on a throwaway Process in Development: import, new version, tags, deploy, activation, run, acknowledge, optionally one Environment Variable value. Prints the plan unless `--confirm`. | the write endpoints | yes, on confirmation |
 | `frends-env-check.sh` | Shows which `.env` vars are SET/UNSET (no values). | none | no |
 | `frends-connection-test.sh` | Fetches a token, lists 1 Process. | `GET /processes?PageSize=1` | no |
 | `frends-agentgroups.sh` | list (per Environment) / show Agent Groups. | `GET /environments`, `GET /environments/{id}/agent-groups`, `GET /agent-groups/{id}` | no |
-| `frends-process-list.sh` | Lists Processes (filter by name/guid, paged). | `GET /processes` | no |
+| `frends-process-list.sh` | Lists live latest Process versions (filter by name/guid, paged; `--all` for every version). | `GET /processes` | no |
 | `frends-process-pull.sh` | Exports one Process version, or several with `--batch --ids`. | `GET /processes/{guid}/versions/{ver}/export`, `GET /processes/{id}/export`, `GET /processes/batch-export` | no |
 | `frends-process-push.sh` | Imports a Process export; `--conflict` defaults to `Error`. | `POST /processes/batch-import` | yes |
 | `frends-deploy.sh` | list / show / deploy / undeploy / activate / deactivate / run. | `/process-deployments...` | yes, except list and show |

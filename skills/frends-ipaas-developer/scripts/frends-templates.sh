@@ -14,7 +14,8 @@
 # create-process changes the tenant: run it only on the person's confirmation.
 # A template is portable when its configuration is in Process Variables (#var) rather
 # than Environment Variables (#env); see references/process-file-format/templates-and-imports.md.
-# STATUS: checked against the 6.3.2 OpenAPI document. See frends-common.sh header.
+# STATUS: checked against the 6.3.2 OpenAPI document. Confirmed live on 6.3.2.5468
+# (frends-smoke-test.sh, frends-write-test.sh): list; export and create-process not yet run (no Process Template on the test tenant).
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=/dev/null

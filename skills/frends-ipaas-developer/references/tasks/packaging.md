@@ -28,7 +28,8 @@ Category: tasks · Baseline: template from `FrendsPlatform/FrendsTasks`, net8.0
 | Warnings | zero; every `NoWarn` or `#pragma warning disable` carries a comment naming the warning and why muting is safe |
 | Packed content | assembly, XML documentation, `FrendsTaskMetadata.json`, `migration.json`, `CHANGELOG.md` |
 | Secrets | never a connection string, key or tenant URL in the csproj |
-| Runtime | Frends 6.3 Agents run .NET 10; a net8.0 assembly loads, but check for APIs removed between the two and say so |
+| Target framework | `net8.0`; `<TargetFrameworks>net8.0;net10.0</TargetFrameworks>` only when the Task needs a .NET 9 or 10 API or a dependency drops net8.0 |
+| Runtime | Frends 6.3 Processes compile against .NET 10 and Agents run .NET 10; a net8.0 Task compiles and runs in them (validated on 6.3.2.5468 with `Frends.HTTP.Request` 1.13.0, which ships net8.0 only). A net10.0-only Task does not load on 6.2 Agents |
 
 ## Versioning
 
@@ -36,7 +37,7 @@ Category: tasks · Baseline: template from `FrendsPlatform/FrendsTasks`, net8.0
 | --- | --- |
 | Major | a parameter moves between tabs or is renamed (typo fixes included); a tab is removed or renamed; a new parameter has no default that keeps the old behaviour |
 | Minor | documentation fixes; new parameters whose defaults keep the old behaviour |
-| Patch | every test import while iterating: Frends will not import the same version twice |
+| Patch | every test import while iterating: Frends will not import the same version twice (from 6.3.1 the UI blocks it) |
 
 - Every major bump comes with a `migration.json` entry and a CHANGELOG entry with the upgrade steps.
 - Prefer a non-breaking design, but never pick a harmful default to avoid a major bump.

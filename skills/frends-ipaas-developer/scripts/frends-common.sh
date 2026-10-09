@@ -4,7 +4,9 @@
 #
 # STATUS: endpoints, parameters and response fields checked against the Frends
 # 6.3.2 OpenAPI document (https://<tenant>.frendsapp.com/v1.0/swagger.json,
-# 92 operations). Use the Frends MCP server first where it covers the operation;
+# 92 operations). Confirmed live on 6.3.2.5468 with frends-smoke-test.sh (reads) and
+# frends-write-test.sh (import, tags, deploy, activation, run, acknowledge, Environment Variable
+# value); each script header lists what is confirmed. Use the Frends MCP server first where it covers the operation;
 # these scripts cover the rest (see references/guides/tooling-routes.md).
 #
 # Auth model: the Frends Platform API uses OAuth2
@@ -124,7 +126,11 @@ get_token() {
     --data-urlencode "client_id=${FRENDS_CLIENT_ID}" \
     --data-urlencode "client_secret=${FRENDS_CLIENT_SECRET}" \
     --data-urlencode "grant_type=client_credentials" \
-    --data-urlencode "resource=${FRENDS_APPLICATION_URI}")"
+    --data-urlencode "resource=${FRENDS_APPLICATION_URI}")" || {
+    local rc=$?
+    echo "ERROR: cannot reach the token endpoint $(token_url) (curl exit ${rc}). Check network, VPN or proxy; this is not an authentication failure." >&2
+    exit 1
+  }
 
   local access expires_on expires_in
   access="$(echo "$resp" | jq -r '.access_token // empty')"
@@ -182,7 +188,7 @@ frends_api() {
     -H "Accept: application/json" \
     -X "$method" \
     -o "$tmpfile" -w "%{http_code}" \
-    "${base}/${endpoint}" "$@")
+    "${base}/${endpoint}" "$@") || true
 
   if [[ -z "$out_file" ]]; then
     RESPONSE_BODY=$(cat "$tmpfile")
@@ -195,6 +201,10 @@ frends_api() {
 # Fail with a clear message if the last call was not a 2xx.
 expect_ok() {
   local context="${1:-request}"
+  if [[ -z "$RESPONSE_CODE" || "$RESPONSE_CODE" == "000" ]]; then
+    echo "ERROR: ${context} failed: cannot reach $(api_base). Check network, VPN, proxy or IP allowlisting." >&2
+    return 1
+  fi
   if [[ ! "$RESPONSE_CODE" =~ ^2[0-9][0-9]$ ]]; then
     echo "ERROR: ${context} failed (HTTP ${RESPONSE_CODE})" >&2
     if [[ -n "$RESPONSE_BODY" ]]; then

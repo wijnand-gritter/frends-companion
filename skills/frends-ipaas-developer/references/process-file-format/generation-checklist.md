@@ -13,8 +13,10 @@ decisions, scopes, and subprocess calls from this reference. See
    ([shape-type-codes.md](shape-type-codes.md)), correct `SelectedTypeId` (real Task ref for Tasks),
    and `Parameters` leaves as `{mode,value}` ([parameter-encoding.md](parameter-encoding.md)).
 3. Emit `TriggersJson` for the start event ([triggers-encoding.md](triggers-encoding.md)).
-4. Fill `UsedTasksJson` with every Task ref used, set `FrendsVersion`/`TargetFramework` to the
-   target tenant (6.2, net8.0), generate a new `UniqueIdentifier`.
+4. Fill `UsedTasksJson` with every Task ref used, set `FrendsVersion`, `ProcessExecutionVersion`
+   and `TargetFramework` to the values in a sample export of the target tenant (spec keys
+   `frendsVersion`, `processExecutionVersion`, `targetFramework`; a 6.3 tenant exports `net10.0`),
+   generate a new `UniqueIdentifier`.
 5. Wrap in the correct envelope for the import path ([proprietary-json.md](proprietary-json.md)).
 
 ## Harvest before you build: ask for a sample export
@@ -101,8 +103,9 @@ export containing X before I can generate this correctly."
 - **Run the reviewer before delivering.** `frends-reviewer`'s `review_process.py` checks the
   generated file against the import wiring rules and the conventions in
   [../guides/best-practices.md](../guides/best-practices.md); fix blockers and majors first.
-- **Set `frendsVersion` to the tenant's version** (MCP `get_overview`, or the Control Panel). The
-  generator defaults to 6.2.3.3649, the version its encodings were confirmed against; 6.2 exports
-  import into 6.3 tenants.
+- **Set `frendsVersion` and `targetFramework` to the tenant's values** (a sample export; MCP
+  `get_overview` gives the version). The generator defaults to 6.2.3.3649 and `net8.0`, the values
+  its encodings were confirmed against; on a 6.3 tenant pass `net10.0`. A generated file with
+  `net10.0` and `6.3.2.5468` imports through the Platform API (confirmed (import)).
 - **On the MCP route, do not generate a file.** Build the draft with the process builder tools;
   this checklist is the file route ([../guides/tooling-routes.md](../guides/tooling-routes.md)).

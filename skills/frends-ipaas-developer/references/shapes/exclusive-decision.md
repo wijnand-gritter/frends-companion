@@ -29,6 +29,8 @@ See [../process-file-format/shape-type-codes.md](../process-file-format/shape-ty
 
 ## Gotchas
 - Decision fields can't use Handlebars/Text — they're always C# expressions.
+- From 6.3.0, a branch that ends in a Throw needs no Intermediate Return before it.
+- From 6.3.1, branch names cannot contain a double quote.
 - **The import parser enforces structured flow**: each branch must terminate (its own
   Return/Throw/end event) or reconverge at the same single node, properly nested — see
   [../process-file-format/structured-flow-rules.md](../process-file-format/structured-flow-rules.md).

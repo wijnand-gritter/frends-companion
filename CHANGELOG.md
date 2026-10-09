@@ -9,6 +9,41 @@ versions were released from a different repository and have no tag here.
 
 ## [Unreleased]
 
+## [0.8.1] - 2026-10-09
+
+### Changed
+- The skill states that it works against Frends 6.3 (6.3.0 to 6.3.2) and 6.2, checked against the
+  6.3 release notes and a 6.3.2.5468 tenant. `staying-current.md` carries a version coverage table.
+- `expressions/csharp-versions.md`: 6.3 Processes compile against .NET 10 with C# up to 14,
+  validated on the tenant with .NET 9 and 10 APIs and C# 13 and 14 syntax. Code shapes can `await`.
+- Custom Tasks target net8.0; `net8.0;net10.0` only for .NET 9 or 10 APIs. A net8.0 Task compiles
+  in a 6.3 Process (validated with `Frends.HTTP.Request` 1.13.0). Reviewer rule TSK-09 follows.
+- `TargetFramework` and `FrendsVersion` in generated files come from a sample export of the target
+  tenant; `FRENDS_TARGET_FRAMEWORK` no longer defaults to net8.0.
+- 6.3.0 and 6.3.1 behaviour folded into the references: unique Code shape names, no double quotes
+  in shape and branch names, Throw branches without an Intermediate Return, Inclusive Decision log
+  skipping, the Shared State first-write fix, RabbitMQ trigger retries and certificate validation,
+  MCP Trigger OAuth access, .NET Runtime 10.0.7 for 6.3.1 Agents, blocked Task re-imports.
+
+### Added
+- `frends-write-test.sh`: a live test of the operations that change the tenant, on a throwaway
+  Process in Development; prints the plan and stops unless `--confirm`.
+- `frends-smoke-test.sh`: a read-only run of every Platform API script against the tenant, with
+  the export validated and reviewed and a live OpenAPI drift check.
+
+- Platform API scripts confirmed live on 6.3.2.5468: every read, plus import, tags, deploy,
+  activation, run, acknowledge and Environment Variable values. Script headers, the CLI reference
+  and the README list what is confirmed; a generated `net10.0` file imports into 6.3.
+- A 6.3 export carries `TargetFramework` `net10.0`; the generator takes `targetFramework`,
+  `frendsVersion` and `processExecutionVersion` from the spec.
+- `frends-process-list.sh` shows live latest versions only; `--all` lists every version, deleted and
+  outdated ones included.
+
+### Fixed
+- `frends-process-push.sh` printed raw JSON after an import: the response `data` is an array.
+- An unreachable token endpoint or tenant now reports "cannot reach" instead of exiting silently
+  or reading as an authentication failure.
+
 ## [0.8.0] - 2026-10-09
 
 ### Added
@@ -279,7 +314,8 @@ versions were released from a different repository and have no tag here.
 ## [0.1.0] - initial scaffold
 - Initial Frends Companion plugin, marketplace, and bundled skill.
 
-[Unreleased]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.8.0...main
+[Unreleased]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.8.1...main
+[0.8.1]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.8.0...frends-companion-developer--v0.8.1
 [0.8.0]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.7.0...frends-companion-developer--v0.8.0
 [0.7.0]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.5.0...frends-companion-developer--v0.7.0
 [0.5.0]: https://github.com/wijnand-gritter/frends-companion/releases/tag/frends-companion-developer--v0.5.0

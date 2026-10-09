@@ -52,7 +52,7 @@ Tenant work goes through three routes, chosen per operation: the Frends MCP serv
 
 The CLI tools in `skills/frends-ipaas-developer/scripts/` talk to the Frends Platform API (`https://<tenant>.frendsapp.com/api/v1`). The Platform API is not enabled out of the box: it requires Microsoft Entra ID app registration, an admin app role, and IP allowlisting arranged with Frends support. Authentication is OAuth2 client-credentials against Azure AD, which returns a bearer token used on every Platform API call. See `skills/frends-ipaas-developer/references/guides/cli_tool_reference.md` and the `connect` command.
 
-The Platform API scripts are checked against the Frends 6.3.2 OpenAPI document (`https://<tenant>.frendsapp.com/v1.0/swagger.json`, 92 operations) and exercised against a stubbed API. `scripts/check_api_drift.py <swagger.json>` reports operations added or removed since, and script calls the document no longer has. Entra ID client credentials are the only authentication the Platform API accepts.
+The Platform API scripts are checked against the Frends 6.3.2 OpenAPI document (`https://<tenant>.frendsapp.com/v1.0/swagger.json`, 92 operations) and confirmed live on 6.3.2.5468 with `frends-smoke-test.sh` (reads) and `frends-write-test.sh` (writes on a throwaway Process); each script header lists what is confirmed. `scripts/check_api_drift.py <swagger.json>` reports operations added or removed since, and script calls the document no longer has. Entra ID client credentials are the only authentication the Platform API accepts.
 
 ## Skill VERSION files
 

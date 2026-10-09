@@ -6,7 +6,8 @@ you can import, and drives the Frends Platform API from your terminal.
 
 The reason it exists: generic C# and BPMN knowledge gets Frends wrong. Ask any model to write a loop
 or reference an earlier result and it invents syntax. The bundled `frends-ipaas-developer` skill
-carries the real vocabulary and the traps, verified against Frends 6.2 exports.
+carries the real vocabulary and the traps, verified against Frends 6.2 exports and checked against
+Frends 6.3 up to 6.3.2: the release notes and a live 6.3.2 tenant.
 
 This repository is both the plugin and its marketplace, `frends-companion`.
 
@@ -193,13 +194,15 @@ bearer token it gets back.
 
 ## Maturity
 
-The knowledge is solid. The serialisation spec under `references/process-file-format/` is confirmed
-against real 6.2 exports, and the 6.3 release notes are folded into the references they affect.
+The knowledge works against Frends 6.2 and 6.3 (6.3.0 to 6.3.2). The serialisation spec under
+`references/process-file-format/` is confirmed against real 6.2 exports, which import into 6.3
+tenants. The 6.3.0, 6.3.1 and 6.3.2 release notes are folded into the references they affect, and
+the .NET 10 and C# 14 support was validated on a 6.3.2 tenant through the Frends MCP server.
 
-The Platform API scripts are not. They were written from the published 6.2 Platform API reference and
-have never run against a live tenant. Check each endpoint against your own
-`https://<tenant>.frendsapp.com/swagger` before you trust one in automation. Every script says so in
-its header, and a few list endpoints are still marked TODO.
+The Platform API scripts are checked against the 6.3.2 OpenAPI document and ran against a live 6.3.2
+tenant: `frends-smoke-test.sh` covers the reads, `frends-write-test.sh` the import, tags, deploy,
+activation, run, acknowledge and Environment Variable values on a throwaway Process. Each script
+header lists what is confirmed and what has not run yet.
 
 ## Contributing
 

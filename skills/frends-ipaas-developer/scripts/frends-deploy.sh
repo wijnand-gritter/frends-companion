@@ -23,7 +23,8 @@
 # Variables must have values in the target Environment; all used Subprocesses
 # must already be deployed there; the Process target framework must match the
 # Agent Group framework.
-# STATUS: checked against the 6.3.2 OpenAPI document. See frends-common.sh header.
+# STATUS: checked against the 6.3.2 OpenAPI document. Confirmed live on 6.3.2.5468
+# (frends-smoke-test.sh, frends-write-test.sh): list, show, deploy, activate, deactivate and run; undeploy not run (Development forbids it).
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=/dev/null

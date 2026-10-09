@@ -23,6 +23,9 @@ outgoing `sequenceFlow` entries (`Type` 4). See
 ## Gotchas
 Unlike Exclusive, more than one branch can fire — design downstream merges accordingly.
 
+From 6.3.1 the shape has "Skip logging result and parameters", like Task shapes; set it when a
+branch condition reads sensitive data. Branch names cannot contain a double quote.
+
 **Not parallel.** The branches that fire run one after another, in creation order. Do not use an
 Inclusive Decision to speed a Process up (Frends process optimisation guide).
 

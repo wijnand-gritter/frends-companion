@@ -30,7 +30,9 @@ SPEC FORMAT (JSON)
 {
   "name": "My Process",
   "isSubprocess": false,
-  "frendsVersion": "6.2.3.3649",            # optional, defaults below
+  "frendsVersion": "6.2.3.3649",            # optional, defaults below; copy from a tenant export
+  "targetFramework": "net8.0",              # optional; a 6.3 tenant exports net10.0
+  "processExecutionVersion": "6.2.10",      # optional
   "trigger": { "type": "manual" }
              | { "type": "http", "route": "api/x/v1/things", "method": "POST",
                  "references": ["data.body.id"], "openApiDocument": "" },
@@ -463,9 +465,9 @@ def generate(spec):
         "PackageVersion": "0.1.1",
         "UsedTasksJson": _cjson(used_tasks),
         "UsedSubprocessesJson": _cjson({}),
-        "ProcessExecutionVersion": DEFAULT_EXEC_VERSION,
+        "ProcessExecutionVersion": spec.get("processExecutionVersion", DEFAULT_EXEC_VERSION),
         "FrendsVersion": spec.get("frendsVersion", DEFAULT_FRENDS_VERSION),
-        "TargetFramework": TARGET_FRAMEWORK,
+        "TargetFramework": spec.get("targetFramework", TARGET_FRAMEWORK),
         "StaticRequiredEnvironmentVariables": env_vars,
         "RequiredEnvironmentVariables": env_vars,
         "PromotedResultVariablesJson": _cjson([]),
