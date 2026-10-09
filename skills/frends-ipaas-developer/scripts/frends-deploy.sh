@@ -24,7 +24,9 @@
 # must already be deployed there; the Process target framework must match the
 # Agent Group framework.
 # STATUS: checked against the 6.3.2 OpenAPI document. Confirmed live on 6.3.2.5468
-# (frends-smoke-test.sh, frends-write-test.sh): list, show, deploy, activate, deactivate and run; undeploy not run (Development forbids it).
+# (frends-smoke-test.sh, frends-write-test.sh): list, show, deploy, activate, deactivate and run.
+# undeploy confirmed live on 2026-10-09 (Frends 6.3.2) on a Test Agent Group deployment; show on the
+# removed id then returns HTTP 404. Development forbids undeploy.
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=/dev/null
