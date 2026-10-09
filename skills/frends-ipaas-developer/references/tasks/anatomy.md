@@ -123,6 +123,9 @@ public class Error
 }
 ```
 
+The template generates `AdditionalInfo` as `Exception`. Keep that when the Task has no richer error
+shape; otherwise replace it with a concrete type.
+
 | Rule | Detail |
 | --- | --- |
 | Always `Success` and `Error` | `Error { Message, AdditionalInfo }` |
@@ -138,8 +141,9 @@ One `try/catch` around the body, delegating to the template's `ex.Handle(options
 | Behaviour | Reason |
 | --- | --- |
 | `OperationCanceledException` is rethrown first | a stopped Process is a normal stop, never `Success = false` |
-| `ThrowErrorOnFailure = true` throws a new exception with the original as inner | the stack trace survives in the Process Instance |
-| `ThrowErrorOnFailure = false` returns `Success = false` | `Error.Message` set, `ErrorMessageOnFailure` prefixed, never replacing the cause |
+| `ThrowErrorOnFailure = true`, `ErrorMessageOnFailure` empty: the original exception is rethrown unchanged | `ExceptionDispatchInfo` keeps its type and stack trace in the Process Instance |
+| `ThrowErrorOnFailure = true`, `ErrorMessageOnFailure` set: a new `Exception` with that message and the original as inner | the Process author's message leads, the cause survives |
+| `ThrowErrorOnFailure = false` returns `Success = false` | `Error.Message` is `<ErrorMessageOnFailure>: <original message>`, or the original message alone; `AdditionalInfo` holds the exception |
 | A raw exception never escapes when `ThrowErrorOnFailure` is false | the Process chose to branch on the result |
 
 Richer error detail goes into a typed `AdditionalInfo`, never into a changed handler flow. The older
