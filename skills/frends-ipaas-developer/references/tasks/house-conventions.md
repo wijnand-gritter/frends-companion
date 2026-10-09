@@ -46,7 +46,8 @@ The domain rule stays: AFAS returns business validation errors with HTTP 500 and
 | Publish | on a version tag, to the organisation's NuGet feed named in `house_standards.md` |
 | Guard | publish refused without a bumped `<Version>` and a CHANGELOG entry |
 
-Remove the template's GitHub workflows; they depend on Frends' internal feeds and secrets.
+Remove the template's GitHub workflows (`.github/workflows/<Action>_*.yml`, written to the
+directory `dotnet new frends-task` ran in); they depend on Frends' internal feeds and secrets.
 
 ## Licence
 Per repository: MIT for Tasks meant for reuse outside Conclusion, a proprietary licence file for
