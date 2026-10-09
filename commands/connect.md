@@ -1,50 +1,62 @@
 ---
-description: Interactive guide for setting up Frends Platform API credentials
+description: Detect the route to the Frends tenant and set up Platform API credentials in .env
 ---
 
-Guide the user through setup or re-setup of their `.env` file for Frends Platform API access.
+Find out which route reaches the tenant and set up `.env` for the Platform API route. Run it from the workspace root, or from the User Template to give every new workspace the same `.env`.
 
-The Platform API is the second route. When a Frends MCP server answers (`get_overview`), it covers building, inspecting, deploying, running and diagnosing; the Platform API is still needed for tags, templates, API specifications, Environment Variable values per Environment, exports and instance acknowledgement. Problems with the MCP connection itself go to the `frends:getting-connected` skill when the `frends` plugin is installed. Entra ID client credentials are the only authentication the Platform API accepts; Private Application tokens are for published APIs only.
+## Rules
+
+- Never ask for, read, write or echo `FRENDS_CLIENT_SECRET`. The user types it into `.env`.
+- Fill non-secret values only through `frends-env-init.sh`. Project settings block reading `.env` directly.
+- On a 401, a 403 or a token error, stop after the first attempt. Repeated bad-auth calls can lock the account.
 
 ## Steps
 
-1. **Check current state**:
-   - Ensure the `frends-ipaas-developer` skill is loaded (the `scripts/` directory comes from the skill).
-   - Run `bash scripts/frends-env-check.sh` to see which variables are SET vs UNSET.
-   - Run `bash scripts/frends-connection-test.sh` to test token retrieval and Platform API connectivity.
-   - Inform the user of the current state.
+1. Load the `frends-ipaas-developer` skill. Scripts below are `bash <skill-base>/scripts/<name>`.
 
-2. **Ask the user what they want** (use the AskUserQuestion tool):
-   - "Create/recreate .env with Frends credentials"
-   - "Test connection to the Frends Platform API"
-   - "Explain the credential fields"
-   - "Do full setup"
+2. Detect the routes:
 
-3. **For credential setup**:
-   - Have the user copy `.env.example` to a new file named `.env` in a text editor or IDE.
-   - Explain each value and where to find it. Tell the user to paste each value into `.env` and save.
-   - You will not be able to write credentials into `.env` yourself — project settings block reading/writing `.env`.
+   | Check | Pass means |
+   |---|---|
+   | a `*get_overview` MCP tool answers | MCP route available |
+   | `frends-env-check.sh` shows the credential keys SET and `frends-connection-test.sh` passes | Platform API route available |
 
-   Fields:
-   - `FRENDS_TENANT` — your tenant name; the Control Panel URL is `https://<tenant>.frendsapp.com`.
-   - `FRENDS_AZURE_TENANT` — your Azure AD tenant, e.g. `yourorg.onmicrosoft.com`.
-   - `FRENDS_CLIENT_ID` — the Entra ID app registration's Application (client) ID (Azure Portal → App registrations → your app → Overview).
-   - `FRENDS_CLIENT_SECRET` — a client secret for that app registration (Certificates & secrets). Store it safely; it is not retrievable later.
-   - `FRENDS_APPLICATION_URI` — the Application ID URI exposed by the app (Expose an API). This is the token `resource`.
-   - `FRENDS_DEV_AGENT_GROUP_ID` / `FRENDS_TEST_AGENT_GROUP_ID` / `FRENDS_PROD_AGENT_GROUP_ID` — Agent Group IDs. Find them in Control Panel, or via `bash scripts/frends-agentgroups.sh show --id <n>`.
-   - `FRENDS_DEV_ENVIRONMENT_ID` / `FRENDS_TEST_ENVIRONMENT_ID` / `FRENDS_PROD_ENVIRONMENT_ID` — Environment IDs (used when setting Environment Variable values).
-   - `FRENDS_TARGET_FRAMEWORK` — usually `net8.0` for Frends 6.x.
-   - `FRENDS_VERIFY_SSL` — set `false` only if corporate SSL inspection blocks TLS verification.
+   Report both results. With MCP available, the Platform API is optional: it adds Templates, tags, API management, batch export and instance housekeeping (see `references/guides/tooling-routes.md`). Ask whether to set it up.
 
-4. **Important platform prerequisite**: The Platform API is **not enabled by default.** It needs an Entra ID app registration with an `Administrator` app role (admin consent granted) and IP allowlisting arranged with Frends support. If `frends-connection-test.sh` returns 401/403, walk the user to `https://docs.frends.com/reference/frends-platform-api/how-to-enable-frends-platform-api` before retrying — repeated bad-auth calls can lock the account.
+3. Create `.env` and fill the non-secret values:
+   - Run `frends-env-init.sh` to create `.env` from `.env.example` (mode 600) when it is missing.
+   - With MCP available, take the ids from `get_overview` and pass them with `--set`:
 
-5. **Confirm completion**:
-   - Run `bash scripts/frends-connection-test.sh` to verify.
-   - On success, ask: "What would you like to build or deploy?"
-   - On failure, help troubleshoot based on the error message (token error → credentials/app registration; 401/403 → app role/consent/allowlisting; SSL error → VPN/SSL inspection).
+     | Key | Source in `get_overview` |
+     |---|---|
+     | `FRENDS_DEV_ENVIRONMENT_ID`, `FRENDS_TEST_ENVIRONMENT_ID`, `FRENDS_PROD_ENVIRONMENT_ID` | `environments[].id`, matched on `displayName` |
+     | `FRENDS_DEV_AGENT_GROUP_ID`, `FRENDS_TEST_AGENT_GROUP_ID`, `FRENDS_PROD_AGENT_GROUP_ID` | `environments[].agentGroups[].id` |
+
+     Ask the user which Environment is which when the names do not say Development, Test or Production, or when an Environment has more than one Agent Group.
+   - Ask the user for `FRENDS_TENANT`, `FRENDS_AZURE_TENANT`, `FRENDS_CLIENT_ID` and `FRENDS_APPLICATION_URI`, then pass them with `--set`.
+
+   | Key | Where to find it |
+   |---|---|
+   | `FRENDS_TENANT` | the Control Panel URL `https://<tenant>.frendsapp.com` |
+   | `FRENDS_AZURE_TENANT` | the Entra ID tenant, for example `yourorg.onmicrosoft.com` |
+   | `FRENDS_CLIENT_ID` | Azure Portal, App registrations, the app, Overview, Application (client) ID |
+   | `FRENDS_APPLICATION_URI` | the app's Expose an API page, Application ID URI |
+   | `FRENDS_CLIENT_SECRET` | the app's Certificates & secrets page; the user pastes it into `.env` |
+   | `FRENDS_TARGET_FRAMEWORK` | `net8.0` for Frends 6.x |
+   | `FRENDS_VERIFY_SSL` | `false` only when SSL inspection breaks TLS |
+
+4. Ask the user to open `.env`, paste `FRENDS_CLIENT_SECRET` and save. Wait for confirmation.
+
+5. Verify: run `frends-env-check.sh`, then `frends-connection-test.sh`.
+
+   | Result | Next step |
+   |---|---|
+   | pass | report the routes available and ask what to build |
+   | token error | check client id, secret, Azure tenant, application URI |
+   | 401 or 403 | check Platform API enablement, the Administrator app role with admin consent and IP allowlisting: `https://docs.frends.com/reference/frends-platform-api/how-to-enable-frends-platform-api` |
+   | curl exit 35 | check VPN or SSL inspection; `FRENDS_VERIFY_SSL=false` as a last resort |
 
 ## Notes
 
-- Can be run multiple times for re-setup.
-- The agent helps the user *find* credentials but does not write them to `.env` — the user edits the file.
-- Never echo secret values back into the conversation.
+- Safe to rerun; existing values are kept unless the user asks to replace one (`--force`).
+- The Platform API accepts Entra ID bearer tokens only. Private Application tokens work for published APIs, not for the Platform API.

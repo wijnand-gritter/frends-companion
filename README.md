@@ -139,8 +139,8 @@ unreadable on the canvas.
 
 | Command | What it does |
 |---|---|
-| `/frends-companion-developer:connect` | Walks you through the Platform API credentials and writes `.env` |
-| `/frends-companion-developer:new-workspace` | Copies the project template somewhere you choose and writes a global `/frends-init` |
+| `/frends-companion-developer:connect` | Detects the MCP and Platform API routes, creates `.env` and fills the non-secret values; you add the client secret |
+| `/frends-companion-developer:new-workspace` | Copies the project template somewhere you choose, sets up its `.env` and writes a global `/frends-init` |
 | `/frends-companion-developer:clean` | Removes development artefacts, keeps the folder structure |
 
 Run `new-workspace` once. After that, `/frends-init` scaffolds a new Frends project from any empty
@@ -156,12 +156,12 @@ agents/                      frends-canvas-arranger
 skills/frends-ipaas-developer/
   references/                concepts, triggers, shapes, expressions, tasks, guides,
                              process-file-format, one folder per entity
-  scripts/                   fourteen Platform API tools, an API drift check and the process generator
+  scripts/                   fourteen Platform API tools, `.env` setup, an API drift check and the process generator
 skills/frends-reviewer/
   references/                rule catalogue, custom task checklist, house standards, report format
   scripts/                   review_process.py, the automatic checks
 template/                    what new-workspace copies into your workspace
-changes/                     one fragment per merge request
+changes/                     one fragment per pull request
 ```
 
 References are split by entity so extending them is obvious: a new trigger is a new file in

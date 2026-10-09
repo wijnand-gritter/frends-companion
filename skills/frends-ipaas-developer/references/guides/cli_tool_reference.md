@@ -58,7 +58,8 @@ through Frends API Management; they do not open the Platform API.
 
 | Script | What it does | Key endpoint(s) | Changes the tenant |
 |--------|--------------|-----------------|---|
-| `frends-env-check.sh` | Shows which `.env` vars are SET/UNSET (no values). | — | no |
+| `frends-env-init.sh` | Creates `.env` from `.env.example` (mode 600) and fills non-secret keys with `--set`; refuses the client secret. | none | no |
+| `frends-env-check.sh` | Shows which `.env` vars are SET/UNSET (no values). | none | no |
 | `frends-connection-test.sh` | Fetches a token, lists 1 Process. | `GET /processes?PageSize=1` | no |
 | `frends-agentgroups.sh` | list (per Environment) / show Agent Groups. | `GET /environments`, `GET /environments/{id}/agent-groups`, `GET /agent-groups/{id}` | no |
 | `frends-process-list.sh` | Lists Processes (filter by name/guid, paged). | `GET /processes` | no |

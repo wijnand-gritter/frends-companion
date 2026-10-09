@@ -31,6 +31,8 @@ versions were released from a different repository and have no tag here.
   operations of the 6.3.2 OpenAPI document, and a check that reports drift and broken script calls.
 - `references/process-file-format/templates-and-imports.md`: Template versus Process export, the
   conversions, what each import path validates, and `#var` before `#env` for portable templates.
+- `frends-env-init.sh` creates `.env` from `.env.example` with mode 600 and fills the non-secret
+  keys; it refuses the client secret.
 - `frends-reviewer` reads a Frends MCP `get_process_data` result and Template exports; its rules
   were calibrated over the 77 public FrendsTemplates.
 
@@ -55,6 +57,9 @@ versions were released from a different repository and have no tag here.
 - The reviewer reports duplicate Return and Throw names as minor and SQL built from `#var` as
   minor; `#trigger` input in SQL stays major.
 - `frends-canvas-arranger` is for the file route only.
+- `/connect` detects the MCP route first, treats the Platform API as optional when MCP answers and
+  fills Environment and Agent Group ids from `get_overview`. `/new-workspace` sets up the User
+  Template's `.env`, and `/frends-init` creates one when a workspace lacks it.
 
 ## [0.7.0] - 2026-10-09
 

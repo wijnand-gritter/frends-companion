@@ -1,89 +1,77 @@
 ---
-description: Set up your local Frends template folder and configure the command to spin up a new workspace profile
+description: Set up your Frends User Template with its .env and generate the global /frends-init command
 ---
 
-This command sets up the user's personal Frends project template (the **User Template**) and generates the global `/frends-init` command for spinning up new workspaces from it. It locates the plugin's **Reference Template** and copies it into the **User Template** location the user specifies.
+Set up the user's personal Frends project template (the User Template), give it one `.env` that every workspace inherits, and generate the global `/frends-init` command that scaffolds a workspace from it.
 
-## Workflow
+## Rules
 
-### Step 1: Get Template Location
+- Never ask for, read, write or echo `FRENDS_CLIENT_SECRET`.
+- Never overwrite an existing `.env` or `.env.local`.
 
-Use the AskUserQuestion tool:
+## Steps
 
-**Question:** "Where would you like your Frends template folder to be stored?"
-**Header:** "Template path"
-**Options (in this order):**
-1. **Current directory** - "Use this current working directory"
-2. **~/frends-template** - "Default location in your home directory"
-3. **~/Desktop/frends-template** - "On your Desktop for easy access"
+1. Ask where the User Template goes (AskUserQuestion, header "Template path"):
 
-The user can also select "Other" for a custom path.
+   | Option | Description |
+   |---|---|
+   | Current directory | use this working directory |
+   | `~/frends-template` | default location in the home directory |
+   | `~/Desktop/frends-template` | on the Desktop |
 
-### Step 2: Find the Reference Template Directory
+2. Find the Reference Template:
+   - Load the `frends-ipaas-developer` skill. Its base directory is `<install-path>/frends-companion-developer/<version>/skills/frends-ipaas-developer`.
+   - Strip `/skills/frends-ipaas-developer` and append `/template`.
+   - Check the path exists with `ls`. When it does not, ask the user where the plugin is installed.
 
-- [ ] Load the `frends-ipaas-developer` skill. The loader prints a base directory line: `<install-path>/frends-companion-developer/skills/frends-ipaas-developer`.
-- [ ] Strip the trailing `/skills/frends-ipaas-developer` → that's the plugin root.
-- [ ] Append `/template` → that's the Reference Template path.
-- [ ] Verify it exists with `ls <path>` before proceeding.
+3. Copy the Reference Template into the User Template:
 
-Example: base dir `~/.claude/plugins/cache/conclusion/frends-companion-developer/<version>/skills/frends-ipaas-developer` → Reference Template at `~/.claude/plugins/cache/conclusion/frends-companion-developer/<version>/template/`.
+   | User Template | Action |
+   |---|---|
+   | does not exist | create it and copy everything |
+   | exists | preserve `.env`, `.env.local`, `preferred_connections.md` and custom files; update the folder structure, `.gitignore`, `.env.example`, `README.md`, `CLAUDE.md`, `.claude/settings.json`; ask on conflicts |
 
-If the skill fails to load or the template path doesn't exist, ask the user where the `frends-companion-developer` plugin is installed. Call this resolved path `PLUGIN_REFERENCE_TEMPLATE_DIR`.
+   Report what was updated and what was preserved.
 
-### Step 3: Copy Template to Workspace
+4. Set up `.env` in the User Template: run the `/frends-companion-developer:connect` steps with the User Template as the working folder. Every workspace scaffolded from it gets a copy. Skip when the user only works on the MCP route; `connect` can run later in a workspace.
 
-**If the User Template folder doesn't exist:**
-- Create it and copy all contents from `PLUGIN_REFERENCE_TEMPLATE_DIR/`.
-- Tell the user to set up `.env` from `.env.example`.
+5. Write `~/.claude/commands/frends-init.md`, with `{{USER_TEMPLATE_PATH}}` replaced by the User Template path:
 
-**If it already exists — smart merge:**
-- **PRESERVE**: `.env`, `.env.local`, `preferred_connections.md`, `house_standards.md`, any custom files/instructions.
-- **MERGE / UPDATE**: directory structure, `.gitignore`, `.env.example`, `README.md`, `CLAUDE.md`, `.claude/settings.json`.
-- **ASK** about conflicts when unsure; err toward preserving user content.
-- Report what was updated vs preserved.
+   ````markdown
+   ---
+   description: Create a new Frends workspace from your User Template
+   allowed-tools: Bash
+   ---
 
-### Step 4: Generate Global Command
+   Scaffold a Frends workspace in the current directory from the User Template.
 
-Create `~/.claude/commands/frends-init.md`:
+   ## Pre-flight
 
-```markdown
----
-description: Create a new Frends project from your personal template
-allowed-tools: Bash
----
+   1. The User Template exists at {{USER_TEMPLATE_PATH}}.
+   2. The current directory is not inside `.git` and is not the User Template.
 
-Scaffold a new Frends project by copying the designated template into the current working directory.
+   ## Execution
 
-## Pre-flight Checks
+   ```bash
+   rsync -av --exclude='.git' --exclude='.frends-token-cache' --exclude='hook-logs' "{{USER_TEMPLATE_PATH}}/" .
+   ```
 
-1. Verify the template exists at: {{USER_TEMPLATE_PATH}}
-2. Verify the current directory is safe (not inside .git, not the template workspace itself)
+   ## Post-setup
 
-## Execution
+   1. Load the `frends-ipaas-developer` skill.
+   2. When the workspace has no `.env`, run `bash <skill-base>/scripts/frends-env-init.sh` to create it from `.env.example`.
+   3. Detect the routes: a `*get_overview` MCP tool answers; `frends-env-check.sh` and `frends-connection-test.sh` pass. Report which routes are available.
+   4. When the Platform API route is wanted and fails, run `/frends-companion-developer:connect`.
+   5. Tell the user to restart the session if permission prompts are frequent: workspace settings load at session start.
+   ````
 
-\`\`\`bash
-rsync -av --exclude='.git' --exclude='.frends-token-cache' --exclude='hook-logs' "{{USER_TEMPLATE_PATH}}/" .
-\`\`\`
-
-## Post-Setup
-
-Tell the user: if your .env is set up, you are ready to build.
-TIP: if permission prompts feel frequent, /exit and relaunch — the workspace permission settings only take effect after a fresh session.
-```
-
-Replace `{{USER_TEMPLATE_PATH}}` with the actual User Template path.
-
-### Step 5: Confirm Setup
-
-Tell the user:
-- Their template is at: [path]
-- `/frends-init` is now available globally
-- They can run `/frends-init` from any empty directory to start a new Frends project
-- They can re-run `/frends-companion-developer:new-workspace` anytime to update their template
+6. Report:
+   - the User Template path
+   - whether `.env` is set up, and which routes passed
+   - `/frends-init` scaffolds a workspace from any empty directory
+   - rerun `/frends-companion-developer:new-workspace` to merge plugin updates into the User Template
 
 ## Notes
 
-- Can be run multiple times to update the template.
-- The user's `.env` credentials are NEVER overwritten.
-- The generated `/frends-init` command is independent of the plugin location.
-- The User Template lives outside the plugin, so plugin updates don't overwrite it; re-run this command to merge in updates from the plugin's Reference Template.
+- The User Template lives outside the plugin, so plugin updates never overwrite it.
+- The generated `/frends-init` copies the User Template's `.env` into each workspace. Rotate the secret in the User Template and in existing workspaces.

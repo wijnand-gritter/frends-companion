@@ -24,18 +24,25 @@ Review Processes and custom Tasks with the `frends-reviewer` skill, and run its 
 
 ## Credentials & .env
 
-You cannot read `.env` directly — project settings block it. The CLI tools load credentials internally via `source .env` and exchange them for a short-lived bearer token. To check what's configured, run `bash scripts/frends-env-check.sh` (shows SET/UNSET, never values) and `bash scripts/frends-connection-test.sh`. If credentials are missing or the test fails, guide the user through `/frends-companion-developer:connect`.
+`.env` serves the Platform API route only; the MCP route needs no `.env`. You cannot read `.env`: project settings block it. The scripts source it and exchange the credentials for a short-lived bearer token.
 
-- Never echo secret values into the conversation, plans, or summaries — they could be visible during screen sharing.
+| Need | Command |
+|---|---|
+| create `.env`, fill non-secret values | `bash <skill-base>/scripts/frends-env-init.sh --set KEY=VALUE` |
+| see what is configured | `bash <skill-base>/scripts/frends-env-check.sh` (SET/UNSET, never values) |
+| test the Platform API | `bash <skill-base>/scripts/frends-connection-test.sh` |
+| guided setup | `/frends-companion-developer:connect` |
+
+- Never echo secret values into the conversation, plans, or summaries: they could be visible during screen sharing.
 - Prefer pulling Process exports from the platform over hand-editing secrets: production credential values live in the Frends GUI / Environment Variables.
 
 ## Frends conventions that generic knowledge gets wrong
 
-- **Expression vs Text fields** are a real, consequential setting. An Expression field is C# that must resolve to the expected type; a Text field is plain text that embeds C# via Handlebars `{{ }}`.
-- **Reference syntax** is Frends-specific: `#result[Task Name].Body`, `#var.Name`, `#env.Group.Name`, `#trigger`, `#process`.
-- **Code Tasks** cannot add new `using` namespaces or external libraries; if you need a new library, write a custom Task.
-- **Custom Task methods** must be `public static` with a return value (no `void`, no overloads).
-- **Deployment prerequisites are hard:** Subprocesses must be deployed before the parent; every used Environment Variable must have a value in the target Environment; target framework must match the Agent Group.
+- Expression vs Text fields are a real, consequential setting. An Expression field is C# that must resolve to the expected type; a Text field is plain text that embeds C# via Handlebars `{{ }}`.
+- Reference syntax is Frends-specific: `#result[Task Name].Body`, `#var.Name`, `#env.Group.Name`, `#trigger`, `#process`.
+- Code Tasks cannot add new `using` namespaces or external libraries; if you need a new library, write a custom Task.
+- Custom Task methods must be `public static` with a return value (no `void`, no overloads).
+- Deployment prerequisites are hard: Subprocesses must be deployed before the parent; every used Environment Variable must have a value in the target Environment; target framework must match the Agent Group.
 
 ## Workflow and style
 

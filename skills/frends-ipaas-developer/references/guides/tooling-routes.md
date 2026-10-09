@@ -13,7 +13,8 @@ order, and name the route in the reply.
 1. Call the `get_overview` tool once at the start of tenant work. An answer means MCP is the route
    for everything MCP covers.
 2. When MCP is absent, or for an operation MCP does not cover, run `frends-env-check.sh` and
-   `frends-connection-test.sh`. A pass means the Platform API route.
+   `frends-connection-test.sh`. A pass means the Platform API route. Without `.env`, run
+   `/frends-companion-developer:connect` when the person wants this route.
 3. Otherwise use files, and say which steps the developer performs in the Control Panel.
 
 ## Fallback
