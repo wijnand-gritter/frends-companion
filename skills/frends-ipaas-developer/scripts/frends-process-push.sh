@@ -15,7 +15,7 @@
 # Run only on the person's explicit confirmation: an import changes the tenant.
 # Importing only creates/updates the Process in Development; deploy separately
 # with frends-deploy.sh. Import can be slow — timeout is raised accordingly.
-# STATUS: checked against the 6.3.2 OpenAPI document. See frends-common.sh header.
+# STATUS: checked against the 6.3.2 OpenAPI document; not yet run live. See frends-common.sh header.
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=/dev/null

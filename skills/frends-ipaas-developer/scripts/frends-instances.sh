@@ -16,7 +16,8 @@
 # --state one of: ShowAll ShowRunning ShowFinished ShowSuccessful ShowFailed ShowFailedNotAcknowledged
 # Paging uses a continuation token: pass the printed nextContinuationToken back via --token.
 # WARNING: when paging, do not change any other filter between calls or results are invalid.
-# STATUS: checked against the 6.3.2 OpenAPI document. See frends-common.sh header.
+# STATUS: checked against the 6.3.2 OpenAPI document; read operations confirmed live on 6.3.2.5468
+# by frends-smoke-test.sh. Operations that change the tenant are not yet run live.
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=/dev/null

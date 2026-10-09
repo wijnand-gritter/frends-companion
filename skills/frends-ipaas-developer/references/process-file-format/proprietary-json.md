@@ -31,8 +31,8 @@ or stripping will fail.
 - `UniqueIdentifier` (GUID), `Version` (integer process version), `MajorVersion`/`MinorVersion`,
   `Description`, `Modified`, `Modifier`.
 - `FrendsVersion` (e.g. `6.2.3.3649`), `ProcessExecutionVersion` (e.g. `6.2.10`), `TargetFramework`
-  (`net8.0` in 6.2 exports). 6.3 Processes compile against .NET 10; the `TargetFramework` value in a
-  6.3 export is not confirmed. Copy it from a sample export of the target tenant.
+  (`net8.0` in 6.2 exports, `net10.0` in 6.3 exports: confirmed on a 6.3.2.5468 export with
+  `FrendsVersion` `6.3.2.5468`). Copy the three values from a sample export of the target tenant.
 - Packaging fields, present on both Processes and Subprocesses (each compiles into a package):
   `AssemblyName`, `PackageId` (a sanitized name plus the GUID with dashes removed), `PackageVersion`.
   The distinguishing flag is `IsSubprocess` (true for a Subprocess), not the presence of these fields.

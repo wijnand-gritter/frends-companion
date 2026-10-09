@@ -17,7 +17,8 @@
 #   Control Panel.
 # - Deploy validation requires every used Environment Variable to have a value in
 #   the target Environment, so set values before deploying to Test/Production.
-# STATUS: checked against the 6.3.2 OpenAPI document. See frends-common.sh header.
+# STATUS: checked against the 6.3.2 OpenAPI document; read operations confirmed live on 6.3.2.5468
+# by frends-smoke-test.sh. Operations that change the tenant are not yet run live.
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=/dev/null

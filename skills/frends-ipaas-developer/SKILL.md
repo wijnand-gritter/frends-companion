@@ -30,8 +30,8 @@ answering anything non-trivial — the references hold the platform-specific det
 improvise. To add or change coverage, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Works against Frends 6.3 (6.3.0 to 6.3.2) and 6.2. Checked against the 6.3.0, 6.3.1 and 6.3.2
-release notes and a 6.3.2.5468 tenant. On 6.3, Processes compile against .NET 10 with C# 14;
-custom Tasks target net8.0 unless they need a .NET 10 API.
+release notes and a 6.3.2.5468 tenant. On 6.3, Processes compile against .NET 10 with C# 14 and
+export `TargetFramework` `net10.0`; custom Tasks target net8.0 unless they need a .NET 10 API.
 
 ## Choose the route first
 

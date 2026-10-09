@@ -40,7 +40,7 @@ Every platform claim in this skill carries its evidence, in the file header or n
 
 | Frends | Status | Checked against |
 | --- | --- | --- |
-| 6.3.0 to 6.3.2 | supported | release notes 6.3.0, 6.3.1, 6.3.2 and breaking changes; MCP schemas, OpenAPI document and validation on 6.3.2.5468 |
+| 6.3.0 to 6.3.2 | supported | release notes 6.3.0, 6.3.1, 6.3.2 and breaking changes; MCP schemas, OpenAPI document, validation, a Process export and the read-only smoke test on 6.3.2.5468 |
 | 6.2 | supported | tenant exports (serialisation), docs |
 | 6.4 | not checked | run the refresh below |
 

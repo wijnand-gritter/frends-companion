@@ -10,7 +10,8 @@
 #
 # Publishing, deploying and deleting API specifications change the tenant and are done in
 # the Control Panel or by the person; deploy an API together with its linked Processes.
-# STATUS: checked against the 6.3.2 OpenAPI document. See frends-common.sh header.
+# STATUS: checked against the 6.3.2 OpenAPI document; read operations confirmed live on 6.3.2.5468
+# by frends-smoke-test.sh. Operations that change the tenant are not yet run live.
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=/dev/null

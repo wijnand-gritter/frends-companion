@@ -4,7 +4,7 @@ Category: expressions · Baseline: Frends 6.3.2
 
 | Frends | Process compiles against | C# in Code and Expression shapes | Evidence |
 | --- | --- | --- | --- |
-| 6.3 | .NET 10 | up to C# 14 | release notes 6.3.0; validated on a 6.3.2.5468 tenant: `Enumerable.CountBy` (.NET 9), `JsonSerializerOptions.Strict` (.NET 10), the `\e` escape (C# 13) and null-conditional assignment (C# 14) compile |
+| 6.3 | .NET 10 (`TargetFramework` `net10.0` in exports) | up to C# 14 | release notes 6.3.0; export of a 6.3.2.5468 Process; validated on that tenant: `Enumerable.CountBy` (.NET 9), `JsonSerializerOptions.Strict` (.NET 10), the `\e` escape (C# 13) and null-conditional assignment (C# 14) compile |
 | 6.2 | .NET 8 | up to C# 12 | docs |
 | older 6.x | .NET 6 | up to C# 10 | docs |
 | legacy Agent | .NET Framework 4.7.1, .NET Standard 2.0 | up to C# 7.3 | docs |

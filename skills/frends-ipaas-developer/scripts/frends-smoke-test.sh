@@ -100,7 +100,7 @@ if [[ -n "$PGUID" && -n "$PVER" ]]; then
 import json, sys
 d = json.load(open(sys.argv[1], encoding="utf-8-sig"))
 p = d["Processes"][0] if isinstance(d, dict) and d.get("Processes") else d
-print(f'FrendsVersion {p.get("FrendsVersion")}, TargetFramework {p.get("TargetFramework")}')
+print(f'FrendsVersion {p.get("FrendsVersion")}, ProcessExecutionVersion {p.get("ProcessExecutionVersion")}, TargetFramework {p.get("TargetFramework")}')
 PY
 )"
     RESULTS+=("INFO|export versions|$FV")

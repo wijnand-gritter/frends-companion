@@ -199,10 +199,10 @@ The knowledge works against Frends 6.2 and 6.3 (6.3.0 to 6.3.2). The serialisati
 tenants. The 6.3.0, 6.3.1 and 6.3.2 release notes are folded into the references they affect, and
 the .NET 10 and C# 14 support was validated on a 6.3.2 tenant through the Frends MCP server.
 
-The Platform API scripts are not. They were written from the published 6.2 Platform API reference and
-have never run against a live tenant. Check each endpoint against your own
-`https://<tenant>.frendsapp.com/swagger` before you trust one in automation. Every script says so in
-its header, and a few list endpoints are still marked TODO.
+The Platform API scripts are checked against the 6.3.2 OpenAPI document, and their read operations
+ran against a live 6.3.2 tenant through `frends-smoke-test.sh`. Operations that change the tenant
+(push, deploy, run, tags, Environment Variable values) have not run live yet; each script header says
+which state it is in.
 
 ## Contributing
 

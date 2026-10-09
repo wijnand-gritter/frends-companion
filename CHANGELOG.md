@@ -29,6 +29,13 @@ versions were released from a different repository and have no tag here.
 - `frends-smoke-test.sh`: a read-only run of every Platform API script against the tenant, with
   the export validated and reviewed and a live OpenAPI drift check.
 
+- Read operations of every Platform API script confirmed live on 6.3.2.5468; script headers, the CLI
+  reference and the README say which operations are confirmed.
+- A 6.3 export carries `TargetFramework` `net10.0`; the generator takes `targetFramework`,
+  `frendsVersion` and `processExecutionVersion` from the spec.
+- `frends-process-list.sh` shows live latest versions only; `--all` lists every version, deleted and
+  outdated ones included.
+
 ### Fixed
 - An unreachable token endpoint or tenant now reports "cannot reach" instead of exiting silently
   or reading as an authentication failure.

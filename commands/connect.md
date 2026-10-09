@@ -42,7 +42,7 @@ Find out which route reaches the tenant and set up `.env` for the Platform API r
    | `FRENDS_CLIENT_ID` | Azure Portal, App registrations, the app, Overview, Application (client) ID |
    | `FRENDS_APPLICATION_URI` | the app's Expose an API page, Application ID URI |
    | `FRENDS_CLIENT_SECRET` | the app's Certificates & secrets page; the user pastes it into `.env` |
-   | `FRENDS_TARGET_FRAMEWORK` | the `TargetFramework` of a sample export: `net8.0` on 6.2; 6.3 compiles to .NET 10 |
+   | `FRENDS_TARGET_FRAMEWORK` | the `TargetFramework` of a sample export: `net8.0` on 6.2, `net10.0` on 6.3 |
    | `FRENDS_VERIFY_SSL` | `false` only when SSL inspection breaks TLS |
 
 4. Ask the user to open `.env`, paste `FRENDS_CLIENT_SECRET` and save. Wait for confirmation.
