@@ -1,7 +1,7 @@
 # Guide: Frends best practices
 
 The default conventions this skill builds to, taken from the Frends best practices collection and
-the Frends guides. They are **conventions**: where the organisation has a written standard, it wins
+the Frends guides. They are conventions: where the organisation has a written standard, it wins
 (see [../../SKILL.md](../../SKILL.md), "Platform facts vs conventions"). The `frends-reviewer`
 skill checks a built Process against the same list.
 

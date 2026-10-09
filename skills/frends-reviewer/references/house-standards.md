@@ -1,7 +1,7 @@
 # House standards
 
-An organisation's written standard overrides the **convention** rules in [rules.md](rules.md). The
-**platform** rules stay in force whatever the standard says.
+An organisation's written standard overrides the convention rules in [rules.md](rules.md). The
+platform rules stay in force whatever the standard says.
 
 ## Where to find them
 1. A path the user gives in the request.

@@ -101,3 +101,8 @@ export containing X before I can generate this correctly."
 - **Run the reviewer before delivering.** `frends-reviewer`'s `review_process.py` checks the
   generated file against the import wiring rules and the conventions in
   [../guides/best-practices.md](../guides/best-practices.md); fix blockers and majors first.
+- **Set `frendsVersion` to the tenant's version** (MCP `get_overview`, or the Control Panel). The
+  generator defaults to 6.2.3.3649, the version its encodings were confirmed against; 6.2 exports
+  import into 6.3 tenants.
+- **On the MCP route, do not generate a file.** Build the draft with the process builder tools;
+  this checklist is the file route ([../guides/tooling-routes.md](../guides/tooling-routes.md)).

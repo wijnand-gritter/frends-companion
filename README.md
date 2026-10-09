@@ -110,11 +110,17 @@ expression and it is there, so there is nothing to invoke.
 
 With it, Claude can:
 
+- Work through the Frends MCP server first, the Platform API second and generated files last,
+  choosing per operation and saying which route it took. With Frends' own `frends` plugin installed,
+  its skills run the MCP build, review, diagnose and run workflows and the companion adds your house
+  standard, its conventions overlay, the API and file routes and the reviewer.
 - Design a BPMN 2.0 process flow shape by shape, and write the C# expressions and Code Tasks inside
   it.
-- Scaffold a custom C# task as a NuGet package.
-- Generate a process JSON file you can import into Frends 6.2 straight away.
-- List, pull and push processes over the Platform API.
+- Build custom C# tasks from the official `dotnet new frends-task` template: identity, de-branding,
+  the task contract, documentation, tests, security, versioning and packaging.
+- Generate a process JSON file you can import into Frends straight away, when no MCP server is
+  available.
+- List, pull and push processes, tags, templates and API specifications over the Platform API.
 - Deploy a process to an agent group, activate or deactivate its trigger, and run it.
 - Query process instances when something failed, read and set environment variables, and inspect
   agent groups.
@@ -133,8 +139,8 @@ unreadable on the canvas.
 
 | Command | What it does |
 |---|---|
-| `/frends-companion-developer:connect` | Walks you through the Platform API credentials and writes `.env` |
-| `/frends-companion-developer:new-workspace` | Copies the project template somewhere you choose and writes a global `/frends-init` |
+| `/frends-companion-developer:connect` | Detects the MCP and Platform API routes, creates `.env` and fills the non-secret values; you add the client secret |
+| `/frends-companion-developer:new-workspace` | Copies the project template somewhere you choose, sets up its `.env` and writes a global `/frends-init` |
 | `/frends-companion-developer:clean` | Removes development artefacts, keeps the folder structure |
 
 Run `new-workspace` once. After that, `/frends-init` scaffolds a new Frends project from any empty
@@ -150,12 +156,12 @@ agents/                      frends-canvas-arranger
 skills/frends-ipaas-developer/
   references/                concepts, triggers, shapes, expressions, tasks, guides,
                              process-file-format, one folder per entity
-  scripts/                   eleven Platform API tools and the process generator
+  scripts/                   fourteen Platform API tools, `.env` setup, an API drift check and the process generator
 skills/frends-reviewer/
   references/                rule catalogue, custom task checklist, house standards, report format
   scripts/                   review_process.py, the automatic checks
 template/                    what new-workspace copies into your workspace
-changes/                     one fragment per merge request
+changes/                     one fragment per pull request
 ```
 
 References are split by entity so extending them is obvious: a new trigger is a new file in

@@ -3,25 +3,30 @@
 # GET /api/v1/processes/{processGuid}/versions/{processVersion}/export
 #   (or GET /api/v1/processes/{id}/export when --id is used)
 #
+#   (or GET /api/v1/processes/batch-export?ids=..&ids=.. when --batch is used)
+#
 # Usage:
 #   bash scripts/frends-process-pull.sh --guid <uuid> --version <n> [--out <file>]
 #   bash scripts/frends-process-pull.sh --id <processVersionId> [--out <file>]
+#   bash scripts/frends-process-pull.sh --batch --ids <id,id,...> [--out <file>]
 #
 # Process Variable values in the export are taken from the Development Agent Group.
 # Default output dir: active-development/processes/
-# STATUS: scaffolded, not live-tested. See frends-common.sh header.
+# STATUS: checked against the 6.3.2 OpenAPI document. See frends-common.sh header.
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=/dev/null
 source "$SCRIPT_DIR/frends-common.sh"
 
-GUID="" VERSION="" ID="" OUT=""
+GUID="" VERSION="" ID="" OUT="" BATCH="false" IDS=""
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --guid) GUID="$2"; shift 2;;
     --version) VERSION="$2"; shift 2;;
     --id) ID="$2"; shift 2;;
     --out) OUT="$2"; shift 2;;
+    --batch) BATCH="true"; shift;;
+    --ids) IDS="$2"; shift 2;;
     *) echo "Unknown arg: $1" >&2; exit 2;;
   esac
 done
@@ -29,7 +34,12 @@ done
 load_env
 require_tools curl jq
 
-if [[ -n "$ID" ]]; then
+if [[ "$BATCH" == "true" ]]; then
+  [[ -z "$IDS" ]] && { echo "ERROR: --batch needs --ids <id,id,...>" >&2; exit 2; }
+  QS=$(echo "$IDS" | tr ',' '\n' | sed '/^$/d' | sed 's/^/ids=/' | paste -sd'&' -)
+  ENDPOINT="processes/batch-export?${QS}"
+  BASENAME="processes_batch_$(date -u +%Y%m%dT%H%M%SZ).json"
+elif [[ -n "$ID" ]]; then
   ENDPOINT="processes/${ID}/export"
   BASENAME="process_${ID}.json"
 elif [[ -n "$GUID" && -n "$VERSION" ]]; then

@@ -24,6 +24,12 @@ collide.
 - **Unnamed shapes**: events, Returns/Throws and catch subprocesses commonly have no
   name; multiple unnamed shapes are fine.
 
+## Observed in public templates
+35 of the 77 public templates in `FrendsPlatform/FrendsTemplates` repeat a Return name (for example
+`Return and add error to errors variable` four times). They import through the template path. Keep
+Return and Throw names unique anyway; the reviewer reports duplicates there as minor and duplicates
+on activities, gateways and scopes as blockers.
+
 ## Implications for generated processes
 - Repeated patterns need per-instance names. A process with two AFAS update branches
   cannot name both error builders "Create AFAS error response"; qualify each with what

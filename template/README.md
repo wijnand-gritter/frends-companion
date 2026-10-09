@@ -4,8 +4,11 @@ Scaffolded from the Frends Companion (`frends-companion-developer`) plugin.
 
 ## First-time setup
 
-1. Copy `.env.example` to `.env` and fill in your Frends Platform API credentials. Run `/frends-companion-developer:connect` if you want a guided walkthrough.
-2. Verify connectivity:
+The MCP route needs no `.env`. The Platform API route does.
+
+1. Run `/frends-companion-developer:connect`. It detects the routes, creates `.env` from `.env.example` and fills the non-secret values.
+2. Paste `FRENDS_CLIENT_SECRET` into `.env` yourself.
+3. Verify:
 
    ```bash
    bash <skill-base>/scripts/frends-env-check.sh

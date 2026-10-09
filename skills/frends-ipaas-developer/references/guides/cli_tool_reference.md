@@ -1,13 +1,14 @@
 # Frends Platform API CLI tool reference
 
-These `frends-*.sh` scripts live in `scripts/` and wrap the **Frends Platform API**
-(`https://<tenant>.frendsapp.com/api/v1`). Prefer them over hand-crafted `curl`.
+These `frends-*.sh` scripts live in `scripts/` and wrap the Frends Platform API
+(`https://<tenant>.frendsapp.com/api/v1`). They are the second route: use the Frends MCP server
+first for what it covers, and these scripts for the rest or when MCP is absent
+([tooling-routes.md](tooling-routes.md)). Never hand-craft `curl`.
 
-> **Status:** Scaffolded from the published Frends 6.2 Platform API reference
-> (`https://docs.frends.com/reference/frends-platform-api`). **Not yet live-tested
-> against a tenant.** Validate every endpoint against your own
-> `https://<tenant>.frendsapp.com/swagger` before relying on these in automation.
-> If a script's behavior differs from `/swagger`, trust `/swagger` and fix the script.
+Status: endpoints, parameters and response fields checked against the Frends 6.3.2 OpenAPI document
+(`https://<tenant>.frendsapp.com/v1.0/swagger.json`, 92 operations) and exercised against a stubbed
+API. If a script's behaviour differs from the tenant's document, trust the document and fix the
+script.
 
 ## Prerequisites
 
@@ -29,8 +30,12 @@ Frends uses **OAuth2 client-credentials**:
    `chmod 600`) until shortly before it expires.
 3. Every Platform API call sends `Authorization: Bearer <token>`.
 
-If a token fetch fails, the scripts **stop** rather than retry — repeated bad-auth
-calls can lock the account. Fix credentials first.
+If a token fetch fails, the scripts stop rather than retry: repeated bad-auth calls can lock the
+account. Fix credentials first.
+
+Entra ID client credentials are the only authentication the Platform API accepts. Private
+Application tokens (Administration > Private Applications) authenticate callers of APIs published
+through Frends API Management; they do not open the Platform API.
 
 ## .env variables
 
@@ -51,17 +56,23 @@ calls can lock the account. Fix credentials first.
 
 ## Scripts
 
-| Script | What it does | Key endpoint(s) |
-|--------|--------------|-----------------|
-| `frends-env-check.sh` | Shows which `.env` vars are SET/UNSET (no values). | — |
-| `frends-connection-test.sh` | Fetches a token, lists 1 Process. | `GET /processes?PageSize=1` |
-| `frends-process-list.sh` | Lists Processes (filter by name/guid, paged). | `GET /processes` |
-| `frends-process-pull.sh` | Exports a Process version to a local JSON file. | `GET /processes/{guid}/versions/{ver}/export` or `GET /processes/{id}/export` |
-| `frends-process-push.sh` | Imports a Process export (create/new version). | `POST /processes/batch-import` |
-| `frends-deploy.sh` | list / deploy / show / undeploy / activate / deactivate / run. | `/process-deployments...` |
-| `frends-instances.sh` | list / details / counts of Process Instances. | `/instances/{agentGroupId}...` |
-| `frends-env-vars.sh` | list / show / set Environment Variable values. | `/environment-variables...` |
-| `frends-agentgroups.sh` | show (and tentatively list) Agent Groups. | `GET /agent-groups/{id}` |
+| Script | What it does | Key endpoint(s) | Changes the tenant |
+|--------|--------------|-----------------|---|
+| `frends-env-init.sh` | Creates `.env` from `.env.example` (mode 600) and fills non-secret keys with `--set`; refuses the client secret. | none | no |
+| `frends-env-check.sh` | Shows which `.env` vars are SET/UNSET (no values). | none | no |
+| `frends-connection-test.sh` | Fetches a token, lists 1 Process. | `GET /processes?PageSize=1` | no |
+| `frends-agentgroups.sh` | list (per Environment) / show Agent Groups. | `GET /environments`, `GET /environments/{id}/agent-groups`, `GET /agent-groups/{id}` | no |
+| `frends-process-list.sh` | Lists Processes (filter by name/guid, paged). | `GET /processes` | no |
+| `frends-process-pull.sh` | Exports one Process version, or several with `--batch --ids`. | `GET /processes/{guid}/versions/{ver}/export`, `GET /processes/{id}/export`, `GET /processes/batch-export` | no |
+| `frends-process-push.sh` | Imports a Process export; `--conflict` defaults to `Error`. | `POST /processes/batch-import` | yes |
+| `frends-deploy.sh` | list / show / deploy / undeploy / activate / deactivate / run. | `/process-deployments...` | yes, except list and show |
+| `frends-instances.sh` | list / details / counts / acknowledge Process Instances. | `/instances/{agentGroupId}...` | acknowledge |
+| `frends-env-vars.sh` | list / show / set Environment Variable values per Environment. | `/environment-variables...` | set |
+| `frends-tags.sh` | get / all / add / set / remove tags. | `GET`, `PATCH`, `PUT`, `DELETE /tags` | add, set, remove |
+| `frends-templates.sh` | list / export Process Templates; create a Process from one. | `/process-templates...` | create-process |
+| `frends-api-specs.sh` | list / show / version of API specifications. | `/api-management/api-specifications...` | no |
+
+Commands that change the tenant run only on the person's explicit confirmation.
 
 ## Typical promote-to-test workflow
 
@@ -94,12 +105,8 @@ Environment; every used **Subprocess** is already deployed there; and the Proces
 **target framework** matches the Agent Group framework. Deploy Subprocesses before
 their parent Process.
 
-## Endpoints confirmed vs. to verify
-
-- **Confirmed in the reference:** Processes (list/get/export/batch-export/batch-import/delete),
-  ProcessDeployments (list/create/get/undeploy/execute/activation/variableUpdate/variables),
-  ProcessInstances (list/details/counts/acknowledge/comment/export/delete),
-  EnvironmentVariables (list/get/create/child/delete/patch/value-update),
-  AgentGroups single GET.
-- **To verify against /swagger:** the Agent Groups **list** route, the Environments
-  list route, and the exact JSON body shape for env-var value updates per type.
+## Not covered by a script
+Present in the 6.3.2 OpenAPI document and left to the Control Panel or a later script: API
+policies and keys, API specification publish and deploy, passthrough configurations, Private
+Applications, Process variable updates on a deployment, instance comments, CSV export and delete,
+Agent status and events, Process delete, Process Template create and update.

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
 Review a Frends Process export (proprietary JSON, as exported from the tenant or written by
-frends-ipaas-developer's generate_process.py) against the rules in ../references/rules.md.
+frends-ipaas-developer's generate_process.py), a Template export, or a Frends MCP get_process_data
+result saved as JSON, against the rules in ../references/rules.md. The input kind is detected.
 
 Only the automatic ("auto") rules are checked here. The manual rules need a person or the model
 reading the Process, its specification and the organisation's standards; SKILL.md covers them.
@@ -60,7 +61,7 @@ ENDLESS = re.compile(r"while\s*\(\s*true\s*\)|for\s*\(\s*;\s*;\s*\)")
 TRAILING_VERSION = re.compile(r"^.+ - \d+\.\d+(\.\d+)?$")
 # Error-pipeline Processes (the shared handler and the error-event listener) swallow failures and
 # leave the unhandled-error hook empty by design. Matched by name; extend with --pipeline.
-PIPELINE_NAME = re.compile(r"(?i)(error ?handler|handle process error|error event|notify .*error)")
+PIPELINE_NAME = re.compile(r"(?i)(handle process error|generic error handler|error event listener|notify (platform )?error events)\s*$")
 
 
 class Finding:
@@ -79,11 +80,39 @@ def _load(path):
         return json.load(f)
 
 
+def _from_mcp(data):
+    """Wrap a Frends MCP get_process_data result in the export shape the rules read.
+
+    The MCP result carries the diagram and the shape parameters only: no description, tags,
+    promoted-variable list or task links, so the documentation rules and the structural
+    validator are skipped for it."""
+    ep = data.get("elementParametersJson")
+    return {"Processes": [{
+        "Name": data.get("name"),
+        "IsSubprocess": data.get("isSubprocess"),
+        "Bpmn": data.get("bpmnXml"),
+        "ElementParameters": ep if isinstance(ep, str) else json.dumps(ep or []),
+        "ProcessVariablesJson": json.dumps(data.get("processVariablesJson") or {}),
+        "_source": "mcp",
+    }]}
+
+
 def _process(export):
-    procs = export.get("Processes") or export.get("ProcessTemplates")
-    if not procs:
-        raise ValueError("no 'Processes' array: not a Frends Process export")
-    return procs[0]
+    """Return the process record from a Process export, a Template export or an MCP result."""
+    if "bpmnXml" in export and "elementParametersJson" in export:
+        export = _from_mcp(export)
+    if export.get("Processes"):
+        return export["Processes"][0]
+    templates = export.get("ProcessTemplates")
+    if templates:
+        info = templates[0].get("ProcessInfo")
+        if isinstance(info, dict) and isinstance(info.get("Process"), dict):
+            proc = dict(info["Process"])
+            proc.setdefault("Name", templates[0].get("Name"))
+            proc["_source"] = "template"
+            return proc
+        return templates[0]
+    raise ValueError("not a Frends Process export, Template export or MCP get_process_data result")
 
 
 def _json_field(p, key, default):
@@ -163,6 +192,9 @@ def review(export, path, disabled, import_check=True, pipeline=()):
             out.append(Finding(rule, sev, where, msg, fix))
 
     p = _process(export)
+    source = p.get("_source", "export")
+    if source != "export":
+        import_check = False
     name = p.get("Name") or os.path.basename(path)
     is_sub = bool(p.get("IsSubprocess"))
     is_pipeline = bool(PIPELINE_NAME.search(name)) or name in pipeline
@@ -204,7 +236,15 @@ def review(export, path, disabled, import_check=True, pipeline=()):
         if nm:
             seen.setdefault(nm.strip(), []).append(nid)
     for nm, ids in seen.items():
-        if len(ids) > 1:
+        if len(ids) < 2:
+            continue
+        # Duplicate names on Returns and Throws occur in public templates that import through the
+        # template path; duplicates on activities, gateways and scopes fail a Process import.
+        events_only = all(g.nodes[i][0] in ("endEvent", "intermediateThrowEvent") for i in ids)
+        if events_only:
+            add("IMP-04", "minor", f"'{nm}'", f"Return or Throw name used {len(ids)} times: {', '.join(ids)}",
+                "qualify each instance; confirm by importing as a Process")
+        else:
             add("IMP-04", "blocker", f"'{nm}'", f"shape name used {len(ids)} times: {', '.join(ids)}",
                 "qualify each instance with what it handles")
 
@@ -375,9 +415,13 @@ def review(export, path, disabled, import_check=True, pipeline=()):
                         add("SEC-02", "blocker", f"{label(nid)} {joined}", "hard-coded credential",
                             "move the value to a secret Environment Variable")
                         break
-            if SQL_KEY.search(key) and ("{{#" in val or re.search(r"\+\s*#(var|trigger|result)", val)):
-                add("SEC-04", "major", f"{label(nid)} {joined}", "input concatenated into SQL text",
-                    "use the Task's query parameters")
+            if SQL_KEY.search(key):
+                if re.search(r"\{\{[^}]*#trigger|\+\s*#trigger", val):
+                    add("SEC-04", "major", f"{label(nid)} {joined}", "trigger input concatenated into SQL text",
+                        "use the Task's query parameters")
+                elif re.search(r"\{\{\s*#(var|result)|\+\s*#(var|result)", val):
+                    add("SEC-04", "minor", f"{label(nid)} {joined}", "variable concatenated into SQL text",
+                        "confirm the value never comes from a caller; otherwise use query parameters")
 
     # ---- Inclusive gateway
     for nid, (tag, _) in g.nodes.items():
@@ -403,14 +447,17 @@ def review(export, path, disabled, import_check=True, pipeline=()):
     if ENV_TOKEN.search(name):
         add("NAM-02", "minor", name, "Process name carries an environment token", "remove it")
 
-    # ---- documentation
+    # ---- documentation (an MCP result carries no description or tags)
     desc = (p.get("Description") or "").strip()
-    if not desc:
+    if source == "mcp":
+        add("DOC-01", "info", name, "description and tags not in the MCP result",
+            "check them in the Control Panel or review an API export")
+    elif not desc:
         add("DOC-01", "minor", name, "empty description", "state purpose, interface id and specification version")
     elif TRAILING_VERSION.match(desc):
         add("DOC-01", "minor", name, f"description is the OpenAPI title and version ('{desc}')",
             "replace it with a one-line purpose; keep the version as a footnote")
-    if not p.get("Tags") and not (p.get("TagString") or "").strip():
+    if source != "mcp" and not p.get("Tags") and not (p.get("TagString") or "").strip():
         add("DOC-02", "info", name, "no tags", "one tag per external system")
 
     # ---- embedded OpenAPI document
@@ -479,7 +526,7 @@ def main(argv=None):
     ap.add_argument("--disable", default="", help="comma-separated rule ids to skip")
     ap.add_argument("--pipeline", action="append", default=[],
                     help="Process name to treat as error pipeline (repeatable); names matching "
-                         "'error handler', 'handle process error', 'error event' are recognised already")
+                         "'handle process error', 'generic error handler', 'error event listener' and 'notify error events' are recognised already")
     ap.add_argument("--no-import-check", action="store_true", help="skip the generator's structural validator")
     args = ap.parse_args(argv)
     disabled = {r.strip() for r in args.disable.split(",") if r.strip()}
@@ -492,7 +539,7 @@ def main(argv=None):
             continue
         try:
             name, findings = review(_load(path), path, disabled, not args.no_import_check, tuple(args.pipeline))
-        except (ValueError, json.JSONDecodeError) as e:
+        except (OSError, ValueError, json.JSONDecodeError) as e:
             print(f"{path}: {e}", file=sys.stderr)
             continue
         results.append((path, name, findings))

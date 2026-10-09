@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
-# Inspect Agent Groups via the Frends Platform API.
+# Inspect Environments and Agent Groups via the Frends Platform API.
 #
 # Subcommands:
+#   list                       GET /api/v1/environments, then
+#                              GET /api/v1/environments/{environmentId}/agent-groups
 #   show --id <agentGroupId>   GET /api/v1/agent-groups/{agentGroupId}
-#   list                       GET /api/v1/agent-groups   <-- TODO: confirm exact
-#                              list path/shape against your tenant /swagger; the
-#                              reference documents the single-group GET explicitly.
 #
-# An Agent Group belongs to exactly one Environment (group.environment), holds one
-# or more Agents, and has a framework flag (isCrossPlatform). You need Agent Group
-# IDs for deploys and for listing Process Instances.
-# STATUS: scaffolded, not live-tested. See frends-common.sh header.
+# The Platform API has no flat Agent Group list; groups are listed per Environment.
+# An Agent Group belongs to exactly one Environment, holds one or more Agents, and has
+# a framework flag (isCrossPlatform). Agent Group IDs are needed for deploys and for
+# listing Process Instances. On the MCP route, get_overview returns the same data.
+# STATUS: checked against the 6.3.2 OpenAPI document. See frends-common.sh header.
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=/dev/null
@@ -35,23 +35,24 @@ case "$CMD" in
     frends_api GET "agent-groups/${ID}"
     expect_ok "Get Agent Group" || exit 1
     if [[ "$RAW" == "true" ]]; then echo "$RESPONSE_BODY" | jq '.'; else
-      echo "$RESPONSE_BODY" | jq -r '.data | "id=\(.id)\t\(.displayName)\tenv=\(.environment.displayName)\tcrossPlatform=\(.isCrossPlatform)\tagents=[\((.agents // [])|join(", "))]"'
+      echo "$RESPONSE_BODY" | jq -r '.data | "id=\(.id)\t\(.displayName)\tenv=\(.environment.displayName)\tmode=\(.agentRegistrationMode)\tcrossPlatform=\(.isCrossPlatform)\tagents=[\((.agents // [])|join(", "))]"'
     fi
     ;;
   list)
-    # The published reference documents GET /agent-groups/{id}. A plain
-    # GET /agent-groups list is the conventional companion route; confirm before use.
-    frends_api GET "agent-groups"
-    if [[ "$RESPONSE_CODE" == "404" || "$RESPONSE_CODE" == "405" ]]; then
-      echo "NOTE: GET /agent-groups returned HTTP ${RESPONSE_CODE}. The list route may differ on your tenant." >&2
-      echo "Open https://${FRENDS_TENANT:-<tenant>}.frendsapp.com/swagger and check the AgentGroups section for the correct list endpoint." >&2
-      exit 1
-    fi
-    expect_ok "List Agent Groups" || exit 1
-    echo "$RESPONSE_BODY" | jq '.'
+    frends_api GET "environments"
+    expect_ok "List Environments" || exit 1
+    ENVS="$RESPONSE_BODY"
+    if [[ "$RAW" == "true" ]]; then echo "$ENVS" | jq '.'; exit 0; fi
+    for ENV_ID in $(echo "$ENVS" | jq -r '.data[].id'); do
+      ENV_NAME=$(echo "$ENVS" | jq -r --argjson id "$ENV_ID" '.data[] | select(.id == $id) | .displayName')
+      frends_api GET "environments/${ENV_ID}/agent-groups"
+      expect_ok "List Agent Groups for Environment ${ENV_ID}" || exit 1
+      echo "$RESPONSE_BODY" | jq -r --arg env "$ENV_NAME" --arg envid "$ENV_ID" \
+        '.data[] | "env=\($env) (\($envid))\tagentGroup=\(.displayName) (\(.id))\tmode=\(.agentRegistrationMode)\tcrossPlatform=\(.isCrossPlatform)"'
+    done
     ;;
   *)
-    echo "Usage: frends-agentgroups.sh <show --id <n> | list>" >&2
+    echo "Usage: frends-agentgroups.sh <list | show --id <n>> [--raw]" >&2
     exit 2
     ;;
 esac

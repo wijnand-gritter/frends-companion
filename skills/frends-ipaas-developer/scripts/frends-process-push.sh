@@ -5,22 +5,23 @@
 # Usage:
 #   bash scripts/frends-process-push.sh --file <export.json> [--conflict <mode>]
 #
-# importConflict modes (default NewVersion):
+# importConflict modes (default Error, the API default; pass NewVersion to update a Process):
 #   Error              - fail if the Process GUID already exists
 #   UseExisting        - skip Processes that already exist
 #   NewVersion         - update the existing Process to the imported one
 #   NewActiveElement   - create a new Process with an Activated Trigger
 #   NewInactiveElement - create a new Process with a Deactivated Trigger
 #
+# Run only on the person's explicit confirmation: an import changes the tenant.
 # Importing only creates/updates the Process in Development; deploy separately
 # with frends-deploy.sh. Import can be slow — timeout is raised accordingly.
-# STATUS: scaffolded, not live-tested. See frends-common.sh header.
+# STATUS: checked against the 6.3.2 OpenAPI document. See frends-common.sh header.
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=/dev/null
 source "$SCRIPT_DIR/frends-common.sh"
 
-FILE="" CONFLICT="NewVersion"
+FILE="" CONFLICT="Error"
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --file) FILE="$2"; shift 2;;

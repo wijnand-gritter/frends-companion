@@ -1,7 +1,7 @@
 {
   "name": "frends-companion-developer",
-  "description": "Frends iPaaS development tools: skill, commands, and agents for building, deploying, and monitoring Frends integrations",
-  "version": "0.7.0",
+  "description": "Frends iPaaS development tools: routes across the Frends MCP server, Platform API and generated files, custom Task development, a reviewer, commands and agents",
+  "version": "0.8.0",
   "author": {
     "name": "Wijnand Gritter"
   }

@@ -21,10 +21,10 @@ collection; where the organisation has its own written standard, that standard w
 | Upstream failure, unexpected exception, failed entity in a batch | Throw | failed | yes |
 
 Two platform facts drive this:
-- **A caught error that ends at an end event records the run as successful.** It does not show on
+- A caught error that ends at an end event records the run as successful. It does not show on
   the Dashboard's Failed Processes widget and no monitoring rule sees it. A handled failure must
   therefore still end in a Throw.
-- **A request the Process validated and answered is not a failure.** Marking it failed floods
+- A request the Process validated and answered is not a failure. Marking it failed floods
   monitoring with the caller's mistakes. Answer it with a Return.
 
 ## Expected failures: detect from results, answer with a Return
@@ -34,7 +34,7 @@ results, not exceptions:
 - Branch with an Exclusive Decision on `#result[Task].Success` (or the Task's status field).
 - Terminate the rejection branch in its own Return carrying the 4xx and the error envelope.
 
-The branching gateway must not come **after** a Scope that has a Catch: nothing branches after such
+The branching gateway must not come after a Scope that has a Catch: nothing branches after such
 a scope ([exception-handler-rules.md](../process-file-format/exception-handler-rules.md) rule 4), and
 a Return inside a scope only ends the scope. So a call whose rejection is answered with a 4xx stays
 outside the caught scope, with its gateway on the main lane; its unexpected exceptions go to the
@@ -43,7 +43,7 @@ unhandled-error hook (below).
 ## Unexpected failures: scope, catch, handler, Throw
 1. The work runs inside a Scope.
 2. A Catch outside it receives the exception into a named error variable.
-3. The catch branch is **one** Scope (import rule 3). Inside it:
+3. The catch branch is one Scope (import rule 3). Inside it:
    `Call Shared - Handle process error` → Throw.
 4. For an API Process the Throw is an `HttpResult` 5xx carrying the error envelope.
 5. Set `bypassGlobalExceptionHandler` on that Throw. The handler already ran; without the bypass the
@@ -62,9 +62,11 @@ Return HttpResult 204
 The scope's other outgoing flow and the catch scope both target the same Return (import rules 1 to
 3). Wiring detail: [exception-handler-rules.md](../process-file-format/exception-handler-rules.md).
 
-**Open point:** whether `httpStatusCode` on an `HttpResult` Return accepts an expression is not
-confirmed. If it does, one Return with a status from `#var.response` can serve success and 4xx
-alike. Ask the developer for an export before relying on it.
+Status code from an expression. `httpStatusCode` on an `HttpResult` Return accepts a C#
+expression (mode `csharp`, confirmed in the MCP builder schema on Frends 6.3), so one Return with the
+status from `#var.response` can serve success and 4xx alike. On the MCP route a Throw carries an
+`expression` only; a Throw with an `HttpResult` body needs the editor or the file route
+([mcp-build-conventions.md](mcp-build-conventions.md)).
 
 ## Loops: continue per entity, fail the run at the end
 1. Each iteration gets its own Scope and Catch. The catch scope calls the handler with the entity in
@@ -81,20 +83,20 @@ The loop is not a caught scope, so the gateway after it is allowed.
 - Mechanics, backoff and the `ThrowExceptionOnErrorResponse` interaction: [../shapes/task.md](../shapes/task.md).
 
 ## Unhandled errors: the last-resort hook
-Process settings offer **"Select Subprocess to call on unhandled error"**: the chosen Subprocess
+Process settings offer "Select Subprocess to call on unhandled error": the chosen Subprocess
 runs whenever the Process dies with an uncaught exception or a Throw without the bypass. It is
-reporting and cleanup only: it cannot resume the run, and the platform provides **no loop
-protection** if the handler itself fails.
+reporting and cleanup only: it cannot resume the run, and the platform provides no loop
+protection if the handler itself fails.
 
 | Process | Hook | Why |
 | --- | --- | --- |
 | Business processes | the shared error handler, `error` = `#error` | covers failures before the first scope and bugs in a catch branch |
-| Error-event listener | **empty** | a failing listener would publish an event it then consumes, amplifying the queue; its queue retry and dead-letter are the safety net |
-| The shared error handler | **empty** | the handler's own failure must terminate |
+| Error-event listener | empty | a failing listener would publish an event it then consumes, amplifying the queue; its queue retry and dead-letter are the safety net |
+| The shared error handler | empty | the handler's own failure must terminate |
 
 Two design rules make the shared handler safe as this hook:
-1. **It never throws**: its publish step has its own catch that sets a flag and returns normally.
-2. **Circuit breaker**, first thing in the handler:
+1. It never throws: its publish step has its own catch that sets a flag and returns normally.
+2. Circuit breaker, first thing in the handler:
 
 ```csharp
 // Never publish an error event about the error pipeline itself.

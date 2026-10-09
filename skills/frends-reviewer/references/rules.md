@@ -1,11 +1,11 @@
 # Rule catalogue
 
-The rules `frends-reviewer` checks. **Auto** rules are checked by `scripts/review_process.py` on a
-Process export; **manual** rules need the reviewer to read the Process, its specification and, for
+The rules `frends-reviewer` checks. Auto rules are checked by `scripts/review_process.py` on a
+Process export; manual rules need the reviewer to read the Process, its specification and, for
 some, the tenant settings.
 
-Each rule has one of two origins. **Platform** rules are facts of the importer or runtime: they are
-never switched off. **Convention** rules come from the Frends best practices collection and the
+Each rule has one of two origins. Platform rules are facts of the importer or runtime: they are
+never switched off. Convention rules come from the Frends best practices collection and the
 Frends guides: an organisation's own written standard overrides them (see
 [house-standards.md](house-standards.md)).
 
@@ -25,7 +25,7 @@ Frends guides: an organisation's own written standard overrides them (see
 | IMP-01 | a Scope with a Catch has exactly two outgoing flows, the Catch listed first | blocker | auto |
 | IMP-02 | the catch branch is one node whose single flow reaches the scope's own end shape | blocker | auto |
 | IMP-03 | nothing branches after a Scope with a Catch | blocker | auto |
-| IMP-04 | shape names are unique across the Process, including inside scopes | blocker | auto |
+| IMP-04 | shape names are unique across the Process, including inside scopes; duplicate Return and Throw names are minor (seen in public templates) | blocker | auto |
 | IMP-05 | the export passes the generator's structural validation | blocker | auto |
 
 Detail: `../../frends-ipaas-developer/references/process-file-format/exception-handler-rules.md`,
@@ -95,7 +95,7 @@ Detail: `../../frends-ipaas-developer/references/process-file-format/exception-h
 | SEC-01 | no secret in a URL or query string | convention | major | auto |
 | SEC-02 | no hard-coded credential | convention | blocker | auto |
 | SEC-03 | secrets only in secret fields, or on shapes with Skip logging | convention | minor | auto (heuristic) |
-| SEC-04 | no input concatenated into SQL text | convention | major | auto |
+| SEC-04 | no input concatenated into SQL text: `#trigger` is major, `#var` and `#result` minor | convention | major | auto |
 | SEC-05 | external input is validated before use | convention | major | manual |
 | SEC-06 | personal data in logs or archives is a recorded decision | convention | major | manual |
 | SEC-07 | every published endpoint (API, HTTP, MCP trigger) requires authentication | convention | blocker | manual |
@@ -145,3 +145,17 @@ Custom Task rules (TSK-*) are in [custom-task-checklist.md](custom-task-checklis
 - `https://docs.frends.com/guides/development/frends-process-optimization.md`
 - `https://docs.frends.com/guides/development/iteration-in-frends-processes.md`
 - `https://docs.frends.com/guides/development/how-to-test-processes-and-tasks.md`
+
+## Calibration
+`review_process.py` was run over the 77 public templates in `FrendsPlatform/FrendsTemplates`:
+
+| Rule | Templates | Reading |
+| --- | --- | --- |
+| ERR-05, LOG-01, LOG-02 | 77 | templates are portable and carry no hook or promoted values by design |
+| IMP-04 (Returns and Throws) | 35 | duplicate Return names import through the template path |
+| SEC-04 | 30 | `#trigger` and `#var` handlebars inside SQL queries |
+| ERR-02 | 3 | a 400 answered through a Throw |
+| RTY-01 | 2 | retry on an HTTP Task that does not throw on error responses |
+
+Re-run it when a rule changes: a rule that fires on most templates without a real defect needs a
+narrower check.

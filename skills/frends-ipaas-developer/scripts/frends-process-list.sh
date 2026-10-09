@@ -4,7 +4,7 @@
 #   bash scripts/frends-process-list.sh [--name <substring>] [--guid <uuid>] [--page N] [--size N] [--raw]
 #
 # Prints a compact table (name, guid, latest version) unless --raw is given.
-# STATUS: scaffolded, not live-tested. See frends-common.sh header.
+# STATUS: checked against the 6.3.2 OpenAPI document. See frends-common.sh header.
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=/dev/null

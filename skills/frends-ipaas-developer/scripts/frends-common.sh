@@ -2,10 +2,10 @@
 # Shared utilities for Frends Platform API CLI tools.
 # Sourced by all frends-*.sh tool scripts — not executed directly.
 #
-# STATUS: Scaffolded against the published Frends 6.2 Platform API reference
-# (https://docs.frends.com/reference/frends-platform-api). NOT yet live-tested
-# against a tenant. Validate endpoints against your own
-# https://<tenant>.frendsapp.com/swagger before relying on these in automation.
+# STATUS: endpoints, parameters and response fields checked against the Frends
+# 6.3.2 OpenAPI document (https://<tenant>.frendsapp.com/v1.0/swagger.json,
+# 92 operations). Use the Frends MCP server first where it covers the operation;
+# these scripts cover the rest (see references/guides/tooling-routes.md).
 #
 # Auth model: the Frends Platform API uses OAuth2
 # client-credentials against Microsoft Entra ID (Azure AD). We POST client
