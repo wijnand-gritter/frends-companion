@@ -11,10 +11,11 @@ export** that placed all 11 triggers and ~20 shapes on one canvas. Shape Type co
 parameter-mode statistics are also informed by 77 official 5.7 template files (FrendsTemplates repo).
 Between these, the envelope, the `{mode, value}` encoding, every shape Type code in
 [shape-type-codes.md](shape-type-codes.md), and all 11 trigger `$type`/`config` shapes in
-[triggers-encoding.md](triggers-encoding.md) are **confirmed for 6.2**. What remains unconfirmed (no
-sample yet): the Inclusive Decision gateway code, the Assign Variable code, and the fully-configured
-key sets for the AMQP/RabbitMQ triggers (their palette defaults were near-empty). Validate those
-against a matching export or the tenant `/swagger`.
+[triggers-encoding.md](triggers-encoding.md) are **confirmed for 6.2**. A 6.3.2.5468 export,
+[examples/mcp_rabbitmq_inclusive_export_6.3.json](examples/mcp_rabbitmq_inclusive_export_6.3.json), adds the Inclusive Decision (Types 15 and 16), the MCP Trigger and the
+configured RabbitMQ Trigger with client certificate authentication. What remains unconfirmed (no
+sample yet): the fully-configured key set for the AMQP trigger (its palette default was empty).
+Validate that against a matching export or the tenant `/swagger`.
 
 ## The two formats at a glance
 - **BPMN XML export (`.bpmn`)** — the diagram only: shapes, names, sequence flows, and layout. No

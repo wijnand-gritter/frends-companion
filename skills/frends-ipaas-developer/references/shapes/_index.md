@@ -10,7 +10,7 @@ against real 6.2 exports).
 | [task.md](task.md) | Task (runs a Frends Task) | `task` / 1 |
 | [code-task.md](code-task.md) | Code Task (inline C#) | `scriptTask` / 12 |
 | [exclusive-decision.md](exclusive-decision.md) | Exclusive Decision (either/or) | `exclusiveGateway` / 2 |
-| [inclusive-decision.md](inclusive-decision.md) | Inclusive Decision (multi-branch) | `inclusiveGateway` / (unconfirmed) |
+| [inclusive-decision.md](inclusive-decision.md) | Inclusive Decision (multi-branch) | `inclusiveGateway` / 15, branch `sequenceFlow` / 16 |
 | [assign-variable.md](assign-variable.md) | Assign Variable | `scriptTask` / 12 (distinguished by `variableName` params) |
 | [loop.md](loop.md) | Foreach / While | `subProcess` / 10, 11 |
 | [scope-and-catch.md](scope-and-catch.md) | Scope + Catch | `subProcess` / 8, scope start 13; Catch `intermediateCatchEvent` / 14 |

@@ -26,6 +26,16 @@ Real Frends 6.2 exports, in `examples/`:
   [unhandled-error-hook.md](unhandled-error-hook.md), and a Type 6 Throw with
   `bypassGlobalExceptionHandler`. UTF-8 BOM.
 
+Frends 6.3 exports:
+
+- `examples/mcp_rabbitmq_inclusive_export_6.3.json`: a full Process export from 6.3.2.5468
+  (`net10.0`), built through the MCP process builder as a harvest test and never activated: an
+  [MCP Trigger](../triggers/mcp.md) and a [RabbitMQ Trigger](../triggers/rabbitmq.md) with PEM
+  client certificate authentication, both flowing into an
+  [Inclusive Decision](../shapes/inclusive-decision.md) (Type 15) with a conditional and a default
+  branch (Type 16), two Assign Variable shapes (Type 12) and one Return. All connection and
+  certificate values are placeholders; the modifier email is redacted. No BOM.
+
 ## Read the examples as serialization, not as conventions
 The exports are real tenant files and keep their original names and flows. Three things in them
 differ from the default conventions in [../guides/best-practices.md](../guides/best-practices.md):
