@@ -46,7 +46,7 @@ The Control Panel renders XML documentation into the parameter editor, so it is 
 | Rule | Detail |
 | --- | --- |
 | Coverage | every public member, parameter and result property, each with an `<example>` |
-| Summary | short; ends with a Documentation link to the Task README in the owning repository |
+| Summary | short; ends with a Markdown `[Documentation]` link to the Task README in the owning repository; `FrendsTaskAnalyzers` rule FT0012 fails the build without it |
 | Extended help | in a `<frendsdocs>` tag, never in `<summary>`; long summaries break the editor layout |
 | Markdown | supported in `<summary>` and `<frendsdocs>` |
 | No `<cref>` | reference tags are not resolved in the rendered help |
