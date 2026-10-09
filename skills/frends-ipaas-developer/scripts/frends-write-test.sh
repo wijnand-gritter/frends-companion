@@ -93,7 +93,7 @@ run "validate test Process" python3 "$S/generate_process.py" --validate "$WORK/t
 run "process-push --conflict Error" bash "$S/frends-process-push.sh" --file "$WORK/test.json" --conflict Error || { report; exit 1; }
 GUID="$(grep -oE 'guid=[0-9a-fA-F-]{36}' "$WORK/last" | head -1 | cut -d= -f2)"
 [[ -z "$GUID" ]] && GUID="$(python3 -c "import json,sys; d=json.load(open(sys.argv[1],encoding='utf-8-sig')); p=d['Processes'][0] if 'Processes' in d else d; print(p['UniqueIdentifier'])" "$WORK/test.json")"
-NOTE="guid $GUID"; RESULTS[${#RESULTS[@]}-1]="PASS|process-push --conflict Error|guid $GUID"
+RESULTS[${#RESULTS[@]}-1]="PASS|process-push --conflict Error|guid $GUID"
 run "process-push --conflict NewVersion" bash "$S/frends-process-push.sh" --file "$WORK/test.json" --conflict NewVersion
 run "process-list --guid" bash "$S/frends-process-list.sh" --guid "$GUID" --raw
 VER="$(jq -r '[.data[] | select(.isDeleted != true and .isNotLatestVersion != true)][0].version // empty' "$WORK/last")"
@@ -107,7 +107,8 @@ run "tags remove" bash "$S/frends-tags.sh" remove --type Process --guids "$GUID"
 # 5 deploy and activation
 if [[ -n "$VER" ]]; then
   run "deploy (no activation)" bash "$S/frends-deploy.sh" deploy --agent-group "$AG" --guid "$GUID" --version "$VER" --no-activate --description "companion write test"
-  DID="$(grep -oE 'id=[0-9]+' "$WORK/last" | head -1 | cut -d= -f2)"
+  # Match id= as a whole word, so the leading digits of a guid=... never count.
+  DID="$(grep -oE '(^|[[:space:]])id=[0-9]+' "$WORK/last" | head -1 | cut -d= -f2)"
   if [[ -n "$DID" ]]; then
     run "deploy show" bash "$S/frends-deploy.sh" show --id "$DID"
     run "activate" bash "$S/frends-deploy.sh" activate --id "$DID"
@@ -116,7 +117,11 @@ if [[ -n "$VER" ]]; then
     run "run" bash "$S/frends-deploy.sh" run --id "$DID"
     sleep 15
     run "instances list --guid" bash "$S/frends-instances.sh" list --agent-group "$AG" --guid "$GUID" --size 5 --raw
-    IID="$(jq -r '[.. | objects | select(has("id")) | .id][0] // empty' "$WORK/last")"
+    IID="$(jq -r '.data[0].id // empty' "$WORK/last")"
+    # The run call only says the request was accepted (HTTP 202); the instance state says how it ended.
+    STATE="$(jq -r '.data[0].state // empty' "$WORK/last")"
+    if [[ "$STATE" == "Finished" ]]; then RESULTS[${#RESULTS[@]}-1]="PASS|instances list --guid|instance $IID Finished"
+    else RESULTS[${#RESULTS[@]}-1]="FAIL|instances list --guid|instance ${IID:-none} state ${STATE:-not found}"; fi
     if [[ -n "$IID" ]]; then run "instances acknowledge" bash "$S/frends-instances.sh" acknowledge --agent-group "$AG" --guid "$GUID" --ids "$IID" --reason "companion write test"
     else RESULTS+=("SKIP|instances acknowledge|no instance found yet"); fi
   else RESULTS+=("SKIP|deploy show, activation, run|no deployment id in the deploy output"); fi
