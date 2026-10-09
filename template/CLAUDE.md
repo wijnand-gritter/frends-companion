@@ -2,13 +2,21 @@
 
 This is a Frends-oriented workspace. Load and use the `frends-ipaas-developer` skill for all Frends tasks.
 
-The skill contains `.sh` CLI tools (in its `scripts/` directory) for common Platform API tasks: listing, pulling, and pushing Processes; deploying; querying Process Instances; and managing Environment Variables. Always look for these tools first. Run them as `bash <skill-base-path>/scripts/frends-*.sh`.
+Choose the route per operation, in this order, and name it in your reply:
 
-If you find yourself needing to craft custom `curl` against the Frends Platform API — stop and discuss with the user first. That is unexpected.
+1. The Frends MCP server, when a `get_overview` tool answers. When Frends' own `frends` plugin is installed, its skills run the MCP workflows (plan, build, review against the plan, diagnose, run); the companion adds the house standard, its conventions overlay and `frends-reviewer`.
+2. The Platform API scripts in the skill's `scripts/` directory (`bash <skill-base-path>/scripts/frends-*.sh`), for what MCP does not cover (tags, templates, API specifications, Environment Variable values, exports, instance acknowledgement) or when MCP is absent.
+3. Generated files: `generate_process.py` and manual import in the Control Panel.
 
-If you call the Platform API and get a 401/403 or a token error — stop and discuss with the user before proceeding. Repeated bad-auth calls can lock the account. Check Platform API enablement, the Entra ID app role/consent, IP allowlisting, and credentials first.
+The route matrix is in the skill's `references/guides/tooling-routes.md`.
 
-If you are asked to build an integration and the `frends-ipaas-developer` skill is not in your initial context — alert the user. The skill carries critical platform-specific knowledge. You should not need to file-search for it; if all is working it is presented to you as a skill option.
+If you find yourself crafting custom `curl` against the Frends Platform API, stop and discuss it with the user first.
+
+If an MCP call or a Platform API call returns 401/403 or a token error, stop and discuss it with the user before proceeding. Repeated bad-auth calls can lock the account. For the Platform API, check enablement, the Entra ID app role and consent, IP allowlisting and credentials first.
+
+Build work ends at a validated draft. Promoting, deploying, running, importing a Task package and creating an Environment Variable happen only on the user's explicit confirmation.
+
+If you are asked to build an integration and the `frends-ipaas-developer` skill is not in your initial context, alert the user. The skill carries critical platform-specific knowledge.
 
 ## Reviews
 
@@ -31,7 +39,7 @@ You cannot read `.env` directly — project settings block it. The CLI tools loa
 
 ## Workflow and style
 
-After you build or deploy something, share the exact Process name(s), version, and Agent Group so the user can find them. Author Processes only in the Development Environment, save as a new version, then deploy outward with `frends-deploy.sh`.
+After you build or deploy something, share the exact Process name(s), version, and Agent Group so the user can find them. Author Processes only in the Development Environment, save as a new version, then deploy outward on the user's confirmation, through MCP `deploy_process` or `frends-deploy.sh`.
 
 If `curl` returns exit code 35 (SSL handshake failure), alert the user to check corporate VPN or SSL-inspection tooling (Zscaler, Netskope, Cisco Umbrella) before troubleshooting; `FRENDS_VERIFY_SSL=false` is a last resort.
 

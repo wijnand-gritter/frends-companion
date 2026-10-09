@@ -110,11 +110,17 @@ expression and it is there, so there is nothing to invoke.
 
 With it, Claude can:
 
+- Work through the Frends MCP server first, the Platform API second and generated files last,
+  choosing per operation and saying which route it took. With Frends' own `frends` plugin installed,
+  its skills run the MCP build, review, diagnose and run workflows and the companion adds your house
+  standard, its conventions overlay, the API and file routes and the reviewer.
 - Design a BPMN 2.0 process flow shape by shape, and write the C# expressions and Code Tasks inside
   it.
-- Scaffold a custom C# task as a NuGet package.
-- Generate a process JSON file you can import into Frends 6.2 straight away.
-- List, pull and push processes over the Platform API.
+- Build custom C# tasks from the official `dotnet new frends-task` template: identity, de-branding,
+  the task contract, documentation, tests, security, versioning and packaging.
+- Generate a process JSON file you can import into Frends straight away, when no MCP server is
+  available.
+- List, pull and push processes, tags, templates and API specifications over the Platform API.
 - Deploy a process to an agent group, activate or deactivate its trigger, and run it.
 - Query process instances when something failed, read and set environment variables, and inspect
   agent groups.
@@ -150,7 +156,7 @@ agents/                      frends-canvas-arranger
 skills/frends-ipaas-developer/
   references/                concepts, triggers, shapes, expressions, tasks, guides,
                              process-file-format, one folder per entity
-  scripts/                   eleven Platform API tools and the process generator
+  scripts/                   fourteen Platform API tools, an API drift check and the process generator
 skills/frends-reviewer/
   references/                rule catalogue, custom task checklist, house standards, report format
   scripts/                   review_process.py, the automatic checks

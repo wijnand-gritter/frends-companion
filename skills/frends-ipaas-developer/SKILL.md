@@ -10,7 +10,8 @@ description: >-
   Tasks, scaffold and author custom C# Tasks (NuGet packages), plan deployments across
   environments, debug Process Instances, and answer questions from the Frends docs. Trigger
   it even when the user does not say the word "skill", and even for short questions like
-  "how do I loop in Frends" or "write a Frends expression that...". Prefer this skill over
+  "how do I loop in Frends" or "write a Frends expression that...". Also use it to choose between the
+  Frends MCP server, the Platform API and generated files for tenant work. Prefer this skill over
   generic answers for anything Frends-related, because Frends has platform-specific syntax
   and conventions that generic C# or BPMN knowledge gets wrong.
 ---
@@ -27,6 +28,22 @@ This SKILL.md is a **router**. The knowledge lives in small, single-purpose file
 `references/`, organized by entity so it is easy to extend. Read the file that fits the task before
 answering anything non-trivial — the references hold the platform-specific detail you must not
 improvise. To add or change coverage, see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Choose the route first
+
+Tenant work goes through one of three routes, chosen per operation in this order: the Frends MCP
+server, the Platform API scripts, then files (generator plus manual import). Detection,
+fallback, the operation matrix and the confirmation boundaries are in
+[references/guides/tooling-routes.md](references/guides/tooling-routes.md). Name the route in every
+reply.
+
+When Frends' own `frends` plugin is installed, hand the MCP workflows (plan, pattern, build, review
+against the plan, diagnose, fix, run) to its skills and add this skill's part: the house standard,
+[references/guides/mcp-build-conventions.md](references/guides/mcp-build-conventions.md), the API
+and file routes, custom Tasks, and review with `frends-reviewer`.
+
+Build work ends at a validated draft. Promote, deploy, run, import a Task or create an Environment
+Variable only on the person's explicit confirmation.
 
 ## Core mental model (always keep this straight)
 
@@ -47,14 +64,15 @@ are not enough.
   `#trigger`, `#process`) — [references/expressions/reference-syntax.md](references/expressions/reference-syntax.md).
 - **Code Tasks cannot add new `using`/libraries** — [references/expressions/code-tasks.md](references/expressions/code-tasks.md).
 - **Custom Task methods must be `public static`, return a value, no overloads** — [references/tasks/authoring.md](references/tasks/authoring.md).
+- The `Frends.*` Task prefix belongs to the official catalogue. Custom Tasks use `<Party>.<System>.<Action>`, start from `dotnet new frends-task`, and carry `ThrowErrorOnFailure` plus a `Success`/`Error` result: [references/tasks/anatomy.md](references/tasks/anatomy.md).
 - **Deployment has hard prerequisites** (Subprocesses first; every Environment Variable valued in the
   target) — [references/guides/deployment.md](references/guides/deployment.md).
 - **Trigger parameter fields behave differently** — [references/triggers/parameter-fields.md](references/triggers/parameter-fields.md).
 - **One API Trigger per process; OpenAPI specs need flat schemas** — [references/triggers/openapi-spec-constraints.md](references/triggers/openapi-spec-constraints.md).
-- **A handled failure must still end in a Throw; an answered 4xx ends in a Return.** A catch branch
-  that reaches the end event records the failed run as successful —
+- A handled failure must still end in a Throw; an answered 4xx ends in a Return. A catch branch
+  that reaches the end event records the failed run as successful:
   [references/guides/error-handling.md](references/guides/error-handling.md).
-- **Production logs on "Only errors"; promoted values are logged at every level** —
+- Production logs on "Only errors"; promoted values are logged at every level:
   [references/guides/debugging.md](references/guides/debugging.md).
 - **Gateway branches must join at one node or terminate; `#result` does not survive joins** —
   [references/process-file-format/structured-flow-rules.md](references/process-file-format/structured-flow-rules.md) ·
@@ -137,6 +155,8 @@ Documentation/wiring: [sequence-flow](references/shapes/sequence-flow.md) ·
 
 ### Guides (workflows) — `references/guides/`
 [best-practices](references/guides/best-practices.md) ·
+[tooling-routes](references/guides/tooling-routes.md) ·
+[mcp-build-conventions](references/guides/mcp-build-conventions.md) ·
 [bpmn-modeling](references/guides/bpmn-modeling.md) ·
 [error-handling](references/guides/error-handling.md) ·
 [code-shape-style](references/guides/code-shape-style.md) ·
@@ -147,7 +167,10 @@ Documentation/wiring: [sequence-flow](references/shapes/sequence-flow.md) ·
 
 ### Custom Tasks — `references/tasks/`
 Authoring your own C# Task. [authoring](references/tasks/authoring.md) ·
-[packaging](references/tasks/packaging.md) · [metadata](references/tasks/metadata.md)
+[template](references/tasks/template.md) · [anatomy](references/tasks/anatomy.md) ·
+[metadata](references/tasks/metadata.md) · [packaging](references/tasks/packaging.md) ·
+[testing](references/tasks/testing.md) · [security](references/tasks/security.md) ·
+[house-conventions](references/tasks/house-conventions.md)
 
 ### Process file format & generation — `references/process-file-format/`
 Read whenever asked to produce an importable Process file, parse an export, or reason about how a
@@ -179,18 +202,17 @@ flow is serialized. [overview](references/process-file-format/overview.md) ·
   export containing it first** (at setup or the moment the gap surfaces) — never work around the
   gap silently and never guess. Always tell the developer to validate by importing into a dev
   Agent Group.
-- **Custom Task:** scaffold a real .NET project per
-  [references/tasks/authoring.md](references/tasks/authoring.md) (build/install:
-  [packaging.md](references/tasks/packaging.md); declare/help:
-  [metadata.md](references/tasks/metadata.md)).
+- Custom Task: generate from the official template and de-brand it
+  ([references/tasks/template.md](references/tasks/template.md)), implement the contract
+  ([anatomy.md](references/tasks/anatomy.md)), document, test and secure it, then version and pack
+  ([packaging.md](references/tasks/packaging.md)). Import only on the person's confirmation.
 - **Expressions / Code Tasks:** state which field type they belong in (Expression, Text, Decision,
   Assign Variable, or Code Task) — see [references/expressions/](references/expressions/).
-- **Reviewing a Process or custom Task** against the rules: hand over to the `frends-reviewer`
+- Reviewing a Process or custom Task against the rules: hand over to the `frends-reviewer`
   skill, and run its `review_process.py` on every Process file this skill generates.
-- **Operating a live tenant** (list/pull/push/deploy/run/monitor): use the Platform API CLI tools per
-  [references/guides/cli_tool_reference.md](references/guides/cli_tool_reference.md). Prefer them over
-  hand-rolled curl; they are scaffolded and not yet live-tested, so validate against the tenant's
-  `/swagger`.
+- Operating a live tenant (list/pull/push/deploy/run/monitor): MCP first; the Platform API
+  scripts per [references/guides/cli_tool_reference.md](references/guides/cli_tool_reference.md) for
+  what MCP does not cover or when MCP is absent. Never hand-roll curl.
 
 ## Staying current
 

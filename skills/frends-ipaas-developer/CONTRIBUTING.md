@@ -68,8 +68,9 @@ Guides are whole essays, not per-entity. Drop `references/guides/<guide>.md` and
   them. Serialization lives in `process-file-format/`; reference it.
 - **Relative links** between reference files (e.g. `../expressions/namespaces.md`) so they
   resolve wherever the skill is installed.
-- **State the version baseline** (6.2 / net8.0) and call out where detail is *inferred* vs
-  *confirmed against a real export*.
+- State the version baseline (6.2, 6.3 / net8.0) and the evidence label of each claim:
+  confirmed (export, import, MCP schema, OpenAPI), docs, corpus or inferred
+  ([references/guides/staying-current.md](references/guides/staying-current.md)).
 - **Never invent version-sensitive specifics** (exact Task parameter names, enum members, trigger
   `config` shapes). Link to the source of truth and say it must be confirmed.
 - Bump `VERSION` (minor) when you add or materially change entity coverage; update `SKILL.md`'s

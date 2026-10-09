@@ -1,13 +1,21 @@
-# Custom Tasks — index
+# Custom Tasks: index
 
-Authoring your own Frends [Task](../concepts/task.md) when no ready-made one fits and a
-[Code Task](../shapes/code-task.md) can't (because it needs libraries Frends doesn't load).
+Building your own Frends [Task](../concepts/task.md): a C# class library packed as NuGet and
+imported into a tenant, used as a Task shape in a Process. Build one only when no catalogue Task
+fits and a [Code Task](../shapes/code-task.md) cannot do the work.
 
 | File | What / when to read |
 | --- | --- |
-| [authoring.md](authoring.md) | When to build; method signature rules; parameters/UI; result & cancellation; scaffolding; verifying against source. |
-| [packaging.md](packaging.md) | NuGet packaging (assembly = package Id), `dotnet pack`, importing into a tenant. |
-| [metadata.md](metadata.md) | `FrendsTaskMetadata.json` (which methods are Tasks) and XML-doc help. |
+| [authoring.md](authoring.md) | When to build; the workflow from template to release; the platform's method rules. Start here. |
+| [template.md](template.md) | Installing and running `dotnet new frends-task`, what it generates, de-branding the output. |
+| [anatomy.md](anatomy.md) | The contract: signature, tabs, result, error handling, validation, multi-operation Tasks, disposal, layouts per Task type. |
+| [metadata.md](metadata.md) | `FrendsTaskMetadata.json`, `migration.json`, XML documentation and `<frendsdocs>`. |
+| [packaging.md](packaging.md) | csproj, versioning, changelog, packing, importing into a tenant. |
+| [testing.md](testing.md) | Unit tests, coverage, secrets in tests, Docker, CI pipelines. |
+| [security.md](security.md) | Security and data-protection checklist for a Task. |
+| [house-conventions.md](house-conventions.md) | Where the organisation's own rules differ: party name, repositories, CI, feed. |
 
-To extend: copy [../_TEMPLATE.md](../_TEMPLATE.md) for a new aspect, add a row above, add a router line
-to [../../SKILL.md](../../SKILL.md).
+Review a Task against these files with the `frends-reviewer` skill's custom Task checklist.
+
+Adapted in part from `FrendsPlatform/FrendsTasks`, folder `FrendsTaskSkills` (MIT licence), and the
+`FrendsTaskTemplate` in the same repository.

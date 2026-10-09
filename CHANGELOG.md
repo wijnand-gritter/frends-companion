@@ -9,6 +9,31 @@ versions were released from a different repository and have no tag here.
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-10-09
+
+### Added
+- Routes: tenant work goes through the Frends MCP server first, the Platform API second and
+  generated files last, chosen per operation (`references/guides/tooling-routes.md`). With Frends'
+  own `frends` plugin installed, its skills run the MCP workflows and the companion adds the house
+  layer. Promote, deploy, run, Task import and Environment Variable creation run only on the
+  person's confirmation, on every route.
+- `references/guides/mcp-build-conventions.md`: house rules mapped onto the MCP process builder
+  parameters, checked against the tool schemas on Frends 6.3.2, with the MCP gaps (process
+  variables, tags, a Throw with an `HttpResult` body).
+- Custom Task knowledge rebuilt from the official `FrendsTaskTemplate` and `FrendsTaskSkills`
+  (MIT): `tasks/template.md`, `anatomy.md`, `testing.md`, `security.md`, `house-conventions.md`,
+  and rewritten `authoring.md`, `metadata.md`, `packaging.md`. The `Frends.*` prefix is reserved for
+  the official catalogue; custom Tasks use `<Party>.<System>.<Action>` and the
+  `ThrowErrorOnFailure` / `Success` + `Error` contract.
+- Platform API scripts `frends-tags.sh`, `frends-templates.sh`, `frends-api-specs.sh`;
+  `frends-instances.sh acknowledge`; `frends-process-pull.sh --batch`.
+- `scripts/check_api_drift.py` and `references/guides/platform-api-operations.txt`: the 92
+  operations of the 6.3.2 OpenAPI document, and a check that reports drift and broken script calls.
+- `references/process-file-format/templates-and-imports.md`: Template versus Process export, the
+  conversions, what each import path validates, and `#var` before `#env` for portable templates.
+- `frends-reviewer` reads a Frends MCP `get_process_data` result and Template exports; its rules
+  were calibrated over the 77 public FrendsTemplates.
+
 ### Changed
 - The repository moved to GitHub (`github.com/wijnand-gritter/frends-companion`) and is its own
   marketplace, `frends-companion`, through `.claude-plugin/marketplace.json`. Install with
@@ -19,6 +44,17 @@ versions were released from a different repository and have no tag here.
 - CI moved from GitLab CI to GitHub Actions: `ci.yml` runs `scripts/check.sh` on pull requests and
   `main`; `release.yml` checks a `*--v*` tag against `plugin.json` and publishes the GitHub release.
   `scripts/check.sh` also checks that the marketplace lists the plugin.
+- `frends-agentgroups.sh list` lists Agent Groups per Environment: the Platform API has no flat
+  Agent Group list.
+- `frends-process-push.sh` defaults `--conflict` to `Error`, the API default; pass `NewVersion` to
+  update a Process.
+- `frends-env-vars.sh set` takes the JSON value itself (`'"my-value"'`), the shape `show` returns.
+- All Platform API scripts are checked against the Frends 6.3.2 OpenAPI document; their headers say
+  so. Private Application tokens are documented as unusable for the Platform API.
+- The error-handling guide states that an `HttpResult` Return accepts a status code expression.
+- The reviewer reports duplicate Return and Throw names as minor and SQL built from `#var` as
+  minor; `#trigger` input in SQL stays major.
+- `frends-canvas-arranger` is for the file route only.
 
 ## [0.7.0] - 2026-10-09
 
@@ -238,6 +274,7 @@ versions were released from a different repository and have no tag here.
 ## [0.1.0] - initial scaffold
 - Initial Frends Companion plugin, marketplace, and bundled skill.
 
-[Unreleased]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.7.0...main
+[Unreleased]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.8.0...main
+[0.8.0]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.7.0...frends-companion-developer--v0.8.0
 [0.7.0]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.5.0...frends-companion-developer--v0.7.0
 [0.5.0]: https://github.com/wijnand-gritter/frends-companion/releases/tag/frends-companion-developer--v0.5.0

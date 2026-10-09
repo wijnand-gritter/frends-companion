@@ -52,7 +52,7 @@ for f in skills/frends-ipaas-developer/scripts/*.sh scripts/*.sh; do
 done
 
 step "Python compiles"
-for f in skills/frends-ipaas-developer/scripts/generate_process.py skills/frends-reviewer/scripts/review_process.py scripts/check_links.py; do
+for f in skills/frends-ipaas-developer/scripts/generate_process.py skills/frends-ipaas-developer/scripts/check_api_drift.py skills/frends-reviewer/scripts/review_process.py scripts/check_links.py; do
   python3 -m py_compile "$f" 2>/dev/null && ok "$f" || fail "$f does not compile"
 done
 

@@ -4,6 +4,8 @@ description: Interactive guide for setting up Frends Platform API credentials
 
 Guide the user through setup or re-setup of their `.env` file for Frends Platform API access.
 
+The Platform API is the second route. When a Frends MCP server answers (`get_overview`), it covers building, inspecting, deploying, running and diagnosing; the Platform API is still needed for tags, templates, API specifications, Environment Variable values per Environment, exports and instance acknowledgement. Problems with the MCP connection itself go to the `frends:getting-connected` skill when the `frends` plugin is installed. Entra ID client credentials are the only authentication the Platform API accepts; Private Application tokens are for published APIs only.
+
 ## Steps
 
 1. **Check current state**:

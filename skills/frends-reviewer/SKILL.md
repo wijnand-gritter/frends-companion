@@ -20,18 +20,23 @@ fixes are made with the `frends-ipaas-developer` skill.
 
 | Input | How |
 | --- | --- |
+| A draft or deployed Process, MCP route | `get_process_data` (with `draftId` or `deploymentId`), result saved as JSON, then `scripts/review_process.py` |
+| A Process on the tenant, Platform API route | `frends-process-pull.sh` (frends-ipaas-developer), then `scripts/review_process.py` |
 | Process or Subprocess export (`.json`) | `scripts/review_process.py`, then the manual rules |
-| A Process on the tenant | pull it with `frends-process-pull.sh` (frends-ipaas-developer), then as above |
+| Template export (`ProcessTemplates`) | `scripts/review_process.py` reads the embedded Process |
 | A BPMN-only export (`.bpmn`) | ask for the JSON export; BPMN carries no shape parameters |
 | A generated Process from frends-ipaas-developer | as a JSON export, before it is delivered |
 | A custom Task repository | [references/custom-task-checklist.md](references/custom-task-checklist.md) |
 
 ## Workflow
 
-1. **Find the standard.** Look for a path in the request, then `house_standards.md` in the workspace
+0. Pick the route per frends-ipaas-developer's `references/guides/tooling-routes.md`: MCP
+   `get_process_data`, else a Platform API export, else the file in hand. An MCP result carries no
+   description, tags or promoted-variable list, so those rules are reported as not assessable.
+1. Find the standard. Look for a path in the request, then `house_standards.md` in the workspace
    root. Read the standard's documents. Without one, review against the Frends baseline and state
    that in the report. Precedence: [references/house-standards.md](references/house-standards.md).
-2. **Run the automatic checks** on every export:
+2. Run the automatic checks on every export:
 
    ```bash
    python3 <skill-base-path>/scripts/review_process.py <export.json> [more.json] \
@@ -41,15 +46,19 @@ fixes are made with the `frends-ipaas-developer` skill.
    `--disable` switches off convention rules the house standard contradicts. `--pipeline` names
    the error handler and the error-event listener where their names are not recognised
    automatically. Exit code 2 means blockers, 1 majors.
-3. **Check the manual rules** in [references/rules.md](references/rules.md). Read the Process: the
+3. Check the manual rules in [references/rules.md](references/rules.md). Read the Process: the
    canvas flow, Code Task bodies, Task parameters, trigger settings, description. Ask for what the
    export cannot show: the specification, the tenant log level, the operating instructions, the test
    evidence. A rule without the input goes under "Manual rules not assessable".
-4. **Confirm each automatic finding before reporting it.** The security and naming checks are
+4. Confirm each automatic finding before reporting it. The security and naming checks are
    heuristics: drop a false positive and say why in one line.
-5. **Report** in the format of [references/report-format.md](references/report-format.md): verdict,
+5. Report in the format of [references/report-format.md](references/report-format.md): verdict,
    findings table, rules not assessable.
-6. **Offer fixes.** List the fixes in severity order and offer to apply them with
+6. Pair with the plan review. When Frends' `frends` plugin is installed, `frends:review-a-draft`
+   checks the draft against its integration plan. This skill checks platform and house rules. Run
+   both on a draft before promotion and merge the findings into one report, citing which review
+   found each.
+7. Offer fixes. List the fixes in severity order and offer to apply them with
    `frends-ipaas-developer`. A blocker is fixed before anything else is discussed.
 
 ## Rules in one view

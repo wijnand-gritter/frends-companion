@@ -8,12 +8,16 @@
 #               PUT /api/v1/environment-variables/{schemaId}/values/{environmentId}
 #
 # Notes:
-# - The PUT body is a JSON array; the value type must match the variable's schema
-#   type (String/Number/Boolean/Array/Secret/Object). For a plain string value
-#   pass e.g. --value '["my-value"]'. Confirm the exact shape in /swagger.
+# - The PUT body is the JSON value itself, in the same shape `show` returns in
+#   values[].value, and of the variable's type (String, Number, Boolean, Array,
+#   Secret, Object): --value '"my-value"', --value '30', --value '["a","b"]'.
+#   The OpenAPI document types it as a free JSON element; test on Development first.
+# - Setting a value changes the tenant: run `set` only on the person's confirmation.
+#   Never pass a secret on the command line in a shared session; set secrets in the
+#   Control Panel.
 # - Deploy validation requires every used Environment Variable to have a value in
 #   the target Environment, so set values before deploying to Test/Production.
-# STATUS: scaffolded, not live-tested. See frends-common.sh header.
+# STATUS: checked against the 6.3.2 OpenAPI document. See frends-common.sh header.
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=/dev/null
@@ -52,9 +56,9 @@ case "$CMD" in
     echo "$RESPONSE_BODY" | jq '.'
     ;;
   set)
-    [[ -z "$ID" || -z "$ENVID" || -z "$VALUE" ]] && { echo "ERROR: set requires --id, --environment, --value '<json-array>'" >&2; exit 2; }
+    [[ -z "$ID" || -z "$ENVID" || -z "$VALUE" ]] && { echo "ERROR: set requires --id, --environment, --value '<json-value>'" >&2; exit 2; }
     # Validate the value is JSON before sending.
-    echo "$VALUE" | jq -e . >/dev/null 2>&1 || { echo "ERROR: --value must be valid JSON (e.g. '[\"my-value\"]')" >&2; exit 2; }
+    echo "$VALUE" | jq -e . >/dev/null 2>&1 || { echo "ERROR: --value must be valid JSON (e.g. '\"my-value\"')" >&2; exit 2; }
     frends_api PUT "environment-variables/${ID}/values/${ENVID}" -H "Content-Type: application/json" -d "$VALUE"
     expect_ok "Update environment variable value" || exit 1
     echo "Updated env-var ${ID} value in environment ${ENVID}."

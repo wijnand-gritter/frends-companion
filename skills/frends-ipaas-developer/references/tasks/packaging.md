@@ -1,23 +1,77 @@
-# Custom Task packaging and importing
+# Task packaging, versioning and import
 
-**Category:** tasks · **Baseline:** Frends 6.2 / net8.0
+Category: tasks · Baseline: template from `FrendsPlatform/FrendsTasks`, net8.0
 
-How to build a custom [Task](authoring.md) into a NuGet package and get it into a tenant. For which
-methods become Tasks and how help text is surfaced, see [metadata.md](metadata.md).
+## csproj after de-branding
 
-## Packaging as NuGet
-- Tasks are distributed as NuGet packages (`.nupkg`).
-- The **assembly name and package Id must be identical**, e.g. `Frends.TaskTemplate.dll` inside
-  `Frends.TaskTemplate.1.0.0.0.nupkg`.
-- Pack with `dotnet pack`. For legacy non-SDK projects you may instead need `nuget.exe` with a
-  `.nuspec` file.
+```xml
+<PropertyGroup>
+  <TargetFramework>net8.0</TargetFramework>
+  <LangVersion>latest</LangVersion>
+  <Version>1.0.0</Version>
+  <Authors>Conclusion</Authors>
+  <Company>Conclusion</Company>
+  <Copyright>Conclusion</Copyright>
+  <Product>Conclusion Frends Tasks</Product>
+  <PackageTags>Frends;Conclusion</PackageTags>
+  <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  <Description>Executes a SOQL query against Salesforce.</Description>
+  <PackageProjectUrl>https://<repository></PackageProjectUrl>
+  <RepositoryUrl>https://<repository></RepositoryUrl>
+</PropertyGroup>
+```
 
-## Importing into a tenant
-Import the `.nupkg` through the **Tasks admin page** in the Control Panel. For automation, use NuGet
-feeds so your CI/CD pipeline can publish Task packages and the tenant can pull from the feed (see
-[../guides/deployment.md](../guides/deployment.md)). Once imported, the Task appears in the Task
-selector for shapes, with your parameters and XML-doc help.
+| Rule | Detail |
+| --- | --- |
+| Package id | defaults to the assembly name; no `PackageId` override |
+| Licence | `PackageLicenseExpression` matches the chosen licence; `PackageLicenseFile` for proprietary |
+| Warnings | zero; every `NoWarn` or `#pragma warning disable` carries a comment naming the warning and why muting is safe |
+| Packed content | assembly, XML documentation, `FrendsTaskMetadata.json`, `migration.json`, `CHANGELOG.md` |
+| Secrets | never a connection string, key or tenant URL in the csproj |
+| Runtime | Frends 6.3 Agents run .NET 10; a net8.0 assembly loads, but check for APIs removed between the two and say so |
 
-## Source of truth
-`https://docs.frends.com/guides/development/creating-custom-tasks.md`;
-`github.com/FrendsPlatform/FrendsTaskTemplate`.
+## Versioning
+
+| Bump | When |
+| --- | --- |
+| Major | a parameter moves between tabs or is renamed (typo fixes included); a tab is removed or renamed; a new parameter has no default that keeps the old behaviour |
+| Minor | documentation fixes; new parameters whose defaults keep the old behaviour |
+| Patch | every test import while iterating: Frends will not import the same version twice |
+
+- Every major bump comes with a `migration.json` entry and a CHANGELOG entry with the upgrade steps.
+- Prefer a non-breaking design, but never pick a harmful default to avoid a major bump.
+
+## CHANGELOG
+Keep a Changelog format, written for the Process author:
+
+```
+## [2.0.0] - 2026-10-09
+### Changed
+- [Breaking] Moved parameter Timeout to the Options tab.
+  To upgrade, set the same value on the Options tab as it had on the Input tab.
+```
+
+## Pack
+
+```bash
+dotnet test Conclusion.Salesforce.Query/Conclusion.Salesforce.Query.sln
+dotnet pack Conclusion.Salesforce.Query/Conclusion.Salesforce.Query/Conclusion.Salesforce.Query.csproj -c Release -o out
+```
+
+A failing test stops the pack. `out/` is not committed.
+
+## Import into a tenant
+Importing changes the tenant: only on the person's confirmation.
+
+| Route | How |
+| --- | --- |
+| MCP | `import_task` pulls a package from the tenant's configured NuGet feeds; the platform asks the person to confirm |
+| Control Panel | Tasks page: upload the `.nupkg` |
+| Feed | publish to the organisation's NuGet feed from CI; the tenant pulls from it |
+
+The Platform API has no Task import endpoint. Changing a Task's contract affects every Process that
+uses it, which is why breaking changes take a major version.
+
+## Sources
+- `FrendsTaskSkills/frends-task-creator/references/documentation-and-metadata.md`, `testing-and-cicd.md` (MIT)
+- MCP `import_task` tool description, Frends 6.3.2

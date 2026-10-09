@@ -18,4 +18,5 @@ How Frends serializes a Process, for reading an export or generating an importab
 | [exception-handler-rules.md](exception-handler-rules.md) | The four rules a Scope with a Catch must satisfy to import. |
 | [unhandled-error-hook.md](unhandled-error-hook.md) | The unhandled-error Subprocess setting, as a Type 18 entry with no BPMN element. |
 | [canvas-layout-conventions.md](canvas-layout-conventions.md) | DI conventions that make a generated canvas look hand-arranged. |
+| [templates-and-imports.md](templates-and-imports.md) | Template vs Process export, conversions, what each import path validates, `#var` before `#env`. |
 | [examples.md](examples.md) | What each bundled real export demonstrates. |

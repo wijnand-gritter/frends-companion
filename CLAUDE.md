@@ -48,9 +48,11 @@ Frends-specific vocabulary matters; generic BPMN/C# intuition often gets it wron
 
 ## Platform API note
 
-The CLI tools in `skills/frends-ipaas-developer/scripts/` talk to the **Frends Platform API** (`https://<tenant>.frendsapp.com/api/v1`). The Platform API is not enabled out of the box: it requires Microsoft Entra ID app registration, an admin app role, and IP allowlisting arranged with Frends support. Authentication is OAuth2 client-credentials against Azure AD, which returns a bearer token used on every Platform API call. See `skills/frends-ipaas-developer/references/guides/cli_tool_reference.md` and the `connect` command.
+Tenant work goes through three routes, chosen per operation: the Frends MCP server, the Platform API scripts, then generated files (`skills/frends-ipaas-developer/references/guides/tooling-routes.md`). With Frends' own `frends` plugin installed, its skills own the MCP workflows and the companion adds the house layer.
 
-The Platform API scripts are **scaffolded against the published Frends 6.2 Platform API reference and have not been live-tested against a tenant.** Each script header says so. Validate endpoints against your own tenant's `https://<tenant>.frendsapp.com/swagger` before relying on them in automation, and confirm any list endpoints whose exact path is marked TODO in the script.
+The CLI tools in `skills/frends-ipaas-developer/scripts/` talk to the Frends Platform API (`https://<tenant>.frendsapp.com/api/v1`). The Platform API is not enabled out of the box: it requires Microsoft Entra ID app registration, an admin app role, and IP allowlisting arranged with Frends support. Authentication is OAuth2 client-credentials against Azure AD, which returns a bearer token used on every Platform API call. See `skills/frends-ipaas-developer/references/guides/cli_tool_reference.md` and the `connect` command.
+
+The Platform API scripts are checked against the Frends 6.3.2 OpenAPI document (`https://<tenant>.frendsapp.com/v1.0/swagger.json`, 92 operations) and exercised against a stubbed API. `scripts/check_api_drift.py <swagger.json>` reports operations added or removed since, and script calls the document no longer has. Entra ID client credentials are the only authentication the Platform API accepts.
 
 ## Skill VERSION files
 

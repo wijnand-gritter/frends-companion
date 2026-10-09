@@ -16,11 +16,14 @@
 #   run     --id <deploymentId> [--params '<json-object-of-strings>']
 #               POST /api/v1/process-deployments/{id}/execute
 #
+# deploy, undeploy, activate, deactivate and run change the tenant: run them only on
+# the person's explicit confirmation.
+#
 # Deploy validation rules (enforced by the platform): all used Environment
 # Variables must have values in the target Environment; all used Subprocesses
 # must already be deployed there; the Process target framework must match the
 # Agent Group framework.
-# STATUS: scaffolded, not live-tested. See frends-common.sh header.
+# STATUS: checked against the 6.3.2 OpenAPI document. See frends-common.sh header.
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=/dev/null
