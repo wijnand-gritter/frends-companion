@@ -26,6 +26,8 @@ versions were released from a different repository and have no tag here.
   MCP Trigger OAuth access, .NET Runtime 10.0.7 for 6.3.1 Agents, blocked Task re-imports.
 
 ### Added
+- `frends-write-test.sh`: a live test of the operations that change the tenant, on a throwaway
+  Process in Development; prints the plan and stops unless `--confirm`.
 - `frends-smoke-test.sh`: a read-only run of every Platform API script against the tenant, with
   the export validated and reviewed and a live OpenAPI drift check.
 
