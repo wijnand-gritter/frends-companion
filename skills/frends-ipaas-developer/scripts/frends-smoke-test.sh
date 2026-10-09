@@ -68,10 +68,31 @@ run "agentgroups list" bash "$S/frends-agentgroups.sh" list
 if [[ -n "$AG" ]]; then run "agentgroups show" bash "$S/frends-agentgroups.sh" show --id "$AG" --raw
 else skip "agentgroups show" "FRENDS_DEV_AGENT_GROUP_ID unset"; fi
 
-run "process-list" bash "$S/frends-process-list.sh" --size 5 --raw
-PGUID="$(jq -r '.data[0].uniqueIdentifier // empty' "$WORK/last" 2>/dev/null)"
-PVER="$(jq -r '.data[0].version // empty' "$WORK/last" 2>/dev/null)"
-PID="$(jq -r '.data[0].id // empty' "$WORK/last" 2>/dev/null)"
+DGUID=""
+if [[ -n "$AG" ]]; then
+  run "deploy list" bash "$S/frends-deploy.sh" list --agent-group "$AG" --raw
+  # Deployments carry deploymentId; first_id would pick up the nested agentGroup.id.
+  DID="$(jq -r '.data[0].deploymentId // empty' "$WORK/last" 2>/dev/null)"
+  DGUID="$(jq -r '.data[0].processGuid // empty' "$WORK/last" 2>/dev/null)"
+  if [[ -n "$DID" ]]; then run "deploy show" bash "$S/frends-deploy.sh" show --id "$DID"
+  else skip "deploy show" "no deployment"; fi
+else for s in "deploy list" "deploy show"; do skip "$s" "FRENDS_DEV_AGENT_GROUP_ID unset"; done; fi
+
+# The list holds every version, deleted ones included; a deleted version cannot be exported.
+LIVE='[.data[] | select(.isDeleted == false and .isNotLatestVersion == false)][0]'
+pick_live() {
+  PGUID="$(jq -r "$LIVE.uniqueIdentifier // empty" "$WORK/last" 2>/dev/null)"
+  PVER="$(jq -r "$LIVE.version // empty" "$WORK/last" 2>/dev/null)"
+  PID="$(jq -r "$LIVE.id // empty" "$WORK/last" 2>/dev/null)"
+}
+run "process-list" bash "$S/frends-process-list.sh" --size 50 --raw
+pick_live
+# A tenant with many deleted versions can fill the first page with them; fall back to a deployed Process.
+if [[ -z "$PGUID" && -n "$DGUID" ]]; then
+  NOTE="deployed Process $DGUID"
+  run "process-list --guid (deployed)" bash "$S/frends-process-list.sh" --guid "$DGUID" --raw
+  pick_live
+fi
 
 if [[ -n "$PGUID" && -n "$PVER" ]]; then
   if run "process-pull (guid, version)" bash "$S/frends-process-pull.sh" --guid "$PGUID" --version "$PVER" --out "$WORK/export.json"; then
@@ -89,18 +110,14 @@ PY
       rc=$?; [[ $rc -le 1 ]] && RESULTS+=("PASS|review_process.py on export|exit $rc (1 = findings)") || RESULTS+=("FAIL|review_process.py on export|exit $rc")
     fi
   fi
-else skip "process-pull (guid, version)" "no Process in list"; fi
+else skip "process-pull (guid, version)" "no live Process found"; fi
 if [[ -n "$PID" ]]; then run "process-pull --batch" bash "$S/frends-process-pull.sh" --batch --ids "$PID" --out "$WORK/batch.json"
 else skip "process-pull --batch" "no Process id"; fi
 
 if [[ -n "$AG" ]]; then
-  run "deploy list" bash "$S/frends-deploy.sh" list --agent-group "$AG" --raw
-  DID="$(first_id id)"
-  if [[ -n "$DID" ]]; then run "deploy show" bash "$S/frends-deploy.sh" show --id "$DID"
-  else skip "deploy show" "no deployment"; fi
   run "instances list" bash "$S/frends-instances.sh" list --agent-group "$AG" --size 5 --raw
   run "instances counts" bash "$S/frends-instances.sh" counts --agent-group "$AG"
-else for s in "deploy list" "deploy show" "instances list" "instances counts"; do skip "$s" "FRENDS_DEV_AGENT_GROUP_ID unset"; done; fi
+else for s in "instances list" "instances counts"; do skip "$s" "FRENDS_DEV_AGENT_GROUP_ID unset"; done; fi
 
 run "env-vars list" bash "$S/frends-env-vars.sh" list --raw
 EID="$(first_id id)"
