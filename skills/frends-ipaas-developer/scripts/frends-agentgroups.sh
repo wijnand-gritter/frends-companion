@@ -10,8 +10,8 @@
 # An Agent Group belongs to exactly one Environment, holds one or more Agents, and has
 # a framework flag (isCrossPlatform). Agent Group IDs are needed for deploys and for
 # listing Process Instances. On the MCP route, get_overview returns the same data.
-# STATUS: checked against the 6.3.2 OpenAPI document; read operations confirmed live on 6.3.2.5468
-# by frends-smoke-test.sh. Operations that change the tenant are not yet run live.
+# STATUS: checked against the 6.3.2 OpenAPI document. Confirmed live on 6.3.2.5468
+# (frends-smoke-test.sh, frends-write-test.sh): list and show.
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=/dev/null

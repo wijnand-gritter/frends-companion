@@ -4,8 +4,9 @@
 #
 # STATUS: endpoints, parameters and response fields checked against the Frends
 # 6.3.2 OpenAPI document (https://<tenant>.frendsapp.com/v1.0/swagger.json,
-# 92 operations). Read operations confirmed live on 6.3.2.5468 with frends-smoke-test.sh;
-# operations that change the tenant are not yet run live. Use the Frends MCP server first where it covers the operation;
+# 92 operations). Confirmed live on 6.3.2.5468 with frends-smoke-test.sh (reads) and
+# frends-write-test.sh (import, tags, deploy, activation, run, acknowledge, Environment Variable
+# value); each script header lists what is confirmed. Use the Frends MCP server first where it covers the operation;
 # these scripts cover the rest (see references/guides/tooling-routes.md).
 #
 # Auth model: the Frends Platform API uses OAuth2

@@ -15,7 +15,8 @@
 # Run only on the person's explicit confirmation: an import changes the tenant.
 # Importing only creates/updates the Process in Development; deploy separately
 # with frends-deploy.sh. Import can be slow — timeout is raised accordingly.
-# STATUS: checked against the 6.3.2 OpenAPI document; not yet run live. See frends-common.sh header.
+# STATUS: checked against the 6.3.2 OpenAPI document. Confirmed live on 6.3.2.5468
+# (frends-write-test.sh): --conflict Error and NewVersion, with a generated net10.0 file.
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=/dev/null
@@ -45,5 +46,5 @@ frends_api POST "processes/batch-import" \
 
 expect_ok "Import Process(es)" || exit 1
 echo "Imported successfully:"
-echo "$RESPONSE_BODY" | jq -r '.data | "  \(.name)  guid=\(.elementIdentifier)  id=\(.id)  v\(.version)"' 2>/dev/null || echo "$RESPONSE_BODY"
+echo "$RESPONSE_BODY" | jq -r '(.data | if type == "array" then .[] else . end) | "  \(.name)  guid=\(.elementIdentifier)  id=\(.id)"' 2>/dev/null || echo "$RESPONSE_BODY"
 log_activity "process-push" "success" "$RESPONSE_CODE" "$(jq -cn --arg f "$FILE" --arg c "$CONFLICT" '{file:$f,conflict:$c}')"

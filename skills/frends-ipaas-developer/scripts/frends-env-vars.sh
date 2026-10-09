@@ -11,14 +11,14 @@
 # - The PUT body is the JSON value itself, in the same shape `show` returns in
 #   values[].value, and of the variable's type (String, Number, Boolean, Array,
 #   Secret, Object): --value '"my-value"', --value '30', --value '["a","b"]'.
-#   The OpenAPI document types it as a free JSON element; test on Development first.
+#   Confirmed live with a String value: --value '"companion-test"' stores companion-test.
 # - Setting a value changes the tenant: run `set` only on the person's confirmation.
 #   Never pass a secret on the command line in a shared session; set secrets in the
 #   Control Panel.
 # - Deploy validation requires every used Environment Variable to have a value in
 #   the target Environment, so set values before deploying to Test/Production.
-# STATUS: checked against the 6.3.2 OpenAPI document; read operations confirmed live on 6.3.2.5468
-# by frends-smoke-test.sh. Operations that change the tenant are not yet run live.
+# STATUS: checked against the 6.3.2 OpenAPI document. Confirmed live on 6.3.2.5468
+# (frends-smoke-test.sh, frends-write-test.sh): list, show and set (a String value in Development).
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=/dev/null

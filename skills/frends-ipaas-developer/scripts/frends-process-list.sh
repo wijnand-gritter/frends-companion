@@ -6,8 +6,8 @@
 # Prints a compact table (name, guid, latest version) unless --raw is given.
 # The API returns every version, deleted and outdated ones included, with the full BPMN; the table
 # shows only live latest versions unless --all is given. A deleted version cannot be exported (HTTP 400).
-# STATUS: checked against the 6.3.2 OpenAPI document; read operations confirmed live on 6.3.2.5468
-# by frends-smoke-test.sh. Operations that change the tenant are not yet run live.
+# STATUS: checked against the 6.3.2 OpenAPI document. Confirmed live on 6.3.2.5468
+# (frends-smoke-test.sh, frends-write-test.sh): the whole script.
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=/dev/null

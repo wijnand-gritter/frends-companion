@@ -105,6 +105,7 @@ export containing X before I can generate this correctly."
   [../guides/best-practices.md](../guides/best-practices.md); fix blockers and majors first.
 - **Set `frendsVersion` and `targetFramework` to the tenant's values** (a sample export; MCP
   `get_overview` gives the version). The generator defaults to 6.2.3.3649 and `net8.0`, the values
-  its encodings were confirmed against; on a 6.3 tenant pass `net10.0`.
+  its encodings were confirmed against; on a 6.3 tenant pass `net10.0`. A generated file with
+  `net10.0` and `6.3.2.5468` imports through the Platform API (confirmed (import)).
 - **On the MCP route, do not generate a file.** Build the draft with the process builder tools;
   this checklist is the file route ([../guides/tooling-routes.md](../guides/tooling-routes.md)).

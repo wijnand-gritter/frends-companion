@@ -11,8 +11,8 @@
 #   remove --type <t> --guids <guid,...> --tags <tag,...> DELETE /api/v1/tags   (removes those tags)
 #
 # add, set and remove change the tenant: run them only on the person's confirmation.
-# STATUS: checked against the 6.3.2 OpenAPI document; read operations confirmed live on 6.3.2.5468
-# by frends-smoke-test.sh. Operations that change the tenant are not yet run live.
+# STATUS: checked against the 6.3.2 OpenAPI document. Confirmed live on 6.3.2.5468
+# (frends-smoke-test.sh, frends-write-test.sh): all, get, add and remove; set not yet run.
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=/dev/null

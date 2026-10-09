@@ -199,10 +199,10 @@ The knowledge works against Frends 6.2 and 6.3 (6.3.0 to 6.3.2). The serialisati
 tenants. The 6.3.0, 6.3.1 and 6.3.2 release notes are folded into the references they affect, and
 the .NET 10 and C# 14 support was validated on a 6.3.2 tenant through the Frends MCP server.
 
-The Platform API scripts are checked against the 6.3.2 OpenAPI document, and their read operations
-ran against a live 6.3.2 tenant through `frends-smoke-test.sh`. Operations that change the tenant
-(push, deploy, run, tags, Environment Variable values) have not run live yet; each script header says
-which state it is in.
+The Platform API scripts are checked against the 6.3.2 OpenAPI document and ran against a live 6.3.2
+tenant: `frends-smoke-test.sh` covers the reads, `frends-write-test.sh` the import, tags, deploy,
+activation, run, acknowledge and Environment Variable values on a throwaway Process. Each script
+header lists what is confirmed and what has not run yet.
 
 ## Contributing
 

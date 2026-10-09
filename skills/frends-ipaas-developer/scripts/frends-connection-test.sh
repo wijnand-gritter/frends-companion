@@ -2,8 +2,8 @@
 # Test Frends Platform API connectivity: fetch a bearer token and list 1 Process.
 # Usage: bash scripts/frends-connection-test.sh
 #
-# STATUS: checked against the 6.3.2 OpenAPI document; read operations confirmed live on 6.3.2.5468
-# by frends-smoke-test.sh. Operations that change the tenant are not yet run live.
+# STATUS: checked against the 6.3.2 OpenAPI document. Confirmed live on 6.3.2.5468
+# (frends-smoke-test.sh, frends-write-test.sh): the whole script.
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=/dev/null

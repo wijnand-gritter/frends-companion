@@ -6,11 +6,12 @@ first for what it covers, and these scripts for the rest or when MCP is absent
 ([tooling-routes.md](tooling-routes.md)). Never hand-craft `curl`.
 
 Status: endpoints, parameters and response fields checked against the Frends 6.3.2 OpenAPI document
-(`https://<tenant>.frendsapp.com/v1.0/swagger.json`, 92 operations). Read operations of every script
-confirmed live on Frends 6.3.2.5468 with `frends-smoke-test.sh`. Operations that change the tenant
-(push, deploy, activation, run, tags, Environment Variable values, acknowledge, create from template)
-are not yet run live. If a script's behaviour differs from the tenant's document, trust the document
-and fix the script.
+(`https://<tenant>.frendsapp.com/v1.0/swagger.json`, 92 operations), and confirmed live on Frends
+6.3.2.5468: `frends-smoke-test.sh` for the reads, `frends-write-test.sh` for import (`Error`,
+`NewVersion`), tags, deploy, activation, run, acknowledge and an Environment Variable value. Not yet
+run live: undeploy, tags `set`, instance `details`, pull `--id`, template export and create-process,
+API specification show and version. Each script header lists what is confirmed. If a script's
+behaviour differs from the tenant's document, trust the document and fix the script.
 
 Facts from the live run:
 
@@ -19,6 +20,10 @@ Facts from the live run:
 | `GET /processes` | returns every version, deleted and outdated ones included, each with its full BPMN; `frends-process-list.sh` shows live latest versions unless `--all` |
 | `GET /processes/{guid}/versions/{v}/export` | HTTP 400 for a deleted version |
 | `GET /process-deployments` | items carry `deploymentId`, `processGuid`, `processVersion`, `triggersActive` and a nested `agentGroup.id` |
+| `POST /processes/batch-import` | `data` is an array of `{name, elementIdentifier (guid), id, resourceLocation}`; a generated 6.3 file (`net10.0`, `FrendsVersion` `6.3.2.5468`) imports |
+| `POST /process-deployments/{id}/execute` | HTTP 202 only accepts the run; poll the instances for `state` (`Finished`) |
+| `POST /instances/.../acknowledge` | accepts a successful instance too |
+| `PUT /environment-variables/{id}/values/{env}` | body is the JSON value: `"companion-test"` for a String |
 
 ## Prerequisites
 
