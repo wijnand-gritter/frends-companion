@@ -23,10 +23,10 @@ versions were released from a different repository and have no tag here.
 - MCP Trigger, RabbitMQ Trigger and Inclusive Decision encodings confirmed from a 6.3.2.5468
   export: the MCP Trigger config keys, the RabbitMQ connection and PEM client certificate keys,
   Inclusive Decision as Type 15 with branches as Type 16, and Assign Variable as Type 12. A redacted
-  example export sits in `process-file-format/examples/`. Still open: the RabbitMQ certificate
+  example export is in `process-file-format/examples/`. Still open: the RabbitMQ certificate
   password and store keys, the `Thumbprint` and `pfx/p12` types, `replyTo` and the AMQP trigger keys.
 - Platform API operations confirmed live on 6.3.2.5468: `frends-tags.sh set` (it replaces the
-  tags), `frends-instances.sh details` (step data sits behind `stepDataUri`), `frends-process-pull.sh
+  tags), `frends-instances.sh details` (step data is behind `stepDataUri`), `frends-process-pull.sh
   --id` with a process version id, and undeploy from a Test Agent Group. Template and API
   specification operations stay unconfirmed: the tenant has neither.
 

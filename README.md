@@ -55,12 +55,7 @@ Moving from the GitLab install: remove it first, so the two copies do not fight 
 claude plugin uninstall frends-companion-developer@conclusion
 ```
 
-Restart Claude Code, then set yourself up:
-
-```bash
-/frends-companion-developer:connect        # Platform API credentials, step by step
-/frends-companion-developer:new-workspace  # project template plus a global /frends-init
-```
+Restart Claude Code, then follow [Set up](#set-up).
 
 ### In the desktop app or Cowork
 
@@ -113,6 +108,79 @@ claude --plugin-dir /path/to/frends-companion
 An install of the old `fc-integration` plugin from this repository's earlier layout fights over the
 same skill. Remove it with `claude plugin uninstall fc-integration@frends-companion`, then
 `claude plugin marketplace update frends-companion`.
+
+## Set up
+
+Installing gives you the skills. To work on a tenant you also need a workspace and at least one
+route to the tenant. Each step is independent: with only a workspace, the plugin generates files you
+import yourself.
+
+### 1. Create a workspace
+
+Run once, in any Claude Code session:
+
+```
+/frends-companion-developer:new-workspace
+```
+
+It copies the project template to a folder you choose (your User Template) and writes a global
+`/frends-init` command. Then, per tenant or customer, open an empty folder and run:
+
+```
+/frends-init
+```
+
+The workspace holds the `CLAUDE.md` with the route order and safety rules, the `.env` for the
+Platform API, a `house_standards.md` for your own conventions and the folders for exports and
+feedback. Start Claude Code from that folder when you work on that tenant.
+
+### 2. Connect the Frends MCP server (recommended)
+
+The MCP route lets Claude build, validate and deploy drafts directly in the tenant. It needs
+Frends 6.3.2 or later.
+
+| Step | Where |
+|---|---|
+| Ask Frends Support to enable Frends MCP for the tenant; `https://<tenant>.frendsapp.com/mcp` answers 405 in a browser once it is on | [How to connect an AI client to Frends MCP](https://docs.frends.com/reference/frends-mcp/how-to-connect-an-ai-client-to-frends-mcp) |
+| Create a Platform Application under API / MCP Applications in your user menu and issue a token, with only the scopes you need (`process:view`, add `process:edit` and `process:deploy` for building and deploying) | [Frends MCP permissions](https://docs.frends.com/reference/frends-mcp/frends-mcp-permissions) |
+| Install Frends' own plugin, which carries the MCP connection and the Frends build, review and diagnose skills; the companion works alongside it | [Frends MCP skills for AI clients](https://docs.frends.com/reference/frends-mcp/frends-mcp-skills-for-ai-clients) |
+
+```bash
+export FRENDS_MCP_URL="https://<tenant>.frendsapp.com/mcp"
+export FRENDS_MCP_TOKEN="<token>"            # in your shell profile, never in a committed file
+claude plugin marketplace add Frends-Product-Management/frends-claude-plugin
+claude plugin install frends@frends
+```
+
+Without Frends' plugin, add the server directly:
+
+```bash
+claude mcp add --transport http frendsmcp https://<tenant>.frendsapp.com/mcp \
+  --header "Authorization: Bearer <token>"
+```
+
+Use one of the two, not both, or the same tools load twice. Check with `/mcp` in a session.
+
+### 3. Set up the Platform API (optional)
+
+The Platform API covers what MCP does not: tags, templates, API specifications, batch exports,
+Environment Variable values per environment and instance housekeeping. It also works on tenants
+without MCP.
+
+| Step | Where |
+|---|---|
+| Register an Entra ID application, give it the Administrator app role with admin consent, and ask Frends Support to allowlist your IP address | [How to enable the Frends Platform API](https://docs.frends.com/reference/frends-platform-api/how-to-enable-frends-platform-api) |
+| In the workspace, run `/frends-companion-developer:connect`: it detects the routes, creates `.env`, fills the Environment and Agent Group ids from MCP when available, and asks for the tenant and Entra values | [Commands](#commands) |
+| Paste the client secret into `.env` yourself; Claude never reads or writes it | |
+| Check the setup with the read-only smoke test | `bash <skill-base>/scripts/frends-smoke-test.sh` |
+
+Private Application tokens do not work for the Platform API; it accepts Entra ID tokens only.
+
+### 4. Start working
+
+Open Claude Code in the workspace and describe what you want: "build a Process that ...", "review
+this export", "why does this Process fail in Test". The plugin picks the route per task and names
+it in its reply. Promoting, deploying, running and importing Tasks only happen after you confirm.
 
 ## What you get
 
@@ -167,7 +235,8 @@ agents/                      frends-canvas-arranger
 skills/frends-ipaas-developer/
   references/                concepts, triggers, shapes, expressions, tasks, guides,
                              process-file-format, one folder per entity
-  scripts/                   fourteen Platform API tools, `.env` setup, an API drift check and the process generator
+  scripts/                   eleven Platform API tools, `.env` setup, live smoke and write tests,
+                             an API drift check and the process generator
 skills/frends-reviewer/
   references/                rule catalogue, custom task checklist, house standards, report format
   scripts/                   review_process.py, the automatic checks
@@ -192,9 +261,9 @@ isolation.
 
 ## Reaching the Platform API
 
-Frends does not enable the Platform API for you. Someone has to register an Entra ID application,
-grant it the admin app role, and ask Frends support to allowlist your IP address. Until that happens
-the tools cannot connect, however correct your `.env` is.
+Frends does not enable the Platform API for you: see [Set up the Platform API](#3-set-up-the-platform-api-optional)
+and [How to enable the Frends Platform API](https://docs.frends.com/reference/frends-platform-api/how-to-enable-frends-platform-api).
+Until that is done the tools cannot connect, however correct your `.env` is.
 
 Once enabled, each script posts to `https://login.microsoftonline.com/<azure-tenant>/oauth2/token`
 with `grant_type=client_credentials`, then calls `https://<tenant>.frendsapp.com/api/v1/...` with the
