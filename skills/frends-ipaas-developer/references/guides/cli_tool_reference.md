@@ -8,9 +8,11 @@ first for what it covers, and these scripts for the rest or when MCP is absent
 Status: endpoints, parameters and response fields checked against the Frends 6.3.2 OpenAPI document
 (`https://<tenant>.frendsapp.com/v1.0/swagger.json`, 92 operations), and confirmed live on Frends
 6.3.2.5468: `frends-smoke-test.sh` for the reads, `frends-write-test.sh` for import (`Error`,
-`NewVersion`), tags, deploy, activation, run, acknowledge and an Environment Variable value. Not yet
-run live: undeploy, tags `set`, instance `details`, pull `--id`, template export and create-process,
-API specification show and version. Each script header lists what is confirmed. If a script's
+`NewVersion`), tags, deploy, activation, run, acknowledge and an Environment Variable value. On
+2026-10-09 (Frends 6.3.2) a run on a test Process also confirmed tags `set`, instance `details`, pull
+`--id`, and deploy to and undeploy from a Test Agent Group. Not yet run live: template export and
+create-process, API specification show and version, because the test tenant has no Process Template
+and no API specification. Each script header lists what is confirmed. If a script's
 behaviour differs from the tenant's document, trust the document and fix the script.
 
 Facts from the live run:
@@ -21,6 +23,10 @@ Facts from the live run:
 | `GET /processes/{guid}/versions/{v}/export` | HTTP 400 for a deleted version |
 | `GET /process-deployments` | items carry `deploymentId`, `processGuid`, `processVersion`, `triggersActive` and a nested `agentGroup.id` |
 | `POST /processes/batch-import` | `data` is an array of `{name, elementIdentifier (guid), id, resourceLocation}`; a generated 6.3 file (`net10.0`, `FrendsVersion` `6.3.2.5468`) imports |
+| `DELETE /process-deployments/{id}` | removes a deployment outside Development; `GET` on that id then returns HTTP 404 |
+| `PUT /tags` | replaces the element's tags with the given list; `GET /tags` returns `{}` for an element without tags |
+| `GET /instances/{agentGroupId}/{executionId}/details` | `steps` is `null`; the step data sits behind `stepDataUri` |
+| `GET /processes/{id}/export` | `id` is the process version id (`id` in `frends-process-list.sh --raw`), not the guid |
 | `POST /process-deployments/{id}/execute` | HTTP 202 only accepts the run; poll the instances for `state` (`Finished`) |
 | `POST /instances/.../acknowledge` | accepts a successful instance too |
 | `PUT /environment-variables/{id}/values/{env}` | body is the JSON value: `"companion-test"` for a String |

@@ -12,7 +12,8 @@
 #
 # add, set and remove change the tenant: run them only on the person's confirmation.
 # STATUS: checked against the 6.3.2 OpenAPI document. Confirmed live on 6.3.2.5468
-# (frends-smoke-test.sh, frends-write-test.sh): all, get, add and remove; set not yet run.
+# (frends-smoke-test.sh, frends-write-test.sh): all, get, add and remove. set confirmed live on
+# 2026-10-09 (Frends 6.3.2): it replaces the element's tags; get returns {} once no tag is left.
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=/dev/null

@@ -13,7 +13,8 @@
 # Process Variable values in the export are taken from the Development Agent Group.
 # Default output dir: active-development/processes/
 # STATUS: checked against the 6.3.2 OpenAPI document. Confirmed live on 6.3.2.5468
-# (frends-smoke-test.sh, frends-write-test.sh): --guid/--version and --batch; --id not yet run.
+# (frends-smoke-test.sh, frends-write-test.sh): --guid/--version and --batch. --id (the process
+# version id from frends-process-list.sh --raw) confirmed live on 2026-10-09 (Frends 6.3.2).
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=/dev/null
