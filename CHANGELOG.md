@@ -9,10 +9,13 @@ versions were released from a different repository and have no tag here.
 
 ## [Unreleased]
 
+## [0.8.3] - 2026-10-09
+
 ### Changed
-- README: a Set up section after Install covers the workspace (`/new-workspace`, `/frends-init`),
-  the Frends MCP connection with Frends' own plugin or `claude mcp add`, and the Platform API, each
-  with links to the Frends docs.
+- On the file route the skill now tells Claude to launch the `frends-canvas-arranger` agent on
+  every generated or edited Process file and then run `review_process.py` on the result. Before,
+  only the review was a written step; the arranger ran only when Claude picked it up from the
+  agent's own description.
 
 ## [0.8.2] - 2026-10-09
 
@@ -344,7 +347,8 @@ versions were released from a different repository and have no tag here.
 ## [0.1.0] - initial scaffold
 - Initial Frends Companion plugin, marketplace, and bundled skill.
 
-[Unreleased]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.8.2...main
+[Unreleased]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.8.3...main
+[0.8.3]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.8.2...frends-companion-developer--v0.8.3
 [0.8.2]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.8.1...frends-companion-developer--v0.8.2
 [0.8.1]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.8.0...frends-companion-developer--v0.8.1
 [0.8.0]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.7.0...frends-companion-developer--v0.8.0

@@ -100,9 +100,15 @@ export containing X before I can generate this correctly."
 - **Never bake secrets** into generated parameters. Use Environment Variable references
   (`{{#env.Group.Name}}` in text fields), let the tenant hold the values, and list each one in
   `RequiredEnvironmentVariables`.
-- **Run the reviewer before delivering.** `frends-reviewer`'s `review_process.py` checks the
-  generated file against the import wiring rules and the conventions in
-  [../guides/best-practices.md](../guides/best-practices.md); fix blockers and majors first.
+- **Run the canvas arranger, then the reviewer, before delivering.** Do both after every
+  generation or edit of a Process file, in this order:
+  1. Launch the `frends-canvas-arranger` agent on the file. It checks the sequence-flow wiring and
+     tidies the DI layout without deleting shapes.
+  2. Run `frends-reviewer`'s `review_process.py` on the arranged file. It checks the file against
+     the import wiring rules and the conventions in
+     [../guides/best-practices.md](../guides/best-practices.md); fix blockers and majors first.
+  Review last, so the findings describe the file the developer imports. If a fix changes shapes or
+  flows, run both again.
 - **Set `frendsVersion` and `targetFramework` to the tenant's values** (a sample export; MCP
   `get_overview` gives the version). The generator defaults to 6.2.3.3649 and `net8.0`, the values
   its encodings were confirmed against; on a 6.3 tenant pass `net10.0`. A generated file with
