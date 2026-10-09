@@ -8,14 +8,11 @@ The reason it exists: generic C# and BPMN knowledge gets Frends wrong. Ask any m
 or reference an earlier result and it invents syntax. The bundled `frends-ipaas-developer` skill
 carries the real vocabulary and the traps, verified against Frends 6.2 exports.
 
-It is installed from the Conclusion marketplace, which also carries the solution design plugins.
-That catalogue's
-[README](https://repo.virtualsciences.nl/ai-pilot/conclusion-marketplace/-/blob/main/README.md)
-covers the rest of what the integration team maintains.
+This repository is both the plugin and its marketplace, `frends-companion`.
 
 ## Before you start
 
-You need Claude Code, either in the terminal or in the desktop app, and access to our GitLab.
+You need Claude Code, either in the terminal or in the desktop app.
 
 The skill itself needs nothing else. The Platform API tools are shell scripts and the process
 generator is a Python script, so if you want those, install these once:
@@ -41,31 +38,21 @@ python3 --version
 
 ## Install
 
-### Letting git in, once per machine
-
-The catalogue is served over HTTPS, so git needs a token for our GitLab. Create a personal access
-token in GitLab, under your avatar, then Edit profile, then Access tokens. The `read_repository`
-scope is enough. Then:
-
-```bash
-git config --global url."https://oauth2:<TOKEN>@repo.virtualsciences.nl/ai-pilot".insteadOf "https://repo.virtualsciences.nl/ai-pilot"
-```
-
-Use this rewrite rather than a credential helper or keychain entry. Claude Code runs its background
-update with credential helpers switched off, so a keychain entry is invisible to it and your plugins
-quietly stop updating while your own `git pull` keeps working.
-
-Skip this if you already set it up for another Conclusion plugin.
-
 ### In the terminal
 
 ```bash
-claude plugin marketplace add https://repo.virtualsciences.nl/ai-pilot/conclusion-marketplace.git
-claude plugin install frends-companion-developer@conclusion
+claude plugin marketplace add wijnand-gritter/frends-companion
+claude plugin install frends-companion-developer@frends-companion
 ```
 
-Skip the first line if you already added the catalogue for `solution-design` or a customer pack. The
-same commands work inside a session as `/plugin marketplace add ...` and `/plugin install ...`.
+The repository is public, so git needs no token. The same commands work inside a session as
+`/plugin marketplace add ...` and `/plugin install ...`.
+
+Moving from the GitLab install: remove it first, so the two copies do not fight over the same skills.
+
+```bash
+claude plugin uninstall frends-companion-developer@conclusion
+```
 
 Restart Claude Code, then set yourself up:
 
@@ -81,7 +68,7 @@ files, which are a zipped plugin directory under a different extension. This rep
 directory, so package its root:
 
 ```bash
-git clone https://repo.virtualsciences.nl/ai-pilot/frends-companion.git
+git clone https://github.com/wijnand-gritter/frends-companion.git
 cd frends-companion
 zip -r ~/frends-companion-developer.plugin . -x ".git/*" -x "*.DS_Store" -x "*__pycache__*"
 ```
@@ -112,8 +99,9 @@ plugin changes.
 claude --plugin-dir /path/to/frends-companion
 ```
 
-Colleagues who installed this from the old public `fc-integration` marketplace should remove it. The
-plugin moved here and was renamed, so the two copies fight over the same skill.
+An install of the old `fc-integration` plugin from this repository's earlier layout fights over the
+same skill. Remove it with `claude plugin uninstall fc-integration@frends-companion`, then
+`claude plugin marketplace update frends-companion`.
 
 ## What you get
 
@@ -211,10 +199,9 @@ its header, and a few list endpoints are still marked TODO.
 
 Run `bash scripts/check.sh` before you push. It validates the manifests, SemVer, the shell and
 Python syntax, and every relative Markdown link. `git config core.hooksPath scripts/githooks` makes
-git run it on every push, which matters because our GitLab has no runners yet and a pipeline
-currently checks nothing.
+git run it on every push. GitHub Actions runs the same script on every pull request.
 
-Then open a merge request.
+Then open a pull request.
 
 [RELEASING.md](RELEASING.md) covers cutting a version.
 

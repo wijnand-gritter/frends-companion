@@ -4,18 +4,14 @@ This is a Claude Code plugin for Frends iPaaS development. It contains a skill, 
 
 ## Installation
 
-Users add the Conclusion marketplace and install:
-
 ```bash
-/plugin marketplace add https://repo.virtualsciences.nl/ai-pilot/conclusion-marketplace.git
-/plugin install frends-companion-developer@conclusion
+/plugin marketplace add wijnand-gritter/frends-companion
+/plugin install frends-companion-developer@frends-companion
 ```
 
-This repo is the plugin: its root holds `.claude-plugin/plugin.json`. The catalogue entry lives in
-the separate `conclusion-marketplace` repo and points here by git URL, so a version bump here is
-what reaches users — the catalogue does not have to change.
+This repo is both the plugin and its marketplace. `.claude-plugin/plugin.json` is the plugin manifest; `.claude-plugin/marketplace.json` lists the plugin with source `./`. A version bump in `plugin.json` reaches users; the marketplace entry carries no version.
 
-Updates are generally applied automatically when opening a new Claude Code session, or manually via the `/plugin` menu.
+Updates apply at the next Claude Code session, or manually from the `/plugin` menu.
 
 ## Structure
 
@@ -25,6 +21,8 @@ commands/                   # Slash commands (/frends-companion-developer:comman
 agents/                     # Custom agents
 skills/                     # Agent skills (each oriented around a SKILL.md)
 template/                   # Reference Template copied into a user workspace
+.claude-plugin/marketplace.json  # Marketplace listing this plugin
+.github/workflows/           # CI (scripts/check.sh) and releases
 changes/                    # Changelog fragments (one per PR)
 ```
 

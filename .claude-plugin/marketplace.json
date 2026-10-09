@@ -1,0 +1,16 @@
+{
+  "name": "frends-companion",
+  "owner": {
+    "name": "Wijnand Gritter"
+  },
+  "metadata": {
+    "description": "Frends iPaaS development tools for Claude Code"
+  },
+  "plugins": [
+    {
+      "name": "frends-companion-developer",
+      "description": "Frends iPaaS development tools: a developer skill, a reviewer skill, commands and agents",
+      "source": "./"
+    }
+  ]
+}

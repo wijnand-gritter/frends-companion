@@ -1,0 +1,38 @@
+# On a tag written by `claude plugin tag --push` (<plugin-name>--v<version>):
+# check both halves against plugin.json, then publish a GitHub release
+# with the matching CHANGELOG section as its notes.
+name: release
+
+on:
+  push:
+    tags: ["*--v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check the tag against plugin.json
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          n=$(python3 -c "import json; print(json.load(open('.claude-plugin/plugin.json'))['name'])")
+          v=$(python3 -c "import json; print(json.load(open('.claude-plugin/plugin.json'))['version'])")
+          echo "tag=$tag  plugin.json: name=$n version=$v"
+          [ "${tag%%--v*}" = "$n" ] || { echo "ERROR: tag names '${tag%%--v*}', plugin.json says '$n'"; exit 1; }
+          [ "${tag##*--v}" = "$v" ] || { echo "ERROR: tag version ${tag##*--v} does not match plugin.json $v"; exit 1; }
+          echo "VERSION=$v" >> "$GITHUB_ENV"
+      - name: Extract the CHANGELOG section
+        run: |
+          awk -v v="$VERSION" '
+            $0 ~ "^## \\[" v "\\]" { on = 1; next }
+            on && /^## \[/ { exit }
+            on { print }
+          ' CHANGELOG.md > notes.md
+          [ -s notes.md ] || { echo "ERROR: no CHANGELOG section for $VERSION"; exit 1; }
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" --title "$VERSION" --notes-file notes.md --verify-tag

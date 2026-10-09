@@ -3,7 +3,7 @@
 #
 #   bash scripts/check.sh
 #
-# GitLab calls this same script, so the two can never drift. Needs bash and
+# GitHub Actions calls this same script, so the two can never drift. Needs bash and
 # python3, nothing else. Reports every failure rather than stopping at the first.
 
 set -uo pipefail
@@ -19,7 +19,7 @@ json_ok() {
 }
 
 step "JSON manifests parse"
-for f in .claude-plugin/plugin.json template/.claude/settings.json; do
+for f in .claude-plugin/plugin.json .claude-plugin/marketplace.json template/.claude/settings.json; do
   json_ok "$f" && ok "$f" || fail "$f is not valid JSON"
 done
 
@@ -29,6 +29,20 @@ if printf '%s' "$v" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+([-+].*)?$'; then
   ok "version $v"
 else
   fail "version '$v' is not SemVer"
+fi
+
+step "Marketplace lists this plugin"
+if python3 - <<'PY' 2>/dev/null
+import json
+p = json.load(open(".claude-plugin/plugin.json"))
+m = json.load(open(".claude-plugin/marketplace.json"))
+entries = [e for e in m["plugins"] if e["name"] == p["name"]]
+assert entries and entries[0]["source"] in ("./", ".")
+PY
+then
+  ok "marketplace entry for the plugin points at the repo root"
+else
+  fail "marketplace.json has no entry for the plugin.json name with source ./"
 fi
 
 step "Shell scripts parse"

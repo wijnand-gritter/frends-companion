@@ -9,6 +9,17 @@ versions were released from a different repository and have no tag here.
 
 ## [Unreleased]
 
+### Changed
+- The repository moved to GitHub (`github.com/wijnand-gritter/frends-companion`) and is its own
+  marketplace, `frends-companion`, through `.claude-plugin/marketplace.json`. Install with
+  `claude plugin marketplace add wijnand-gritter/frends-companion` and
+  `claude plugin install frends-companion-developer@frends-companion`; uninstall
+  `frends-companion-developer@conclusion` first. Plugin name, commands and the template contract
+  are unchanged.
+- CI moved from GitLab CI to GitHub Actions: `ci.yml` runs `scripts/check.sh` on pull requests and
+  `main`; `release.yml` checks a `*--v*` tag against `plugin.json` and publishes the GitHub release.
+  `scripts/check.sh` also checks that the marketplace lists the plugin.
+
 ## [0.7.0] - 2026-10-09
 
 ### Added
@@ -227,6 +238,6 @@ versions were released from a different repository and have no tag here.
 ## [0.1.0] - initial scaffold
 - Initial Frends Companion plugin, marketplace, and bundled skill.
 
-[Unreleased]: https://repo.virtualsciences.nl/ai-pilot/frends-companion/-/compare/frends-companion-developer--v0.7.0...main
-[0.7.0]: https://repo.virtualsciences.nl/ai-pilot/frends-companion/-/compare/frends-companion-developer--v0.5.0...frends-companion-developer--v0.7.0
-[0.5.0]: https://repo.virtualsciences.nl/ai-pilot/frends-companion/-/tags/frends-companion-developer--v0.5.0
+[Unreleased]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.7.0...main
+[0.7.0]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.5.0...frends-companion-developer--v0.7.0
+[0.5.0]: https://github.com/wijnand-gritter/frends-companion/releases/tag/frends-companion-developer--v0.5.0
