@@ -52,6 +52,14 @@ run, shape by shape, with start time, duration, what executed, and the result.
   Process instance details no longer carry the empty `Steps` list: read `stepDataUri`.
 - Validation errors show on the canvas grouped by shape, and compilation errors under the shape
   that caused them.
+- A Process that fails before any step runs, for example on a trigger error, now logs the failed
+  trigger step to blob storage, so the instance shows why it failed.
+- A step whose result throws while it is being logged no longer stays "started" for ever. It is
+  logged as finished, with the serialisation error as its value. If a step shows a serialisation
+  error, the step itself ran; its result just could not be written to the log. Applies after a
+  rebuild.
+- Large step values are cut to the logging limits while they are serialised, which makes logging
+  them lighter. Applies after a rebuild.
 
 ## Source of truth
 `https://docs.frends.com/management-and-operations/dashboard-and-monitoring/process-instances.md`

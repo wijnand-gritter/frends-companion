@@ -8,6 +8,11 @@ Handlebars in Text fields ([handlebars.md](handlebars.md)).
 - `#result[Task Name].Field` — the result of a previous shape. The name in brackets is the shape's
   **display name** and may contain spaces, e.g. `#result[HTTP Request].Body`. Available fields
   (`.Body`, `.StatusCode`, ...) depend on the Task's result object.
+- `#result` on its own: the result of the shape directly before this one. It depends on the
+  order of the diagram, so inserting or moving a shape changes what it reads. Shapes that produce no
+  result, such as [Signal Resume](../shapes/signal-resume.md), leave it with nothing to read and the
+  Process fails to compile ("Cannot use a #-reference if isn't declared yet, or if there is no
+  previous step"). Prefer `#result[Shape name]` wherever the previous shape might change.
 - `#var.Name` — a process variable set by an [Assign Variable](../shapes/assign-variable.md) shape
   (or a Code Task).
 - `#env.Group.Name` — an [Environment Variable](../concepts/environment-variables.md) (grouped,

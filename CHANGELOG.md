@@ -9,6 +9,41 @@ versions were released from a different repository and have no tag here.
 
 ## [Unreleased]
 
+## [0.9.1] - 2026-11-27
+
+The rest of the Frends 6.4.0 release notes, the 6.4 text-mode conditions and loops in full, and
+findings from helping a colleague with a signal resume.
+
+### Added
+- Signal Resume placement and gotchas (`shapes/signal-resume.md`): the shape produces no result,
+  so a bare `#result` after it fails to compile with "Cannot use a #-reference if isn't declared
+  yet, or if there is no previous step"; and the 6.4.0.1164 editor's 404 on the shape's help text
+  is not a compile error. Found while helping a colleague whose signal resume seemed to work only
+  directly after the trigger.
+- `reference-syntax.md`: what a bare `#result` reads, and why `#result[Shape name]` is safer.
+- `handlebars.md`: the full 6.4 conditions and loops from the Frends Handlebars reference: the
+  field types and shapes they work in, condition rules, `this.Property`, nesting, whitespace in the
+  output, escaping for JSON and XML, errors at save versus at run time, when to use a Decision or a
+  Visual Data Mapper instead, and the difference from the JSON Handlebars Task.
+
+- The rest of the 6.4.0 release notes, checked item by item against the companion:
+  - Visual Data Mapper editor warnings and the broken-mapping list after a schema change.
+  - Certificates: no deletion while in use, references checked at deployment, no private CA to
+    install on Agents, revocation and per-Agent status.
+  - Bug fixes that change advice for older tenants: a Checkpoint branch ending in a Return, HTTP
+    Return headers in text mode, the RabbitMQ reply-to queue, shape types changed by BPMN export
+    and import (a file route caveat), and Task imports missing NuGet feed dependencies.
+  - Logging: a Process that fails before any step, and a result that throws while being logged.
+  - MCP fixes in 6.4: readable validation errors, colours and annotation arrows kept, and no
+    `parentScopeId` needed for connections in a scope.
+  - Self-hosted installations: database initializer, log4net removal, the Service Bus bootstrap
+    key, the HTTP log limit settings and the `PlatformJwtAllowedIps` fix.
+
+### Changed
+- `mcp-build-conventions.md`: relayout with `forceRelayout` on every batch that inserts a shape or
+  rewires connections, how to relayout without other changes, and that the canvas arranger agent
+  is for the file route only.
+
 ## [0.9.0] - 2026-11-27
 
 Frends 6.4 support, checked against the 6.4.0 release notes and the MCP server of a 6.4.0.1164
@@ -409,7 +444,8 @@ tenant, and native shapes as the build default.
 ## [0.1.0] - initial scaffold
 - Initial Frends Companion plugin, marketplace, and bundled skill.
 
-[Unreleased]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.9.0...main
+[Unreleased]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.9.1...main
+[0.9.1]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.9.0...frends-companion-developer--v0.9.1
 [0.9.0]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.8.3...frends-companion-developer--v0.9.0
 [0.8.3]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.8.2...frends-companion-developer--v0.8.3
 [0.8.2]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.8.1...frends-companion-developer--v0.8.2

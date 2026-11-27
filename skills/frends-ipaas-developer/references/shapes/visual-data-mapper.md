@@ -125,6 +125,10 @@ add Process Variables.
   (`#result[HTTP Request].Body`) between the Task and the mapper, give it the body schema, and map
   from it. This also keeps the mappings independent of the Task's result type (seen on 6.4.0.1164).
 - The mapper sits between a trigger and a Return or Throw, like any execution shape.
+- The editor draws an invalid mapping in red, and warns about broken mappings, data type
+  mismatches and several sources mapped onto one target. When a later change to a source or target
+  schema breaks a mapping, the Process editor warns and lists what broke. Check that list after
+  every schema change, such as a new version of the partner's API (release notes).
 - Review a mapping the assistant generated before saving; it guesses matches from names and
   descriptions.
 - With "Strict schema validation" off, a result that misses the target schema passes silently. Turn

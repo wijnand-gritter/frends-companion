@@ -44,5 +44,22 @@ the cloud, or close to the data it needs. Agents are organized into **Agent Grou
 - Unauthenticated and unmatched HTTP requests are logged at most 10 per minute per endpoint, method
   and status, and 100 per minute in total.
 
+### Self-hosted installations (6.4)
+These matter only where your organisation runs the Agents or the Web Portal itself; a Frends
+cloud tenant handles them for you.
+- Run the database initializer for the ConfigurationStore and LogStore databases. It adds the
+  certificate tables and removes the database step-logging tables, and it logs to the console
+  only. It can now set up PostgreSQL with fewer privileges.
+- log4net is removed. The Log Service reads the `Logging` section of `appsettings.json`
+  (`PathFormat`, `RetainedFileCountLimit`, `FileSizeLimitBytes`).
+- Agents on Azure Service Bus get their access tokens from the Web Portal with a one-time bootstrap
+  key, as from 6.3.3. Coming from 6.3.2 or earlier, download each Agent's configuration or
+  Kubernetes files again. RabbitMQ Agents are not affected.
+- The unauthenticated request log limits are set with
+  `HttpLoggingOptions:UnauthenticatedRequestsPerEndpointPerMinute` and
+  `HttpLoggingOptions:UnauthenticatedRequestsPerAgentPerMinute`.
+- A `PlatformJwtAllowedIps` entry with only `IpAddress` set used to admit every IPv4 caller. Fixed
+  in 6.4.0; check such entries on an older installation.
+
 ## Source of truth
 `https://docs.frends.com/hybrid-integration-architecture/frends-runtime.md`

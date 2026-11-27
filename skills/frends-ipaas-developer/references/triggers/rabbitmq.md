@@ -10,6 +10,8 @@ Consumes messages from RabbitMQ — an alternative to Service Bus and AMQP queue
 - `queueName`: the queue to consume; it cannot start with `frends_`.
 - `maxConcurrentMessages`: messages processed at once, default 1.
 - `reply`, `replyErrors`, `replyTo`: send a reply, send an error reply, the reply queue address.
+  Before 6.4.0 the trigger ignored a message's reply-to queue and dropped the reply when no default
+  reply queue was set. From 6.4.0 a caller's reply-to queue works without a default.
 - `retryMessageProcessingIfExceptionThrown`: retry the message when the Process throws.
 - `shouldNotLogParameters`: keep the trigger parameters out of the Process Instance log.
 

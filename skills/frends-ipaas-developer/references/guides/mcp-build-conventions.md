@@ -35,9 +35,18 @@ Pass it into the brief when handing a build to `frends:build-a-process` or a bui
 | No literal secrets in tool arguments | secret Environment Variable, value set by a person in the Control Panel | none |
 | New Environment Variables on confirmation only | `create_environment_variable` after a yes | the guide creates them when the tool is available |
 | Reuse shared Subprocesses | `list_processes` before building custom logic | none |
-| Clean canvas | `forceRelayout: true` on the last mutation of a Process built in this session; ask before relayout of someone else's Process | none |
+| Clean canvas | `forceRelayout: true` on the last mutation of a Process built in this session, and on every batch that inserts a shape between two others or rewires connections: without it the builder keeps existing positions and only places new shapes, so an insert leaves crossing lines. No separate layout tool exists; to relayout without other changes, send an `EditShape` that repeats a shape's current config with `forceRelayout: true`. The canvas arranger agent is for the file route only. Ask before relayout of someone else's Process | none |
 | Default Agent Group unless told otherwise | `deploy_process` `targetAgentGroupId` | none |
 | Description states purpose, interface id and specification version | `create_process_draft` `description` | none |
+
+## Changed in 6.4 (MCP)
+- The builder tools take Visual Data Mapper shapes and their source schemas.
+- A request with invalid input is rejected with a readable validation error, so read the message
+  before retrying with changed input.
+- Edits keep the colours of shapes, connections and labels, and the arrows of text annotations.
+  Before 6.4 an MCP edit removed them from a Process a person had styled.
+- A connection inside a scope no longer needs `parentScopeId`: it is placed in the scope of the
+  source shape.
 
 ## Gaps on the MCP route
 
