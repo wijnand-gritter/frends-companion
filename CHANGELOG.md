@@ -9,6 +9,11 @@ versions were released from a different repository and have no tag here.
 
 ## [Unreleased]
 
+## [0.9.1] - 2026-11-27
+
+The rest of the Frends 6.4.0 release notes, the 6.4 text-mode conditions and loops in full, and
+findings from helping a colleague with a signal resume.
+
 ### Added
 - Signal Resume placement and gotchas (`shapes/signal-resume.md`): the shape produces no result,
   so a bare `#result` after it fails to compile with "Cannot use a #-reference if isn't declared
@@ -439,7 +444,8 @@ tenant, and native shapes as the build default.
 ## [0.1.0] - initial scaffold
 - Initial Frends Companion plugin, marketplace, and bundled skill.
 
-[Unreleased]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.9.0...main
+[Unreleased]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.9.1...main
+[0.9.1]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.9.0...frends-companion-developer--v0.9.1
 [0.9.0]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.8.3...frends-companion-developer--v0.9.0
 [0.8.3]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.8.2...frends-companion-developer--v0.8.3
 [0.8.2]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.8.1...frends-companion-developer--v0.8.2
