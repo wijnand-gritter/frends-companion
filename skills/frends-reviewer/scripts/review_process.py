@@ -73,6 +73,8 @@ CODE_ELSE_IF = re.compile(r"\belse\s+if\b")
 # STR-05: a JSON object built field by field, e.g. obj["dealId"] = ... or new JProperty("dealId", ...)
 CODE_FIELD_SET = re.compile(r"\[\s*\"[^\"]+\"\s*\]\s*=(?!=)|\bnew\s+JProperty\s*\(")
 # The common Frends idiom: dynamic json = new JObject(); json.invoice_name = ...;
+# STR-05: a Code Task whose display name says it maps, e.g. "Map record", "Transform order"
+CODE_MAPPING_NAME = re.compile(r"^\s*(map|transform|convert)\b", re.IGNORECASE)
 CODE_DYNAMIC_JOBJECT = re.compile(r"\bdynamic\s+([A-Za-z_]\w*)\s*=\s*new\s+JObject\s*\(")
 TRAILING_VERSION = re.compile(r"^.+ - \d+\.\d+(\.\d+)?$")
 # Error-pipeline Processes (the shared handler and the error-event listener) swallow failures and
@@ -431,8 +433,12 @@ def review(export, path, disabled, import_check=True, pipeline=()):
                 fields = len(CODE_FIELD_SET.findall(code))
                 for name in set(CODE_DYNAMIC_JOBJECT.findall(code)):
                     fields += len(re.findall(rf"\b{re.escape(name)}\.[A-Za-z_]\w*\s*(?:=(?!=)|\+=)", code))
-                if fields >= 5:
-                    add("STR-05", "info", label(nid), f"Code Task sets {fields} JSON fields one by one",
+                shape_name = str(e.get("Name") or "")
+                if CODE_MAPPING_NAME.search(shape_name):
+                    add("STR-05", "minor", label(nid), "Code Task named as a mapping",
+                        "on Frends 6.4, use a Visual Data Mapper shape, with a placeholder schema if the fields are not known yet")
+                elif fields >= 3:
+                    add("STR-05", "minor", label(nid), f"Code Task sets {fields} JSON fields one by one",
                         "on Frends 6.4, map it with a Visual Data Mapper shape")
 
         # Security and SQL on every leaf

@@ -61,6 +61,17 @@ For each piece of logic, take the first option that fits:
 
 ## What a Code shape is for
 
+### Mapping on 6.4: always a Visual Data Mapper
+On a 6.4 tenant every JSON-to-JSON mapping is a Visual Data Mapper, whatever its size: a two-field
+map, a placeholder in a template, or the first draft of a mapping whose fields are not known yet.
+Do not start with a Code shape and plan to convert it later; a "Map record" Code shape that returns
+its input is the mapping hidden from the diagram before anyone has written it. When the schemas are
+not known, give the mapper a small placeholder schema marked `REPLACE`, map the fields you do know,
+and turn on strict schema validation. The person who fills in the template then imports the real
+schemas in the editor. A Code shape for mapping stays acceptable only for logic the mapper cannot
+express, such as a lookup across two sources or a format a Task must parse first, and the design
+says why.
+
 A Code shape holds one transformation or calculation that no Task, mapper or single expression
 covers. Good examples: parsing a fixed-width file line into a `JObject`, computing a checksum the
 target system requires, or, before 6.4, mapping an AFAS order to the HubSpot deal model. On 6.4 that
