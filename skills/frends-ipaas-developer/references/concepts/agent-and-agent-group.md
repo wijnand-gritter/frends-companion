@@ -26,8 +26,23 @@ the cloud, or close to the data it needs. Agents are organized into **Agent Grou
 - Process execution tracing and metrics can be exported to OpenTelemetry.
 - Remote Subprocess execution is re-architected (Agent-specific sessions with batching) for
   high parallel loads - a behaviour-neutral performance change.
-- Heads-up: **6.4 drops the Legacy Agent** entirely; plan migrations to the Cross-platform
-  Agent before upgrading past 6.3.
+- 6.4 drops the Legacy Agent; see below.
+
+## Changed in 6.4
+- The Legacy Agent and its installer are gone. A tenant that still has Legacy Agents is not updated
+  to 6.4: move its Agent Groups to the Cross-platform Agent first.
+- Processes compile for .NET 10 only. A Process version compiled for .NET Framework 4.7.1 can no
+  longer be deployed; the next save compiles it for .NET 10.
+- On-premises Cross-platform Agents need .NET Runtime 10.0.7 or newer. The Windows Agent installer
+  checks for the .NET and ASP.NET Core runtimes first.
+- [Certificates](certificates.md) are managed per Agent Group and installed on every Agent in it,
+  on Agents of 6.4 or newer.
+- The Agent honours `X-Forwarded-Host` and `X-Forwarded-Proto` only from trusted proxies
+  (`ForwardedHeaders:KnownProxies`, `ForwardedHeaders:KnownNetworks`), for the URLs it returns for
+  OpenAPI and the MCP Trigger. The RFC 7239 `Forwarded` header is no longer read.
+- Each Agent Group's RabbitMQ user reads only its own Agent Group's queues.
+- Unauthenticated and unmatched HTTP requests are logged at most 10 per minute per endpoint, method
+  and status, and 100 per minute in total.
 
 ## Source of truth
 `https://docs.frends.com/hybrid-integration-architecture/frends-runtime.md`

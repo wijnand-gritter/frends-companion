@@ -29,9 +29,12 @@ This SKILL.md is a **router**. The knowledge lives in small, single-purpose file
 answering anything non-trivial — the references hold the platform-specific detail you must not
 improvise. To add or change coverage, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Works against Frends 6.3 (6.3.0 to 6.3.2) and 6.2. Checked against the 6.3.0, 6.3.1 and 6.3.2
-release notes and a 6.3.2.5468 tenant. On 6.3, Processes compile against .NET 10 with C# 14 and
-export `TargetFramework` `net10.0`; custom Tasks target net8.0 unless they need a .NET 10 API.
+Works against Frends 6.4 (6.4.0), 6.3 (6.3.0 to 6.3.2) and 6.2. Checked against the 6.4.0 and
+6.3.0 to 6.3.2 release notes, a 6.3.2.5468 tenant and the MCP server of a 6.4.0.1164 tenant. On 6.3
+and 6.4, Processes compile against .NET 10 with C# 14 and export `TargetFramework` `net10.0`; 6.4
+compiles for .NET 10 only. Custom Tasks target net8.0 unless they need a .NET 10 API. 6.4 adds the
+[Visual Data Mapper](references/shapes/visual-data-mapper.md) and managed
+[certificates](references/concepts/certificates.md).
 
 ## Choose the route first
 
@@ -67,6 +70,10 @@ are not enough.
 - **Reference syntax is Frends-specific** (`#result[Name].Field`, `#var`, `#env.Group.Name`,
   `#trigger`, `#process`) — [references/expressions/reference-syntax.md](references/expressions/reference-syntax.md).
 - **Code Tasks cannot add new `using`/libraries** — [references/expressions/code-tasks.md](references/expressions/code-tasks.md).
+- Native shapes first. Calls go in Tasks, routes in Decisions and Loops, failures in Throws, rules
+  and constants in DMN Tasks and Environment Variables, JSON mappings in a Visual Data Mapper
+  (6.4). A Code shape holds one action nothing else
+  can express, and the design says why: [references/guides/native-shapes-first.md](references/guides/native-shapes-first.md).
 - **Custom Task methods must be `public static`, return a value, no overloads** — [references/tasks/authoring.md](references/tasks/authoring.md).
 - The `Frends.*` Task prefix belongs to the official catalogue. Custom Tasks use `<Party>.<System>.<Action>`, start from `dotnet new frends-task`, and carry `ThrowErrorOnFailure` plus a `Success`/`Error` result: [references/tasks/anatomy.md](references/tasks/anatomy.md).
 - **Deployment has hard prerequisites** (Subprocesses first; every Environment Variable valued in the
@@ -114,6 +121,7 @@ live docs before either wins.
 [process-instance](references/concepts/process-instance.md) ·
 [environment-variables](references/concepts/environment-variables.md) ·
 [api-management](references/concepts/api-management.md) ·
+[certificates](references/concepts/certificates.md) ·
 [add-on-products](references/concepts/add-on-products.md)
 
 ### Triggers — `references/triggers/`
@@ -134,7 +142,9 @@ live docs before either wins.
 [scope-and-catch](references/shapes/scope-and-catch.md) ·
 [call-subprocess](references/shapes/call-subprocess.md) ·
 [shared-state-task](references/shapes/shared-state-task.md) ·
-[dmn-task](references/shapes/dmn-task.md) · [ai-connector](references/shapes/ai-connector.md) ·
+[dmn-task](references/shapes/dmn-task.md) ·
+[visual-data-mapper](references/shapes/visual-data-mapper.md) (6.4) ·
+[ai-connector](references/shapes/ai-connector.md) ·
 [return](references/shapes/return.md) ·
 [intermediate-return](references/shapes/intermediate-return.md) ·
 [throw](references/shapes/throw.md)
@@ -161,6 +171,7 @@ Documentation/wiring: [sequence-flow](references/shapes/sequence-flow.md) ·
 [best-practices](references/guides/best-practices.md) ·
 [tooling-routes](references/guides/tooling-routes.md) ·
 [mcp-build-conventions](references/guides/mcp-build-conventions.md) ·
+[native-shapes-first](references/guides/native-shapes-first.md) ·
 [bpmn-modeling](references/guides/bpmn-modeling.md) ·
 [error-handling](references/guides/error-handling.md) ·
 [code-shape-style](references/guides/code-shape-style.md) ·
@@ -198,8 +209,10 @@ and `TargetFramework` from a sample export of the target tenant.
 ## Producing artifacts
 
 - **Designing a flow:** give a shape-by-shape description (each shape's type, name, key parameters,
-  connections, and the expressions per field), laid out so it maps onto the canvas. See
-  [references/guides/bpmn-modeling.md](references/guides/bpmn-modeling.md). Offer to render a diagram.
+  connections, and the expressions per field), laid out so it maps onto the canvas. Place each piece
+  of logic by [references/guides/native-shapes-first.md](references/guides/native-shapes-first.md)
+  before writing any C#. See [references/guides/bpmn-modeling.md](references/guides/bpmn-modeling.md).
+  Offer to render a diagram.
 - **Importable Process file:** use `scripts/generate_process.py` and follow
   [references/process-file-format/generation-checklist.md](references/process-file-format/generation-checklist.md).
   Task GUIDs are tenant-specific — harvest, never fabricate. If the process needs any Task, trigger,
@@ -213,7 +226,8 @@ and `TargetFramework` from a sample export of the target tenant.
   ([anatomy.md](references/tasks/anatomy.md)), document, test and secure it, then version and pack
   ([packaging.md](references/tasks/packaging.md)). Import only on the person's confirmation.
 - **Expressions / Code Tasks:** state which field type they belong in (Expression, Text, Decision,
-  Assign Variable, or Code Task) — see [references/expressions/](references/expressions/).
+  Assign Variable, or Code Task) — see [references/expressions/](references/expressions/). For a
+  Code Task, also state why no Task or native shape fits.
 - Reviewing a Process or custom Task against the rules: hand over to the `frends-reviewer`
   skill, and run its `review_process.py` on every Process file this skill generates, after the
   `frends-canvas-arranger` agent has checked and laid it out (file route only; on the MCP route

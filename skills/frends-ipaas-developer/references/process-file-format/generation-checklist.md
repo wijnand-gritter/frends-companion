@@ -3,7 +3,9 @@
 The generator at `scripts/generate_process.py` implements this for linear flows (its docstring
 documents the spec format; `scripts/sample_spec.json` is a starting point). It is validated to
 round-trip and match the real exports field-for-field; use it for linear processes and hand-author
-decisions, scopes, and subprocess calls from this reference. See
+decisions, scopes, and subprocess calls from this reference. The generator's limit is no reason to
+fold a Decision or a Loop into a Code Task
+([../guides/native-shapes-first.md](../guides/native-shapes-first.md)). See
 [../guides/cli_tool_reference.md](../guides/cli_tool_reference.md).
 
 ## Steps to assemble a valid Process JSON

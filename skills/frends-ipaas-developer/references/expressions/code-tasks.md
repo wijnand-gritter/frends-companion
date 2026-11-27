@@ -8,6 +8,10 @@
 A Code Task is the place for more than one expression of C#. A scope is provided; write a
 method-like block, optionally with helper functions and lambdas.
 
+Reach for it last. Calls, routes, failures, assignments and business rules have native shapes or
+belong in data; the order of choice is in
+[../guides/native-shapes-first.md](../guides/native-shapes-first.md).
+
 - Keep to **one logical action per Code Task**. Don't write the whole Process as one — splitting
   into shapes keeps the flow debuggable in the [Process Instance](../concepts/process-instance.md)
   view.

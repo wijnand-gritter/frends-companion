@@ -14,6 +14,7 @@ The platform model. Read the file that fits; read [process.md](process.md) and
 | [process-instance.md](process-instance.md) | The record of one execution — the debugging surface. |
 | [environment-variables.md](environment-variables.md) | Per-environment config; the deploy-value rule. |
 | [api-management.md](api-management.md) | Built-in API management; pairs with the API trigger. |
+| [certificates.md](certificates.md) | Managed certificates per Agent Group (6.4); `#cert` references. |
 | [add-on-products.md](add-on-products.md) | BAP and API Portal (documented separately). |
 
 To add a concept: copy [../_TEMPLATE.md](../_TEMPLATE.md) here, add a row above, add a router line to

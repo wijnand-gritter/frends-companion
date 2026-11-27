@@ -13,6 +13,7 @@ skill checks a built Process against the same list.
 | Subprocesses for reuse | shared logic only; one-off logic stays inline ([subprocess-extraction.md](subprocess-extraction.md)) |
 | No Remote Subprocess on high volume | extra overhead; pass identifiers only; payloads of 10 MB and more time out |
 | Split long-running work | no Process waits inside a running instance for an external event; continue in a new stage on the event |
+| Native shapes first | logic in Tasks, Decisions, Loops, Throws, DMN Tasks and Environment Variables; a Code shape for one action nothing else expresses ([native-shapes-first.md](native-shapes-first.md)) |
 | Select Tasks deliberately | check the Task catalogue first; a dedicated Task over a generic HTTP or file Task |
 | Conditional triggering | trigger on a condition instead of a frequent schedule that mostly finds nothing; no business logic in the condition |
 

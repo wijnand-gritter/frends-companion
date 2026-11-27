@@ -14,6 +14,8 @@ paths). They are referenced in C# as `#env.Group.Name` — grouped, hence the tw
   fields (see [../expressions/reference-syntax.md](../expressions/reference-syntax.md)). Secrets
   belong here, never inlined into a Process.
 - Types include String, Number, Boolean, Array, Object, and Secret.
+- 6.4: secret values are masked in Process logs once the Process is rebuilt. A certificate belongs
+  in [managed certificates](certificates.md) rather than in an Environment Variable.
 - Managed via the Platform API `/environment-variables` endpoints (see
   [../guides/cli_tool_reference.md](../guides/cli_tool_reference.md)).
 

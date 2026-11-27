@@ -17,6 +17,7 @@ against real 6.2 exports).
 | [call-subprocess.md](call-subprocess.md) | Call Subprocess | `callActivity` / 7 |
 | [shared-state-task.md](shared-state-task.md) | Shared State Task | `businessRuleTask` / 20 |
 | [dmn-task.md](dmn-task.md) | DMN Task | `businessRuleTask` / 21 |
+| [visual-data-mapper.md](visual-data-mapper.md) | Visual Data Mapper (6.4) | `businessRuleTask` / 28 |
 | [ai-connector.md](ai-connector.md) | AI Connector | `task` / 27 |
 | [return.md](return.md) | Return (normal end) | `endEvent` / 5 |
 | [intermediate-return.md](intermediate-return.md) | Intermediate Return (respond + continue) | `endEvent` / 17 |

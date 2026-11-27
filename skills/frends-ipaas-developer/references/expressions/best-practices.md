@@ -2,8 +2,9 @@
 
 **Baseline:** Frends 6.2
 
-- Keep editor C# to a readable one-liner per Expression field; do heavier work in a
-  [Code Task](../shapes/code-task.md) or a [custom Task](../tasks/authoring.md).
+- Keep editor C# to a readable one-liner per Expression field. Heavier work goes first to a Task or
+  a native shape, then a [Code Task](../shapes/code-task.md) or a [custom Task](../tasks/authoring.md)
+  ([../guides/native-shapes-first.md](../guides/native-shapes-first.md)).
 - Do any calculation/formatting **before** embedding a value via Handlebars, rather than packing
   logic into the Handlebars expression.
 - Prefer explicit shapes ([Assign Variable](../shapes/assign-variable.md),

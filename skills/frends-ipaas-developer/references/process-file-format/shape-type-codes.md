@@ -34,12 +34,13 @@ it is noted. Each row links to the shape's reference file.
 | 25 | `intermediateCatchEvent` | [Scheduled Resume](../shapes/scheduled-resume.md) | None | confirmed |
 | 26 | `intermediateCatchEvent` | [Signal Resume](../shapes/signal-resume.md) | None | confirmed |
 | 27 | `task` | [AI Connector](../shapes/ai-connector.md) | `NativeAi` | confirmed |
+| 28 | `businessRuleTask` | [Visual Data Mapper](../shapes/visual-data-mapper.md) | None (`null`) | confirmed (6.4.0, MCP draft) |
 
 Notes:
 - A Scope, a Foreach, and a While all render as BPMN `subProcess`; the `Type` (8 / 10 / 11)
   distinguishes them. Each embedded scope contains its own `startEvent` recorded as `Type` 13.
-- Shared State (20) and DMN (21) both render as `businessRuleTask`; the `Type` and `SelectedTypeId`
-  distinguish them. The AI Connector (27) renders as a plain `task`.
+- Shared State (20), DMN (21) and the Visual Data Mapper (28) all render as `businessRuleTask`; the
+  `Type` and `SelectedTypeId` distinguish them. The AI Connector (27) renders as a plain `task`.
 - Catch (14), Checkpoint (24), Scheduled Resume (25), and Signal Resume (26) all render as
   `intermediateCatchEvent`; the `Type` and their distinct `Parameters` keys tell them apart (see
   [confirmed-shape-parameters.md](confirmed-shape-parameters.md)).
@@ -68,3 +69,8 @@ values above for 6.2 work**; treat 5.7 template codes as that-version-specific.
 
 > When you add a shape, add its row here and to [bpmn-xml.md](bpmn-xml.md)'s mapping table, and link
 > both from the shape's file. See [../../CONTRIBUTING.md](../../CONTRIBUTING.md).
+- From 6.4, a Process with a Visual Data Mapper carries one more `ElementParameters` entry, `Id`
+  `$schemas` with `Type` 22, that has no BPMN element. It holds the source schemas, keyed by shape
+  id, Process Variable name, or the variable name a Code shape assigns. Type 22 is otherwise the
+  Data Object Reference; the `$schemas` id tells them apart. See
+  [../shapes/visual-data-mapper.md](../shapes/visual-data-mapper.md).

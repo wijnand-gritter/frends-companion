@@ -36,6 +36,15 @@ Frends 6.3 exports:
   branch (Type 16), two Assign Variable shapes (Type 12) and one Return. All connection and
   certificate values are placeholders; the modifier email is redacted. No BOM.
 
+Frends 6.4:
+
+- `examples/vdm_mcp_draft_6.4.json`: a `get_process_data` result for an MCP draft on 6.4.0.1164,
+  built as a harvest test and never promoted: a manual trigger, a Code shape that assigns
+  `sampleOrder`, a [Visual Data Mapper](../shapes/visual-data-mapper.md) (Type 28) with text,
+  C# and per-item array mappings, the `$schemas` entry (Type 22) holding the source schema, and a
+  Return. It is the MCP result shape, not an export envelope: `review_process.py` reads it as is.
+  No personal data.
+
 ## Read the examples as serialization, not as conventions
 The exports are real tenant files and keep their original names and flows. Three things in them
 differ from the default conventions in [../guides/best-practices.md](../guides/best-practices.md):

@@ -41,7 +41,8 @@ FLOW_NODE_TAGS = {"startEvent", "endEvent", "task", "scriptTask", "exclusiveGate
 
 DEFAULT_NAME = re.compile(
     r"^(HTTP ?Request|Code|Code ?Task|Task|Decision|Exclusive ?Decision|Inclusive ?Decision|"
-    r"Scope|Call ?Subprocess|Assign ?Variable|Assign|Foreach|For ?each|While|Shared ?State)\s*\d*$",
+    r"Scope|Call ?Subprocess|Assign ?Variable|Assign|Foreach|For ?each|While|Shared ?State|"
+    r"Visual ?Data ?Mapper|Data ?Mapper)\s*\d*$",
     re.I)
 ENV_TOKEN = re.compile(r"(?i)(^|[\s_\-\.\[\(])(dev|tst|acc|prd|prod)($|[\s_\-\.\]\)])")
 BRACKETS = re.compile(r"[\[\]{}()<>]")
@@ -58,6 +59,21 @@ HARDCODED = [
 ]
 SQL_KEY = re.compile(r"(?i)(query|sql|command ?text)")
 ENDLESS = re.compile(r"while\s*\(\s*true\s*\)|for\s*\(\s*;\s*;\s*\)")
+# Native shapes first (STR-03, STR-04): patterns in a Code Task that a Task, a native shape or data
+# should carry. Heuristics; the reviewer confirms each finding against the design.
+CODE_IO = re.compile(r"\b(HttpClient|WebClient|WebRequest|SqlConnection|SqlCommand|SmtpClient|TcpClient|"
+                     r"FtpWebRequest)\b|\b(File|Directory)\.(Read|Write|Open|Append|Copy|Move|Delete|Create|"
+                     r"Get|Enumerate)\w*\s*\(")
+CODE_THROW = re.compile(r"\bthrow\s+new\b")
+CODE_VAR_ASSIGN = re.compile(r"#var\.[A-Za-z_]\w*\s*(=(?!=)|\+=|-=)")
+CODE_SLEEP = re.compile(r"\bThread\.Sleep\s*\(|\bTask\.Delay\s*\(")
+CODE_CASE_LITERAL = re.compile(r"\bcase\s+(\"[^\"]*\"|\d+)\s*:|\"[^\"]*\"\s*=>")
+CODE_PAIR_LITERAL = re.compile(r"\{\s*\"[^\"]*\"\s*,\s*\"[^\"]*\"\s*\}")
+CODE_ELSE_IF = re.compile(r"\belse\s+if\b")
+# STR-05: a JSON object built field by field, e.g. obj["dealId"] = ... or new JProperty("dealId", ...)
+CODE_FIELD_SET = re.compile(r"\[\s*\"[^\"]+\"\s*\]\s*=(?!=)|\bnew\s+JProperty\s*\(")
+# The common Frends idiom: dynamic json = new JObject(); json.invoice_name = ...;
+CODE_DYNAMIC_JOBJECT = re.compile(r"\bdynamic\s+([A-Za-z_]\w*)\s*=\s*new\s+JObject\s*\(")
 TRAILING_VERSION = re.compile(r"^.+ - \d+\.\d+(\.\d+)?$")
 # Error-pipeline Processes (the shared handler and the error-event listener) swallow failures and
 # leave the unhandled-error hook empty by design. Matched by name; extend with --pipeline.
@@ -392,6 +408,32 @@ def review(export, path, disabled, import_check=True, pipeline=()):
             lines = code.count("\n") + 1 if code else 0
             if lines > 40:
                 add("STR-02", "info", label(nid), f"Code Task of {lines} lines", "split into shapes with one action each")
+            if _truthy(params.get("useStatementMode")):
+                if CODE_IO.search(code):
+                    add("STR-03", "major", label(nid), "call to an outside system inside a Code Task",
+                        "use the dedicated Task, harvested from the tenant, for retry, logging and secret fields")
+                if CODE_THROW.search(code):
+                    add("STR-04", "minor", label(nid), "throw inside a Code Task",
+                        "return a status, decide on it and end in a Throw shape; keep a throw only as a guard")
+                if CODE_VAR_ASSIGN.search(code):
+                    add("STR-04", "minor", label(nid), "#var assigned inside a Code Task",
+                        "return the value through variableName, or use an Assign Variable shape")
+                if CODE_SLEEP.search(code):
+                    add("STR-04", "minor", label(nid), "sleep or delay inside a Code Task",
+                        "retry on the Task shape, or a Scheduled Resume for long waits")
+                literals = len(CODE_CASE_LITERAL.findall(code)) + len(CODE_PAIR_LITERAL.findall(code))
+                if literals >= 5:
+                    add("STR-04", "minor", label(nid), f"value list of {literals} literals inside a Code Task",
+                        "a DMN Task, Environment Variables or a lookup source the business owns")
+                if len(CODE_ELSE_IF.findall(code)) >= 3:
+                    add("STR-04", "minor", label(nid), "if/else-if chain inside a Code Task",
+                        "a Decision shape for the route, or a DMN Task for the rule")
+                fields = len(CODE_FIELD_SET.findall(code))
+                for name in set(CODE_DYNAMIC_JOBJECT.findall(code)):
+                    fields += len(re.findall(rf"\b{re.escape(name)}\.[A-Za-z_]\w*\s*(?:=(?!=)|\+=)", code))
+                if fields >= 5:
+                    add("STR-05", "info", label(nid), f"Code Task sets {fields} JSON fields one by one",
+                        "on Frends 6.4, map it with a Visual Data Mapper shape")
 
         # Security and SQL on every leaf
         skip_log = _truthy(e.get("ShouldNotLogResult"))

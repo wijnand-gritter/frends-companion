@@ -113,6 +113,9 @@ Detail: `../../frends-ipaas-developer/references/process-file-format/exception-h
 | DES-07 | a schedule that must not overlap is single instance; a file trigger runs one instance | platform | major | manual |
 | STR-01 | size: more than 50 execution shapes | convention | minor | auto |
 | STR-02 | a Code Task holds one logical action | convention | info | auto (length) |
+| STR-03 | a Code Task makes no calls to outside systems; the dedicated Task does | convention | major | auto (heuristic), manual |
+| STR-04 | logic with a native shape or that belongs in data is not in a Code Task: business throws, `#var` assignments, sleeps, value lists, else-if chains | convention | minor | auto (heuristic), manual |
+| STR-05 | on 6.4, a JSON object built field by field in a Code Task is a Visual Data Mapper | convention | info | auto (heuristic) |
 
 ## API
 

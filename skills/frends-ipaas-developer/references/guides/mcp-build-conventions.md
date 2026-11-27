@@ -28,7 +28,9 @@ Pass it into the brief when handing a build to `frends:build-a-process` or a bui
 | Dispose large results | `shouldDispose: true` on the Task | none |
 | Retry transient failures only, five at most | `shouldRetry: true`, `maxRetryCount` ≤ 5, with the Task's `ThrowExceptionOnErrorResponse` true | none |
 | Expected rejections detected from results | Task `ThrowExceptionOnErrorResponse` false, then `process_add_decision` | none |
-| Code in Code shapes, one action each | `process_add_expression` `useStatementMode: true`; a Code shape that ends in `return` needs `shouldAssignVariable: true` and a `variableName` (read it as `#var.<name>`), otherwise it compiles as void and fails with CS8030 (observed on 6.3.2.5468) | none |
+| Native shapes first: calls in Tasks, routes in Decisions and Loops, failures in Throws, rules in DMN ([native-shapes-first.md](native-shapes-first.md)) | `process_add_task`, `process_add_decision`, `process_add_foreach`, `process_add_while`, `process_add_throw`, `process_add_dmn`; `process_add_expression` with `useStatementMode: false` for Assign Variable | none |
+| JSON mappings in a Visual Data Mapper (6.4) | `get_guide('data-mapper')`, `process_set_source_schema` on the source, then `process_add_vdm`; `validateResultSchema: true` where the target rejects malformed input | none |
+| A Code shape only where nothing else fits, one action each | `process_add_expression` `useStatementMode: true`; a Code shape that ends in `return` needs `shouldAssignVariable: true` and a `variableName` (read it as `#var.<name>`), otherwise it compiles as void and fails with CS8030 (observed on 6.3.2.5468) | the guide says to prefer a Code shape over an Expression shape for new code; that compares two C# shapes, and the order in [native-shapes-first.md](native-shapes-first.md) still decides whether code is needed |
 | Configuration from existing Environment Variables only | `list_environment_variables` before every `#env` reference | none |
 | No literal secrets in tool arguments | secret Environment Variable, value set by a person in the Control Panel | none |
 | New Environment Variables on confirmation only | `create_environment_variable` after a yes | the guide creates them when the tool is available |
@@ -41,18 +43,19 @@ Pass it into the brief when handing a build to `frends:build-a-process` or a bui
 
 | Need | Route |
 | --- | --- |
-| Process variables | Control Panel editor |
+| Process variables (also needed before one can be a mapper source) | Control Panel editor |
 | Tags | `frends-tags.sh` (Platform API) |
 | Throw with an `HttpResult` body | Control Panel editor, or the file route |
 | Environment Variable values per Environment | `frends-env-vars.sh set` (Platform API) |
-| Export for review outside the tenant | `get_process_data`, then `frends-reviewer --mcp-json` |
+| Export for review outside the tenant | `get_process_data` saved to a file, then `review_process.py` on it (it detects the MCP result) |
 
 ## After the build
 1. `validate_process` passes.
 2. `get_process_data` with the `draftId`, saved to a file, reviewed with
-   `frends-reviewer` (`review_process.py --mcp-json`).
+   `frends-reviewer` (`review_process.py <file>`; it detects the MCP result).
 3. Blockers and majors fixed in the draft, then validated again.
 4. Promotion only on the person's confirmation ([tooling-routes.md](tooling-routes.md)).
 
 ## Sources
 - `get_guide('process-authoring')`, MCP tool schemas on Frends 6.3.2
+- `get_guide('data-mapper')`, `process_add_vdm` and `process_set_source_schema` schemas on Frends 6.4.0.1164
