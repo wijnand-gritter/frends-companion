@@ -124,6 +124,16 @@ add Process Variables.
   `validate_process` lists all. Put an Assign Variable shape such as `Read user from response body`
   (`#result[HTTP Request].Body`) between the Task and the mapper, give it the body schema, and map
   from it. This also keeps the mappings independent of the Task's result type (seen on 6.4.0.1164).
+- A mapper inside a Scope cannot use a source outside that Scope. The MCP route accepts it, but
+  compilation fails with `CS0103: The name 'frends_variable_<sourceId>' does not exist in the
+  current context` (seen on 6.4.0.1164). The enclosing Foreach is the exception: a mapper in a
+  Scope inside a Foreach can use the Foreach id as its source. Otherwise put a source in the same
+  Scope, such as an Assign Variable shape `Read message for mapping` with `#var.message`, give that
+  the schema, and map from it. Keeping the mapper inside the Scope also keeps a strict validation
+  failure in that Scope's Catch.
+- An Assign Variable shape (expression mode) works as a source as well as a Code shape. Pass the
+  shape id to `process_set_source_schema` and as `sourceNodeId`, not the variable name: the tool
+  rejects a variable name that is not a declared Process Variable.
 - The mapper sits between a trigger and a Return or Throw, like any execution shape.
 - The editor draws an invalid mapping in red, and warns about broken mappings, data type
   mismatches and several sources mapped onto one target. When a later change to a source or target
@@ -149,6 +159,14 @@ target `dealId`, `title`, `paid`, `lineItems[].sku`, `lineItems[].qty`:
   "lineItems.qty": { "mode": "csharp", "value": "#source.lines.quantity" } }
 ```
 
+
+## Template pattern
+A Process template that has a mapping step carries a mapper, not a Code shape. Give both schemas a
+`description` that starts with `REPLACE:` and says where the real schema comes from (a sample
+message, the target's OpenAPI document), map the fields the placeholder has, and turn on strict
+validation. The next shape reads `#result[<mapper name>]`, for example
+`#result[Map record].ToString()` as an HTTP Task's message. The Conclusion tenant's API sync, Batch
+replay, Batch summary and Event listener template drafts follow this pattern.
 
 ## Source of truth
 - `https://docs.frends.com/reference/shapes/activity-shapes/visual-data-mapper.md`

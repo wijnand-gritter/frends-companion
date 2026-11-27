@@ -9,6 +9,18 @@ versions were released from a different repository and have no tag here.
 
 ## [Unreleased]
 
+### Changed
+- On 6.4 every JSON mapping is a Visual Data Mapper, including two-field maps and template
+  placeholders (`native-shapes-first.md`, `mcp-build-conventions.md`). A template's mapping step
+  gets a mapper with a `REPLACE` placeholder schema and strict validation.
+- `frends-reviewer` STR-05 is now minor, fires from three field sets instead of five, and also
+  flags a Code Task named "Map ...", "Transform ..." or "Convert ...".
+
+### Added
+- Visual Data Mapper scope rule, confirmed on 6.4.0.1164: a mapper inside a Scope cannot use a
+  source outside it (CS0103 on `frends_variable_<sourceId>`), except the enclosing Foreach. An
+  Assign Variable shape works as a source; pass its shape id.
+
 ## [0.9.1] - 2026-11-27
 
 The rest of the Frends 6.4.0 release notes, the 6.4 text-mode conditions and loops in full, and
