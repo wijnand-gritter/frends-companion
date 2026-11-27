@@ -21,13 +21,20 @@ pasted into an Environment Variable or installed by hand on each Agent host.
   thirds of the validity period for `http-01` and `dns-persist-01`.
 - Private keys and ACME account keys can be encrypted at rest with a key-encryption certificate
   that you supply.
-- Certificates reach Agents on 6.4 or newer only.
+- Certificates reach Agents on 6.4 or newer only, including Agents that join the group later.
+- An issuer certificate for a private CA no longer has to be installed on the Agent servers.
+- A certificate cannot be deleted while a deployed Process still uses it.
+- An ACME certificate can be revoked at the CA. The status of each certificate on each Agent is
+  reported in the Web Portal.
+- A new HTTPS server certificate takes effect without restarting the Agent.
 
 ## Expressions and references
 A Process, a Trigger or a Process Variable refers to a managed client certificate as
 `#cert.<name>.<property>`, for example `#cert.partnerapi.thumbprint` (docs). Confirm the available
 properties in the editor's auto-complete before relying on one; the release notes name only
-`thumbprint`.
+`thumbprint`. The editor and the deployment both check the reference, so a misspelt name or a
+certificate missing from the target Agent Group stops the deployment rather than failing at run
+time.
 
 ## Conventions
 - Name a certificate after the partner or system it serves (`partnerapi`), like an Environment

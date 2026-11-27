@@ -39,6 +39,15 @@ Pass it into the brief when handing a build to `frends:build-a-process` or a bui
 | Default Agent Group unless told otherwise | `deploy_process` `targetAgentGroupId` | none |
 | Description states purpose, interface id and specification version | `create_process_draft` `description` | none |
 
+## Changed in 6.4 (MCP)
+- The builder tools take Visual Data Mapper shapes and their source schemas.
+- A request with invalid input is rejected with a readable validation error, so read the message
+  before retrying with changed input.
+- Edits keep the colours of shapes, connections and labels, and the arrows of text annotations.
+  Before 6.4 an MCP edit removed them from a Process a person had styled.
+- A connection inside a scope no longer needs `parentScopeId`: it is placed in the scope of the
+  source shape.
+
 ## Gaps on the MCP route
 
 | Need | Route |

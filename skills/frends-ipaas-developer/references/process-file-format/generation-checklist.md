@@ -34,6 +34,10 @@ hidden design deviations, and a guess costs an import-fail roundtrip. State plai
 export containing X before I can generate this correctly."
 
 ## Caveats to state to the developer every time
+- Exports and imports before 6.4.0 could change some shape types, such as a Code shape into an
+  Expression shape. When you harvest a sample exported before 6.4, check `useStatementMode` on
+  every Type 12 shape against what the developer meant, and do not copy a flipped value into a
+  new Process. Fixed in 6.4.0.
 - **Task references are tenant-specific.** The GUID in `/ProcessTask/{guid}/v{n}` is assigned per
   tenant and not portable (see Type 1 in [shape-type-codes.md](shape-type-codes.md)). Never fabricate
   or copy one from a template. Harvest the real ref from a target-tenant export with

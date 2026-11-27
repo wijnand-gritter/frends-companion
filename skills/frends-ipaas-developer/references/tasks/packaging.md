@@ -79,6 +79,10 @@ Importing changes the tenant: only on the person's confirmation.
 | Control Panel | Tasks page: upload the `.nupkg` |
 | Feed | publish to the organisation's NuGet feed from CI; the tenant pulls from it |
 
+Before 6.4.0, importing a Task did not add the NuGet feed dependencies that Agents on newer .NET
+need, so a Task could import cleanly and then fail to load on the Agent. On 6.4, import such a Task
+again (a new patch version) if it still fails to load.
+
 The Platform API has no Task import endpoint. Changing a Task's contract affects every Process that
 uses it, which is why breaking changes take a major version.
 

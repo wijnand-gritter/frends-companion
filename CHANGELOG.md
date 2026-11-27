@@ -21,6 +21,19 @@ versions were released from a different repository and have no tag here.
   output, escaping for JSON and XML, errors at save versus at run time, when to use a Decision or a
   Visual Data Mapper instead, and the difference from the JSON Handlebars Task.
 
+- The rest of the 6.4.0 release notes, checked item by item against the companion:
+  - Visual Data Mapper editor warnings and the broken-mapping list after a schema change.
+  - Certificates: no deletion while in use, references checked at deployment, no private CA to
+    install on Agents, revocation and per-Agent status.
+  - Bug fixes that change advice for older tenants: a Checkpoint branch ending in a Return, HTTP
+    Return headers in text mode, the RabbitMQ reply-to queue, shape types changed by BPMN export
+    and import (a file route caveat), and Task imports missing NuGet feed dependencies.
+  - Logging: a Process that fails before any step, and a result that throws while being logged.
+  - MCP fixes in 6.4: readable validation errors, colours and annotation arrows kept, and no
+    `parentScopeId` needed for connections in a scope.
+  - Self-hosted installations: database initializer, log4net removal, the Service Bus bootstrap
+    key, the HTTP log limit settings and the `PlatformJwtAllowedIps` fix.
+
 ### Changed
 - `mcp-build-conventions.md`: relayout with `forceRelayout` on every batch that inserts a shape or
   rewires connections, how to relayout without other changes, and that the canvas arranger agent

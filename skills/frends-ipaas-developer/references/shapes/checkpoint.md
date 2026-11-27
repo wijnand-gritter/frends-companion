@@ -21,6 +21,9 @@ Exposes `#result` after resume: `.HydrationPoint`, `.CorrelationId`, `.TriggerId
 the Checkpoint so the caller gets a response instead of timing out. State size is capped by the Agent
 setting `MaxDehydratedProcessDataSizeKb` (default 1024).
 
+Before 6.4.0, validation wrongly rejected a branch after a Checkpoint that ended in a Return. Fixed
+in 6.4.0; on an older tenant, route that branch through another shape first.
+
 ## Serialization
 BPMN `intermediateCatchEvent`; JSON `Type` **24**. Confirmed `Parameters`:
 ```json
