@@ -35,7 +35,7 @@ Pass it into the brief when handing a build to `frends:build-a-process` or a bui
 | No literal secrets in tool arguments | secret Environment Variable, value set by a person in the Control Panel | none |
 | New Environment Variables on confirmation only | `create_environment_variable` after a yes | the guide creates them when the tool is available |
 | Reuse shared Subprocesses | `list_processes` before building custom logic | none |
-| Clean canvas | `forceRelayout: true` on the last mutation of a Process built in this session; ask before relayout of someone else's Process | none |
+| Clean canvas | `forceRelayout: true` on the last mutation of a Process built in this session, and on every batch that inserts a shape between two others or rewires connections: without it the builder keeps existing positions and only places new shapes, so an insert leaves crossing lines. No separate layout tool exists; to relayout without other changes, send an `EditShape` that repeats a shape's current config with `forceRelayout: true`. The canvas arranger agent is for the file route only. Ask before relayout of someone else's Process | none |
 | Default Agent Group unless told otherwise | `deploy_process` `targetAgentGroupId` | none |
 | Description states purpose, interface id and specification version | `create_process_draft` `description` | none |
 

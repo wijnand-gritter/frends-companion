@@ -9,6 +9,19 @@ versions were released from a different repository and have no tag here.
 
 ## [Unreleased]
 
+### Added
+- Signal Resume placement and gotchas (`shapes/signal-resume.md`): the shape produces no result,
+  so a bare `#result` after it fails to compile with "Cannot use a #-reference if isn't declared
+  yet, or if there is no previous step"; and the 6.4.0.1164 editor's 404 on the shape's help text
+  is not a compile error. Found while helping a colleague whose signal resume seemed to work only
+  directly after the trigger.
+- `reference-syntax.md`: what a bare `#result` reads, and why `#result[Shape name]` is safer.
+
+### Changed
+- `mcp-build-conventions.md`: relayout with `forceRelayout` on every batch that inserts a shape or
+  rewires connections, how to relayout without other changes, and that the canvas arranger agent
+  is for the file route only.
+
 ## [0.9.0] - 2026-11-27
 
 Frends 6.4 support, checked against the 6.4.0 release notes and the MCP server of a 6.4.0.1164
