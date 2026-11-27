@@ -9,6 +9,10 @@ versions were released from a different repository and have no tag here.
 
 ## [Unreleased]
 
+## [0.9.2] - 2026-11-27
+
+The Visual Data Mapper becomes the rule for every JSON mapping on 6.4.
+
 ### Changed
 - On 6.4 every JSON mapping is a Visual Data Mapper, including two-field maps and template
   placeholders (`native-shapes-first.md`, `mcp-build-conventions.md`). A template's mapping step
@@ -456,7 +460,8 @@ tenant, and native shapes as the build default.
 ## [0.1.0] - initial scaffold
 - Initial Frends Companion plugin, marketplace, and bundled skill.
 
-[Unreleased]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.9.1...main
+[Unreleased]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.9.2...main
+[0.9.2]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.9.1...frends-companion-developer--v0.9.2
 [0.9.1]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.9.0...frends-companion-developer--v0.9.1
 [0.9.0]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.8.3...frends-companion-developer--v0.9.0
 [0.8.3]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.8.2...frends-companion-developer--v0.8.3
