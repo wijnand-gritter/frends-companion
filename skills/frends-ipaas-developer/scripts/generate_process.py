@@ -599,6 +599,8 @@ def validate(export):
               "FrendsVersion", "TargetFramework", "IsSubprocess"):
         if f not in p:
             err(f"Process missing '{f}'")
+    if any(f not in p for f in ("Bpmn", "ElementParameters", "TriggersJson")):
+        return False, msgs
 
     # Parse BPMN
     try:
@@ -647,6 +649,11 @@ def validate(export):
             continue
         if eid in flow_ids and etype == TYPE_FLOW:
             continue  # conditional branch flow, allowed
+        # 6.4: the Visual Data Mapper's source schemas live in a "$schemas" entry (Type 22) with no
+        # BPMN element.
+        if eid == "$schemas":
+            ok("source schemas entry $schemas (Type 22, 6.4 Visual Data Mapper)")
+            continue
         # Uncatalogued element types (data objects, annotations, etc.) -> note, not error.
         msgs.append(f"note: ElementParameters entry {eid} (Type {etype}) has no matching "
                     f"flow node tag (may be a data/annotation/scope element)")

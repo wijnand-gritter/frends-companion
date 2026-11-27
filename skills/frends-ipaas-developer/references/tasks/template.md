@@ -7,8 +7,13 @@ handlers, analyzers, tests, CI workflows and metadata; a hand-written skeleton r
 template already solves.
 
 ## Install (once per machine)
-Requires the .NET SDK 8.0 or newer. Version 1.17.0 of the template was installed and run with
-SDK 10.0.401.
+Requires the .NET SDK 8.0 or newer. This page follows template 2.2.0 (18 November 2026), read from
+the `FrendsPlatform/FrendsTasks` source; version 1.17.0 was the last one installed and run with SDK
+10.0.401. Version 2.0.0 restructured the test project, so a Task generated from 1.x looks different
+(see "Changed in template 2.x" below).
+
+The template ships no `.editorconfig`. Frends places one in a parent folder shared by all Task
+repositories; do the same, so StyleCop and the analyzers read one set of rules.
 
 ```bash
 dotnet new install frendstasktemplate \
@@ -45,13 +50,13 @@ repo-root/
     Conclusion.Salesforce.Query/
       Conclusion.Salesforce.Query.cs   the Task class and method
       Conclusion.Salesforce.Query.csproj
-      FrendsTaskMetadata.json  migration.json  GlobalSuppressions.cs
+      FrendsTaskMetadata.json  migration.json
       Definitions/  Input.cs  Connection.cs  Options.cs  Result.cs  Error.cs
       Helpers/      ErrorHandler.cs  ValidationHandler.cs
       Attributes/   RequiredIfAttribute.cs
     Conclusion.Salesforce.Query.Tests/
       Conclusion.Salesforce.Query.Tests.csproj
-      TestBase.cs  FunctionalTests.cs  ErrorHandlerTest.cs  GlobalSuppressions.cs  .env.example
+      TestBase.cs  FunctionalTests.cs  SetupContainer.cs  .env.example
 ```
 
 One folder and one solution per Task. Tasks are released independently; code is never shared
@@ -81,10 +86,11 @@ Then resolve what the template leaves to you, marked `// TODO:` in the code:
 | --- | --- | --- |
 | Task class, `Definitions/Connection.cs` | a `Connection` tab with a `ConnectionString` | delete the class and the method parameter when the Task connects to nothing |
 | `Definitions/Input.cs`, `Options.cs`, `Result.cs` | the sample `Content`, `Repeat`, `Delimiter` and `Output` | replace with the Task's own parameters; keep `ThrowErrorOnFailure` and `ErrorMessageOnFailure` |
+| `Definitions/Options.cs` | `ContinueOnFailure` (from 2.1.0) | keep it only for a Task that processes a batch of files (upload, download, copy, move); delete it otherwise |
 | `Definitions/Error.cs` | `AdditionalInfo` typed as `Exception` | a concrete type where the error shape is known ([anatomy.md](anatomy.md)) |
 | `Attributes/RequiredIfAttribute.cs` | the conditional validation attribute | delete it when no property uses `[RequiredIf]` |
 | `Tests/TestBase.cs` | reads `FRENDS_SECRET_KEY` and throws when it is not set | rename it to the target system's variable, or remove it; until then every test fails |
-| `Tests/ErrorHandlerTest.cs` | provokes a failure with an empty `Input` | use a real invalid input for the Task |
+| `Tests/SetupContainer.cs` | a Testcontainers fixture starting `hello-world`, a placeholder that exits at once | replace the image with the service the tests need (`postgres`, `atmoz/sftp`), or delete the file when the Task needs no external service; Docker must run where the tests run |
 
 Keep: `TargetFramework net8.0`, `LangVersion latest`, `GenerateDocumentationFile true`, the packing
 of `FrendsTaskMetadata.json`, `migration.json` and `CHANGELOG.md`, the `StyleCop.Analyzers` and
@@ -117,6 +123,18 @@ dotnet build -warnaserror && dotnet test --collect:"XPlat Code Coverage"
 
 `dotnet test` needs the .NET 8 runtime for the net8.0 test project; see [testing.md](testing.md)
 when only a newer runtime is installed.
+
+## Changed in template 2.x
+- 2.0.0: the repetitive tests (error handler, validation handler, `RequiredIf`) moved out of the
+  generated Task into the template's own repository. A generated Task no longer has
+  `ErrorHandlerTest.cs`; write the failure tests from [testing.md](testing.md) yourself.
+- 2.1.0: `Options.ContinueOnFailure` for batch file Tasks, and the Testcontainers example
+  `SetupContainer.cs`.
+- 2.2.0: `GlobalSuppressions.cs` removed from both projects in favour of a shared `.editorconfig`;
+  StyleCop.Analyzers 1.3.180; NUnit 5.0.0, Testcontainers 4.17.0, coverlet 10.1.1.
+- Still `net8.0` in both projects.
+
+Source: `https://github.com/FrendsPlatform/FrendsTasks/blob/main/FrendsTaskTemplate/CHANGELOG.md`.
 
 Acceptable matches: `FrendsTaskMetadata.json`, the `FrendsTaskAnalyzers` package reference,
 `Frends` in `PackageTags`, prose about the platform.

@@ -9,6 +9,68 @@ versions were released from a different repository and have no tag here.
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-11-27
+
+Frends 6.4 support, checked against the 6.4.0 release notes and the MCP server of a 6.4.0.1164
+tenant, and native shapes as the build default.
+
+### Added
+- Visual Data Mapper (6.4): `shapes/visual-data-mapper.md` covers the editor, source and target
+  schemas, the mapping rules and the MCP route (`process_add_vdm`, `process_set_source_schema`, the
+  `data-mapper` guide). The encoding is confirmed from an MCP draft: Type 28 on a
+  `businessRuleTask`, mappings in `vdmMappings`, and source schemas in a `$schemas` entry of Type 22
+  with no BPMN element. The draft is in `process-file-format/examples/vdm_mcp_draft_6.4.json`.
+- Managed certificates (6.4): `concepts/certificates.md` and the `#cert.<name>.<property>`
+  reference. From the release notes only; not yet exercised on a tenant.
+- Data mapping best practices (`guides/best-practices.md`): mapper before Code shape, map from the
+  payload, one model in one place (chain mappers within a Process, a shared Subprocess across
+  Processes, a validation Task for externally held schemas), strict validation where the target
+  is strict. `frends-reviewer` checks the reuse part as DES-08 (manual).
+- `frends-reviewer` STR-05 (info): a Code shape that sets five or more JSON fields one by one is a
+  candidate for a Visual Data Mapper. It recognises `obj["field"] =`, `new JProperty(...)` and the
+  common `dynamic json = new JObject(); json.field = ...` idiom.
+- Visual Data Mapper behaviour confirmed by running it on 6.4.0.1164: strict schema validation
+  fails the run with "Schema validation failed: Required properties are missing from object", a
+  Task as the source maps the Task's `Result` object rather than its body, and a schema cannot be
+  given as a `#var` reference. The reference lists the ways to keep one schema in one place.
+
+### Changed
+- 6.4 folded into the references it affects: .NET 10 only and the Legacy Agent removed
+  (`agent-and-agent-group.md`, `csharp-versions.md`, `deployment.md`); shape parameters logged at
+  the Default level, secret masking and blob-only step data (`debugging.md`); Handlebars
+  `{{#if}}` and `{{#each}}` (`handlebars.md`); the Schedule Trigger and API deployment rules; the
+  Code shape line-comment fix.
+- `tooling-routes.md`: `deploy_process` takes `activation` (`activate`, `deactivate`, `keep`),
+  which replaced `activateTriggers` in 6.3.3; the guide list adds `data-mapper` and
+  `troubleshooting`.
+- Custom Task references follow template 2.2.0: no `GlobalSuppressions.cs` (a shared
+  `.editorconfig` instead), no generated `ErrorHandlerTest.cs`, `SetupContainer.cs` with
+  Testcontainers, `Options.ContinueOnFailure` for batch file Tasks, NUnit 5.
+- The native-shapes guide puts the Visual Data Mapper before a Code shape for JSON mapping, and the
+  MCP overlay names the `process-authoring` guide's "prefer the Code shape" advice as a delta.
+- Native shapes are the build default. Claude places calls in Tasks, routes in Decisions and
+  Loops, failures in Throws, and rules and constants in DMN Tasks and Environment Variables. A Code
+  shape holds one action nothing else can express, and the design says why. Before, the advice to
+  prefer shapes was spread over several files and phrased as a preference, so logic ended up in Code
+  shapes where the diagram and the Process Instance view could not show it. The rule and its order
+  of choice are in the new guide `references/guides/native-shapes-first.md`; SKILL.md, the MCP build
+  conventions, the best practices and the Code Task references point to it.
+- The BPMN modelling example parses the trigger body with an Assign Variable shape, no longer "Code
+  Task or Assign Variable".
+- The generation checklist says the generator's linear-flow limit is no reason to fold a Decision or
+  a Loop into a Code Task.
+
+### Fixed
+- `mcp-build-conventions.md` named a `--mcp-json` flag that `review_process.py` does not have; the
+  script detects an MCP result by itself.
+- The generator's validator crashed on an export without `TriggersJson` after reporting it missing.
+
+### Added (native shapes)
+- `frends-reviewer` 0.3.0 checks Code shapes against the new default. STR-03 (major) flags calls to
+  outside systems such as `HttpClient`, `SqlConnection` or `File.*`. STR-04 (minor) flags business
+  `throw` statements, `#var` assignments, sleeps, value lists of five or more literals and chains of
+  three or more `else if`. Both are heuristics that the reviewer confirms against the design.
+
 ## [0.8.3] - 2026-10-09
 
 ### Changed
@@ -347,7 +409,8 @@ versions were released from a different repository and have no tag here.
 ## [0.1.0] - initial scaffold
 - Initial Frends Companion plugin, marketplace, and bundled skill.
 
-[Unreleased]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.8.3...main
+[Unreleased]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.9.0...main
+[0.9.0]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.8.3...frends-companion-developer--v0.9.0
 [0.8.3]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.8.2...frends-companion-developer--v0.8.3
 [0.8.2]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.8.1...frends-companion-developer--v0.8.2
 [0.8.1]: https://github.com/wijnand-gritter/frends-companion/compare/frends-companion-developer--v0.8.0...frends-companion-developer--v0.8.1

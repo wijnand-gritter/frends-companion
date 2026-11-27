@@ -4,7 +4,9 @@
 
 ## Purpose
 A scope for multi-line C# — the "code" in low-code. Use it for one logical action that needs more
-than a single Expression.
+than a single Expression and that no Task or native shape can do. It is the last option in
+[../guides/native-shapes-first.md](../guides/native-shapes-first.md): no calls to outside systems,
+no route decisions, no business `throw`, no hard-coded value lists.
 
 ## Fields / configuration
 - A C# code block (`variableExpression`, `csharp` mode). Optional `useStatementMode` toggle.
@@ -31,6 +33,8 @@ See [../process-file-format/confirmed-shape-parameters.md](../process-file-forma
   ([../expressions/csharp-versions.md](../expressions/csharp-versions.md)).
 - 6.3: Code shape names must be unique in the Process; the editor rejects duplicates.
 - 6.3: `#process.SendTcpMessage` is no longer offered by completion in the Statement Code shape.
+- Before 6.4.0, a Code shape whose code ended in a `//` line comment failed to compile. Fixed in 6.4.0.
+- 6.4: JSON mapping belongs in a [Visual Data Mapper](visual-data-mapper.md), not in a Code shape.
 
 ## Example
 ```csharp

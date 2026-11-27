@@ -273,10 +273,12 @@ bearer token it gets back.
 
 ## Maturity
 
-The knowledge works against Frends 6.2 and 6.3 (6.3.0 to 6.3.2). The serialisation spec under
-`references/process-file-format/` is confirmed against real 6.2 exports, which import into 6.3
-tenants. The 6.3.0, 6.3.1 and 6.3.2 release notes are folded into the references they affect, and
-the .NET 10 and C# 14 support was validated on a 6.3.2 tenant through the Frends MCP server.
+The knowledge works against Frends 6.2, 6.3 (6.3.0 to 6.3.2) and 6.4 (6.4.0). The serialisation
+spec under `references/process-file-format/` is confirmed against real 6.2 exports, which import into
+6.3 tenants, and the Visual Data Mapper encoding against an MCP draft on 6.4.0.1164. The 6.3.0 to
+6.3.2 and 6.4.0 release notes are folded into the references they affect, and the .NET 10 and C# 14
+support was validated on a 6.3.2 tenant through the Frends MCP server. The Platform API scripts are
+not yet checked against the 6.4 OpenAPI document.
 
 The Platform API scripts are checked against the 6.3.2 OpenAPI document and ran against a live 6.3.2
 tenant: `frends-smoke-test.sh` covers the reads, `frends-write-test.sh` the import, tags, deploy,

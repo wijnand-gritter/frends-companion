@@ -26,6 +26,13 @@ Also infrastructure: from Frends 6.3, on-premise Cross-platform Agents require
 **.NET Runtime 10.0.5 or newer** (10.0.7 from 6.3.1) - an outdated runtime blocks the Agent, not
 just one deploy.
 
+From 6.4, also:
+- A Process version compiled for .NET Framework 4.7.1 can no longer be deployed. Save a new version,
+  which compiles for .NET 10.
+- An API cannot be deployed to an Agent Group where another deployed API still links one of its
+  Processes ([../concepts/api-management.md](../concepts/api-management.md)).
+- Certificates reach only Agents on 6.4 or newer ([../concepts/certificates.md](../concepts/certificates.md)).
+
 ## How to deploy
 1. In the Process list, select the Environment and Agent Group holding the version. To deploy the
    very latest, deploy from the Development Agent Group.

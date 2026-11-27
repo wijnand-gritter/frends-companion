@@ -14,6 +14,10 @@ Handlebars in Text fields ([handlebars.md](handlebars.md)).
   hence two parts).
 - `#trigger` — data from the Trigger that started the Process (e.g. an API Trigger's request body).
 - `#process` — metadata about the current Process execution.
+- `#cert.<name>.<property>` (6.4) — a [managed certificate](../concepts/certificates.md), e.g.
+  `#cert.partnerapi.thumbprint`.
+- `#source.<path>` (6.4) — the source data, inside a
+  [Visual Data Mapper](../shapes/visual-data-mapper.md)'s mappings only.
 
 Use the Process Editor's auto-complete to fill reference and result names; it avoids typos in shape
 names.

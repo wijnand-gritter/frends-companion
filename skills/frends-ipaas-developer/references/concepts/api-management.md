@@ -23,6 +23,14 @@ secured through the platform.
 - The migration can fail when the OpenAPI spec and the deployed Process disagree - align them
   before upgrading.
 
+## Changed in 6.4
+- Deploying an API to an Agent Group is rejected while another API deployed there still links one of
+  its Processes. Unlink or undeploy the other API first.
+- HTTP and API Trigger credential headers, cookies and query parameters are masked in Process logs
+  ([../guides/debugging.md](../guides/debugging.md)).
+- HTTP Triggers can authenticate callers by client certificate against managed issuer certificates
+  ([certificates.md](certificates.md)).
+
 ## Conventions (Frends best practices collection)
 - Name an API after the business capability it exposes, never the backend system behind it.
 - Design first: the OpenAPI specification is agreed before the Process is built.

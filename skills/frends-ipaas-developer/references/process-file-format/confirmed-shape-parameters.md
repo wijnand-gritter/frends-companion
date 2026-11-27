@@ -101,3 +101,8 @@ as a plain string).
 
 [Data Object](../shapes/data-object-reference.md) (22) / [Data Store](../shapes/data-store-reference.md)
 (23): empty `Parameters` (`{}`).
+
+[Visual Data Mapper](../shapes/visual-data-mapper.md) (Type 28, 6.4.0):
+`{ "useVdmMode": {mode toggle}, "sourceNodeId": "<plain string>", "schema": "<JSON string>",
+"schemaTree": "<JSON string>", "vdmMappings": "<JSON string>", "validateResultSchema": <bool> }`,
+plus the `$schemas` entry (Type 22) for its source schema.

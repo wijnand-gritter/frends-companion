@@ -25,7 +25,7 @@ Facts from the live run:
 | `POST /processes/batch-import` | `data` is an array of `{name, elementIdentifier (guid), id, resourceLocation}`; a generated 6.3 file (`net10.0`, `FrendsVersion` `6.3.2.5468`) imports |
 | `DELETE /process-deployments/{id}` | removes a deployment outside Development; `GET` on that id then returns HTTP 404 |
 | `PUT /tags` | replaces the element's tags with the given list; `GET /tags` returns `{}` for an element without tags |
-| `GET /instances/{agentGroupId}/{executionId}/details` | `steps` is `null`; the step data sits behind `stepDataUri` |
+| `GET /instances/{agentGroupId}/{executionId}/details` | `steps` is `null` on 6.3 and gone on 6.4; the step data sits behind `stepDataUri` |
 | `GET /processes/{id}/export` | `id` is the process version id (`id` in `frends-process-list.sh --raw`), not the guid |
 | `POST /process-deployments/{id}/execute` | HTTP 202 only accepts the run; poll the instances for `state` (`Finished`) |
 | `POST /instances/.../acknowledge` | accepts a successful instance too |
@@ -70,7 +70,7 @@ through Frends API Management; they do not open the Platform API.
 | `FRENDS_APPLICATION_URI` | The Application ID URI exposed by the app registration (the token `resource`). |
 | `FRENDS_DEV_AGENT_GROUP_ID` / `FRENDS_TEST_AGENT_GROUP_ID` / `FRENDS_PROD_AGENT_GROUP_ID` | Agent Group IDs used for deploy / instance queries. |
 | `FRENDS_DEV_ENVIRONMENT_ID` / `FRENDS_TEST_ENVIRONMENT_ID` / `FRENDS_PROD_ENVIRONMENT_ID` | Environment IDs used for env-var values. |
-| `FRENDS_TARGET_FRAMEWORK` | Process target framework, from a sample export (`net8.0` on 6.2, `net10.0` on 6.3). |
+| `FRENDS_TARGET_FRAMEWORK` | Process target framework, from a sample export (`net8.0` on 6.2, `net10.0` on 6.3 and 6.4). |
 | `FRENDS_VERIFY_SSL` | `false` to pass `-k` to curl (corporate SSL inspection). Default `true`. |
 | `FRENDS_TIMEOUT` | Optional curl timeout override (seconds). |
 | `FRENDS_COMPANION_LOG_ACTIVITY` | `1` to append operations to `.activity-log/activity.jsonl`. |

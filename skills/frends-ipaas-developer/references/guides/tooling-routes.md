@@ -35,7 +35,7 @@ order, and name the route in the reply.
 | Review | `get_process_data`, then `frends-reviewer` | `frends-process-pull.sh`, then `frends-reviewer` | `frends-reviewer` on the file |
 | Promote a draft to Development | `create_process_from_draft` | `frends-process-push.sh` | manual import |
 | Deploy to Test or Production | `deploy_process` | `frends-deploy.sh deploy` | Control Panel |
-| Activate or deactivate triggers | `deploy_process` with `activateTriggers` | `frends-deploy.sh activate` / `deactivate` | Control Panel |
+| Activate or deactivate triggers | `deploy_process` with `activation` (`activate`, `deactivate` or `keep`; replaced `activateTriggers` in 6.3.3) | `frends-deploy.sh activate` / `deactivate` | Control Panel |
 | Run | `start_process` | `frends-deploy.sh run` | Control Panel |
 | Instances and diagnosis | `get_process_instances`, `get_process_instance_details` | `frends-instances.sh` | Control Panel |
 | Acknowledge failed instances | none | `frends-instances.sh acknowledge` | Control Panel |
@@ -43,6 +43,7 @@ order, and name the route in the reply.
 | Environment Variable values per Environment | none | `frends-env-vars.sh set` | Control Panel |
 | Tasks: find, inspect, import | `list_tasks`, `search_task_packages`, `inspect_task`, `import_task` | none | Control Panel Tasks page |
 | Tags | none | `frends-tags.sh` | Control Panel |
+| Certificates (6.4) | none | none yet: the operations are in the 6.4 Platform API, not in the scripts | Control Panel |
 | Process Templates | none | `frends-templates.sh` | Control Panel |
 | API specifications | none | `frends-api-specs.sh` | Control Panel |
 | Export for backup or version control | none | `frends-process-pull.sh`, `frends-process-pull.sh --batch` | Control Panel |
@@ -76,8 +77,10 @@ before the first builder call and apply the overlay.
 
 ## MCP guides own the tool mechanics
 The MCP server serves guides through `list_guides` and `get_guide`: `process-authoring`,
-`diagnose-process`, `execute-process`, `explore-tasks`, `find-integration`, `manage-environments`,
-`search-processes`. Fetch the guide before using its tools. This skill states house rules and the
+`data-mapper` (6.4), `diagnose-process`, `execute-process`, `explore-tasks`, `find-integration`,
+`manage-environments`, `search-processes`, `troubleshooting`. Follow `troubleshooting` when the
+tenant shows a state the MCP client cannot change, such as a trigger that stays inactive after a
+deploy: it says how often to re-check and what to hand to the person. Fetch the guide before using its tools. This skill states house rules and the
 deltas from those guides; it does not copy them.
 
 ## Boundaries

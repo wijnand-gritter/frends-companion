@@ -37,5 +37,21 @@ run, shape by shape, with start time, duration, what executed, and the result.
 - **"Skip logging result and parameters"** on a shape hides its values from the Instance: use it
   on shapes that carry secrets, personal data or large payloads.
 
+## Changed in 6.4
+- Every shape now logs its parameters at the Default level as well as its result, truncated. The
+  6.4.0 release notes give 2,000 characters per value and 20 list items. A Process picks this up
+  when a new version is saved and deployed. Parameters that carry personal data or large payloads
+  now show up where they did not before, so "Skip logging result and parameters" matters on more
+  shapes.
+- Secret Environment Variables, secret Process Variables and secret Manual Trigger parameters are
+  masked in Process logs after a rebuild. Credential headers, cookies and query parameters of HTTP
+  and API Trigger requests are masked too: `Authorization`, `Cookie`, `X-Api-Key`, `X-ApiKey`,
+  `X-Auth-Token`, `Proxy-Authorization` and the API Policy key, extendable with the Agent setting
+  `TriggerHeadersToMask`.
+- Step data is always logged to blob storage; the database option is gone. The Platform API's
+  Process instance details no longer carry the empty `Steps` list: read `stepDataUri`.
+- Validation errors show on the canvas grouped by shape, and compilation errors under the shape
+  that caused them.
+
 ## Source of truth
 `https://docs.frends.com/management-and-operations/dashboard-and-monitoring/process-instances.md`

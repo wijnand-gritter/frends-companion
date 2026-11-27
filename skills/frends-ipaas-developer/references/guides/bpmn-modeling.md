@@ -36,7 +36,8 @@ To return a Task's output, set the Return field to **Expression** and reference 
 
 ## Making executions debuggable
 Name shapes meaningfully (the name is also the `#result[...]` key), split logic into shapes rather
-than one big Code Task, and promote key values. Detail in [debugging.md](debugging.md).
+than one big Code Task, and promote key values. Detail in [debugging.md](debugging.md). Which shape
+holds which logic: [native-shapes-first.md](native-shapes-first.md).
 
 ## A worked example
 An API-triggered Process that takes an order, enriches it from a CRM, and forwards it to an ERP, with
@@ -44,7 +45,7 @@ a guard if the customer is not found.
 
 ```
 [API Trigger: POST /orders]
-   -> (Code Task or Assign Variable: parse #trigger body into #var.order)
+   -> (Assign Variable: parse #trigger body into #var.order)
    -> [Task: HTTP Request "Get Customer"]
         url:    Expression  $"https://crm/api/customers/{#var.order.CustomerId}"
         method: GET

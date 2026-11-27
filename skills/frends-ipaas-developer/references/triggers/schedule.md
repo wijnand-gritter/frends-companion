@@ -55,6 +55,8 @@ Trigger parameter fields are Text with the `#env` exception; see
 - A Schedule that must not overlap itself is set to single instance.
 - With "Repeat" enabled the interval must be non-zero; an empty interval fails the trigger with
   `DivideByZeroException`.
+- 6.4: a daily or weekly Schedule with an empty recurrence, or a weekly one with no day selected,
+  can no longer be saved.
 
 ## Source of truth
 `https://docs.frends.com/reference/triggers/schedule-trigger.md`; config confirmed against

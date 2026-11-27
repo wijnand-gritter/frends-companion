@@ -58,7 +58,7 @@ public static class Salesforce
 | --- | --- | --- |
 | `Input` | parameters essential to the function | always present, always first |
 | `Connection` | URLs, tokens, client ids and secrets, connection strings | database connection strings always here; delete the class when the Task connects to nothing |
-| `Options` | optional behaviour | always `ThrowErrorOnFailure` (default `true`) and `ErrorMessageOnFailure`; never connection parameters |
+| `Options` | optional behaviour | always `ThrowErrorOnFailure` (default `true`) and `ErrorMessageOnFailure`; `ContinueOnFailure` (default `false`) only on Tasks that process a batch of files; never connection parameters |
 
 No Source or Destination tabs: their connection parameters go to `Connection`.
 

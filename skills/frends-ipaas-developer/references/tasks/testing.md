@@ -3,8 +3,14 @@
 Category: tasks · Baseline: template from `FrendsPlatform/FrendsTasks`, net8.0
 
 ## Unit tests
-The template generates the test project: NUnit 4, `Microsoft.NET.Test.Sdk`, `coverlet.collector`,
-`dotenv.net`, StyleCop, and `TestBase.cs`, `FunctionalTests.cs`, `ErrorHandlerTest.cs`.
+The template generates the test project: NUnit 5 (template 2.2.0; NUnit 4 before), `Microsoft.NET.Test.Sdk`,
+`coverlet.collector`, `dotenv.net`, `Testcontainers`, StyleCop, and `TestBase.cs`,
+`FunctionalTests.cs`, `SetupContainer.cs`. From template 2.0.0 there is no generated
+`ErrorHandlerTest.cs`: the failure cases below are yours to write.
+
+For a Task that talks to a service, start the service in `SetupContainer.cs` with Testcontainers
+(`postgres`, `atmoz/sftp`, `dperson/samba`) so the tests need no manual `docker compose up`. Docker
+must be running on the machine and in CI.
 
 Coverage is at least 80%. Cover at minimum:
 
@@ -24,8 +30,8 @@ Coverage is at least 80%. Cover at minimum:
 - Name tests `Scenario_Condition_Expectation`. The template's own tests use other names; rename them
   as you rewrite them.
 - With NUnit 4, `Assert.Throws<T>(() => Task.Method(...))` does not compile (CS0121, ambiguous
-  between `TestDelegate` and `Action`) because the Task method returns a value. Cast the lambda as
-  the template does: `Assert.Throws<T>((Action)(() => Task.Method(...)))`.
+  between `TestDelegate` and `Action`) because the Task method returns a value. Cast the lambda:
+  `Assert.Throws<T>((Action)(() => Task.Method(...)))`. Not yet checked on NUnit 5.
 - Run: `dotnet test --collect:"XPlat Code Coverage"`.
 
 ### Running on a machine without the .NET 8 runtime
