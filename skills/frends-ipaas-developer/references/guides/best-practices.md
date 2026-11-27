@@ -17,6 +17,14 @@ skill checks a built Process against the same list.
 | Select Tasks deliberately | check the Task catalogue first; a dedicated Task over a generic HTTP or file Task |
 | Conditional triggering | trigger on a condition instead of a frequent schedule that mostly finds nothing; no business logic in the condition |
 
+## Data mapping
+| Rule | Detail |
+| --- | --- |
+| JSON mapping in a Visual Data Mapper | on 6.4, a mapper before a Code shape; one mapper per target model ([native-shapes-first.md](native-shapes-first.md)) |
+| Map from the payload, not the Task result | an Assign Variable such as `Read user from response body` between a Task and the mapper; a Task as the source maps its `Result` object ([../shapes/visual-data-mapper.md](../shapes/visual-data-mapper.md)) |
+| One model, one schema, one place | a schema cannot come from a variable: it is a literal JSON string in the shape, and `#var.targetSchema` is rejected as invalid JSON. Within a Process, chain from the mapper: its result carries its target schema, so a later mapper uses it as source without a schema of its own. Across Processes, put the mapping in a shared Subprocess, e.g. `Shared - Map AFAS order to HubSpot deal`, so the schema and mappings exist once and a change is one deployment. For validation only, a JSON Schema validation Task with the schema in an Environment Variable or a file |
+| Strict schema validation where the target is strict | turn it on when the receiving system rejects malformed input; a missing required field then fails the run with "Schema validation failed" |
+
 ## Naming
 | Rule | Detail |
 | --- | --- |

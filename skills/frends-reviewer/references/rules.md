@@ -111,6 +111,7 @@ Detail: `../../frends-ipaas-developer/references/process-file-format/exception-h
 | DES-05 | a dedicated Task is used where one exists | convention | minor | manual |
 | DES-06 | a conditional trigger replaces a frequent schedule that mostly finds nothing | convention | minor | manual |
 | DES-07 | a schedule that must not overlap is single instance; a file trigger runs one instance | platform | major | manual |
+| DES-08 | a target model mapped in several Processes is mapped once, in a shared Subprocess; a mapper's source is the payload, not a Task's result object | convention | minor | manual |
 | STR-01 | size: more than 50 execution shapes | convention | minor | auto |
 | STR-02 | a Code Task holds one logical action | convention | info | auto (length) |
 | STR-03 | a Code Task makes no calls to outside systems; the dedicated Task does | convention | major | auto (heuristic), manual |

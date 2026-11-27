@@ -80,6 +80,9 @@ Inside it:
 State in the design why the logic needs a Code shape, such as "no Task maps this structure". The
 style for the C# itself is in [code-shape-style.md](code-shape-style.md).
 
+For a Visual Data Mapper, the rules under "Data mapping" in [best-practices.md](best-practices.md)
+apply: map from the payload, and keep one schema per model in one place.
+
 ## When the tools push towards code
 
 - The file route generator, `generate_process.py`, emits linear flows of Tasks and Code shapes

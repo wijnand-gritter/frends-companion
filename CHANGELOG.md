@@ -22,6 +22,10 @@ tenant, and native shapes as the build default.
   with no BPMN element. The draft is in `process-file-format/examples/vdm_mcp_draft_6.4.json`.
 - Managed certificates (6.4): `concepts/certificates.md` and the `#cert.<name>.<property>`
   reference. From the release notes only; not yet exercised on a tenant.
+- Data mapping best practices (`guides/best-practices.md`): mapper before Code shape, map from the
+  payload, one model in one place (chain mappers within a Process, a shared Subprocess across
+  Processes, a validation Task for externally held schemas), strict validation where the target
+  is strict. `frends-reviewer` checks the reuse part as DES-08 (manual).
 - `frends-reviewer` STR-05 (info): a Code shape that sets five or more JSON fields one by one is a
   candidate for a Visual Data Mapper. It recognises `obj["field"] =`, `new JProperty(...)` and the
   common `dynamic json = new JObject(); json.field = ...` idiom.
