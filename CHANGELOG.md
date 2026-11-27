@@ -16,6 +16,10 @@ versions were released from a different repository and have no tag here.
   is not a compile error. Found while helping a colleague whose signal resume seemed to work only
   directly after the trigger.
 - `reference-syntax.md`: what a bare `#result` reads, and why `#result[Shape name]` is safer.
+- `handlebars.md`: the full 6.4 conditions and loops from the Frends Handlebars reference: the
+  field types and shapes they work in, condition rules, `this.Property`, nesting, whitespace in the
+  output, escaping for JSON and XML, errors at save versus at run time, when to use a Decision or a
+  Visual Data Mapper instead, and the difference from the JSON Handlebars Task.
 
 ### Changed
 - `mcp-build-conventions.md`: relayout with `forceRelayout` on every batch that inserts a shape or
